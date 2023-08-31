@@ -6,9 +6,23 @@
       </div>
       <div class="loginsize">
         <div class="sizeleft"><h2>考试系统</h2></div>
-        <div class="sizeright"><img src="../assets/img/QRcode.png" alt="" /></div>
+        <div class="sizeright" @click="Loginishow = !Loginishow" v-if="Loginishow">
+          <img src="../assets/img/QRcode.png" alt="" />
+        </div>
+        <div class="sizeright" v-if="!Loginishow" @click="Loginishow = !Loginishow">
+          <img src="../assets/img/PcLiGon.png" alt="" />
+        </div>
       </div>
-      <div class="loginform">
+      <div class="QrCodes" v-if="!Loginishow">
+        <div style="display: flex; justify-content: center">
+          <img src="../assets/img/CodeData.jpg" alt="" style="width: 180px; height: 180px" />
+        </div>
+        <div style="display: flex; justify-content: center; margin-top: 70px">
+          <p>使用<span style="color: #0089ff">微信</span>扫一扫进行登录</p>
+        </div>
+        <div></div>
+      </div>
+      <div class="loginform" v-if="Loginishow">
         <el-form
           ref="ruleFormRef"
           :model="LoginAdd"
@@ -21,9 +35,14 @@
             <el-input v-model="LoginAdd.username" placeholder="用户名" />
           </el-form-item>
           <el-form-item prop="pass">
-            <el-input v-model="LoginAdd.pass" placeholder="请输入密码" />
+            <el-input
+              v-model="LoginAdd.pass"
+              placeholder="请输入密码"
+              show-password
+              type="password"
+            />
           </el-form-item>
-          <el-form-item prop="pass">
+          <el-form-item>
             <el-button type="primary" @click="LogniAddForm(ruleFormRef)"> 登录 </el-button>
             <div
               style="
@@ -56,6 +75,7 @@ let router = useRouter()
 const store: LoginAddObject | any = useCounterStore()
 const formSize = ref('default')
 const ruleFormRef = ref<FormInstance>()
+let Loginishow = ref(true)
 interface RuleForm {
   username: string
   pass: string
@@ -172,5 +192,8 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
       }
     }
   }
+}
+.QrCodes {
+  padding: 20px 0;
 }
 </style>
