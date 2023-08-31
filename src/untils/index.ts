@@ -20,7 +20,6 @@ export default function () {
       return item.url !== null
     })
     res.forEach((item: any) => {
-      console.log(item.url)
       const viewsurl =
         '../views' +
         item.url +
@@ -29,7 +28,6 @@ export default function () {
         String(item.url).slice(2) +
         'View' +
         '.vue'
-      console.log(viewsurl)
 
       const obj = {
         path: '/SystemMenu' + item.url,
