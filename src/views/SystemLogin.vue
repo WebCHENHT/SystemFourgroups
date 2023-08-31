@@ -43,7 +43,9 @@
             />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="LogniAddForm(ruleFormRef)"> 登录 </el-button>
+            <el-button type="primary" @click="LogniAddForm(ruleFormRef)">
+              {{ Systemname === false ? '登录' : '正在登录中....' }}
+            </el-button>
             <div
               style="
                 width: 100%;
@@ -80,9 +82,10 @@ interface RuleForm {
   username: string
   pass: string
 }
+let Systemname = ref(false)
 const LoginAdd = reactive<RuleForm>({
-  username: '',
-  pass: ''
+  username: 'admin',
+  pass: 'admin'
 })
 const Loginrules = reactive<FormRules<RuleForm>>({
   username: [
@@ -99,9 +102,9 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate(async (valid, fields) => {
     if (valid) {
+      Systemname.value = true
       let res = await TeacherChecklogin(LoginAdd)
       console.log(res.data.token)
-
       if (res.errCode === 10000) {
         let resa = res.data.menu.filter((item: any) => {
           if (item.ico) {
@@ -113,11 +116,13 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
         store.menus = res.data.menu
         store.model = res.data.model
         store.type = res.data.type
-
-        succesMsg('登录成功')
-        router.push({
-          path: '/SystemMenu'
-        })
+        Systemname.value = false
+        setTimeout(() => {
+          succesMsg('登录成功')
+          router.push({
+            path: '/SystemMenu'
+          })
+        }, 200)
       } else {
         errorMsg(res.errMsg)
       }

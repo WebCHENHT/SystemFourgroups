@@ -9,12 +9,7 @@
       @selection-change="handleSelectionChange"
     >
       <!-- 多选 -->
-      <el-table-column
-        v-if="isselect"
-        align="center"
-        type="selection"
-        width="55"
-      />
+      <el-table-column v-if="isselect" align="center" type="selection" width="55" />
       <template v-for="(item, index) in props.tableColums">
         <el-table-column
           v-if="!item.isslot"
@@ -59,73 +54,69 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, defineProps, defineEmits } from 'vue';
+import { onMounted, ref } from 'vue'
 
 let props: any = defineProps({
   //
   TableData: {
     type: Array,
-    default: () => [],
+    default: () => []
   },
   //列表数据名称
   tableColums: {
     type: Array,
-    default: () => [],
+    default: () => []
   },
 
   //
   isselect: {
     type: Boolean,
-    default: false,
+    default: false
   },
   //
   loading: {
     type: Boolean,
-    default: false,
+    default: false
   },
   //
   isexpand: {
     type: Boolean,
-    default: false,
+    default: false
   },
   //总页数
   total: {
     type: Number,
-    default: () => 0,
+    default: () => 0
   },
   showPage: {
     type: Boolean,
-    default: () => true,
-  },
-});
+    default: () => true
+  }
+})
 
-const emit = defineEmits([
-  'allTableData',
-  'sonhandleSizeChange',
-  'sonhandleCurrentChange',
-]);
+const emit = defineEmits(['allTableData', 'sonhandleSizeChange', 'sonhandleCurrentChange'])
 
 // 表格全选
 const handleSelectionChange = (val: object[]) => {
-  emit('allTableData', val);
-};
+  emit('allTableData', val)
+}
 
 // 传递给父组件数据
-const currentPage4 = ref(1);
-const pageSize4 = ref(10);
+const currentPage4 = ref(1)
+const pageSize4 = ref(10)
 // 一页多少条
 const handleSizeChange = (val: number) => {
-  emit('sonhandleSizeChange', val);
-};
+  emit('sonhandleSizeChange', val)
+}
 // 跳到多少页
 const handleCurrentChange = (val: number) => {
-  emit('sonhandleCurrentChange', val);
-};
-onMounted(() => {});
+  emit('sonhandleCurrentChange', val)
+}
+onMounted(() => {})
 </script>
 
 <style lang="less">
-@import url('@/assets/css/table.css');
+@import url('@/ /css/table.css');
 </style>
 <style>
 .demo-pagination-block {
