@@ -1,5 +1,5 @@
 <template>
-  <div>考试</div>
+  <div style="font-size: 20px">考试管理</div>
 </template>
 
 <script setup lang="ts"></script>
