@@ -11,7 +11,8 @@ export default function () {
         title: '菜单'
       },
       component: () => import('../views/SystemMenu.vue'),
-      children: []
+      children: [],
+      redirect: '/SystemMenu/test'
     })
 
     const menu: any[] = store.menus
