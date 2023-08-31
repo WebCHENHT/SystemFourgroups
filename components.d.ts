@@ -9,15 +9,38 @@ declare module 'vue' {
   export interface GlobalComponents {
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElBt: typeof import('element-plus/es')['ElBt']
     ElButton: typeof import('element-plus/es')['ElButton']
+<<<<<<< HEAD
+    ElCascader: typeof import('element-plus/es')['ElCascader']
+=======
+    ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
+    ElCol: typeof import('element-plus/es')['ElCol']
+>>>>>>> cdbfb9c88f3dfddbbd6c247335f56195c2a8fcc2
     ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
+<<<<<<< HEAD
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+=======
+    ElOption: typeof import('element-plus/es')['ElOption']
+<<<<<<< HEAD
+    ElPagination: typeof import('element-plus/es')['ElPagination']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+=======
+    ElRadio: typeof import('element-plus/es')['ElRadio']
+    ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
+    ElRow: typeof import('element-plus/es')['ElRow']
+    ElSelect: typeof import('element-plus/es')['ElSelect']
+>>>>>>> cdbfb9c88f3dfddbbd6c247335f56195c2a8fcc2
+>>>>>>> 2db8d61977355bf5b63efd8a0039f79e1ba3d310
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TableangPage: typeof import('./src/components/TableangPage.vue')['default']
