@@ -1,5 +1,8 @@
 <template>
-  <div>班级</div>
+  <div>
+    <h3>班级管理</h3>
+    <div></div>
+  </div>
 </template>
 
 <script setup lang="ts"></script>
