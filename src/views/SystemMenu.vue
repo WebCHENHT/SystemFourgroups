@@ -222,4 +222,7 @@ const setPass = () => {
     }
   }
 }
+/deep/.el-main {
+  padding: 10px;
+}
 </style>
