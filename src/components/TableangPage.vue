@@ -3,9 +3,14 @@
     <el-table
       v-loading="loading"
       :data="props.TableData"
-      show-overflow-tooltip="true"
+      show-overflow-tooltip
       header-align="center"
       :border="false"
+      :header-cell-style="{
+        backgroundColor: '#fafafa',
+      }"
+      :header-row-style="{ height: '40px' }"
+      :row-style="{ height: '40px' }"
       @selection-change="handleSelectionChange"
     >
       <!-- 多选 -->
@@ -116,7 +121,7 @@ onMounted(() => {})
 </script>
 
 <style lang="less">
-// @import url('@/css/table.css');
+@import url('@/assets/css/table.css');
 </style>
 <style>
 .demo-pagination-block {

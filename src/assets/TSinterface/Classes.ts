@@ -22,3 +22,13 @@ export interface Classes {
   depid: number
   key: string
 }
+export interface Classesdel {
+  id: number
+}
+
+// 添加班级
+export interface Classesadd {
+  id: number
+  name: string
+  depid: number
+}
