@@ -11,6 +11,10 @@ declare module 'vue' {
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
+<<<<<<< HEAD
+=======
+    ElCascader: typeof import('element-plus/es')['ElCascader']
+>>>>>>> fe99343668bcd487f6f74fdea3d27c4f335577c1
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
@@ -21,6 +25,10 @@ declare module 'vue' {
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
+<<<<<<< HEAD
+=======
+    ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
+>>>>>>> fe99343668bcd487f6f74fdea3d27c4f335577c1
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
@@ -29,9 +37,14 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+<<<<<<< HEAD
     ElTree: typeof import('element-plus/es')['ElTree']
+=======
+    ElTransfer: typeof import('element-plus/es')['ElTransfer']
+>>>>>>> fe99343668bcd487f6f74fdea3d27c4f335577c1
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SystemTransfer: typeof import('./src/components/SystemTransfer.vue')['default']
     TableangPage: typeof import('./src/components/TableangPage.vue')['default']
     WangEditor: typeof import('./src/components/WangEditor.vue')['default']
   }
