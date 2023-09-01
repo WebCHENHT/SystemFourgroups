@@ -15,7 +15,14 @@ export interface Data {
 export interface RootObject {
   data: Data
 }
+// 删除
+export interface roleid{
+  id:number
+}
 export interface RolePage {
   page: number
   psize:number
+}
+export interface roleMenu {
+  roleid:number
 }
