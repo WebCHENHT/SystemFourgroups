@@ -79,7 +79,7 @@ const data = reactive({
 //把pinan里面的侧边栏数据取出来
 data.LeftArrDatas = store.LeftArrDatas
 
-let SytemUrl = ref(route.path)
+let SytemUrl = ref(route.meta.url)
 
 //跳转页面
 const SystemLists = (data: any) => {

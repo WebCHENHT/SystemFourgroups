@@ -33,11 +33,21 @@ export default function () {
         path: '/SystemMenu' + item.url,
         name: item.url,
         meta: {
-          name: item.name
+          name: item.name,
+          url: '/SystemMenu' + item.url
         },
         component: viteComponent[viewsurl]
       }
       router.addRoute('SystemMenu', obj)
+      router.addRoute('SystemMenu', {
+        path: '/SystemMenu/test/Analyse',
+        name: 'AnalyseView',
+        meta: {
+          title: '考试分析',
+          url: '/SystemMenu/test'
+        },
+        component: () => import('../views/test/AnalyseView.vue')
+      })
     })
     router.addRoute({
       path: '/:pathMatch(.*)*',
