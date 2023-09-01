@@ -116,7 +116,7 @@ onMounted(() => {})
 </script>
 
 <style lang="less">
-@import url('@/css/table.css');
+@import url('@/assets/css/table.css');
 </style>
 <style>
 .demo-pagination-block {
