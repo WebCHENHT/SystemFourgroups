@@ -3,3 +3,6 @@ import type { RuleForm, LoginAddObject } from '@/assets/TSinterface/SystemLoginI
 export const TeacherChecklogin = (data: RuleForm) => {
   return index.post<LoginAddObject>('teacher/checklogin', data)
 }
+
+
+
