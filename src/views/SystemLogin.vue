@@ -111,6 +111,7 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
             return item
           }
         })
+        
         store.LeftArrDatas = resa
         store.token = res.data.token
         store.menus = res.data.menu

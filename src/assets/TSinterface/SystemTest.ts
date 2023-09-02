@@ -227,3 +227,131 @@ export interface TestAnalyseData {
   model: TestAnalyseModel
   passCounts: TestAnalysePassCount
 }
+
+export interface TestGetForResultAnswer {
+  id: number
+  answerno: string
+  questionid: number
+  content: string
+}
+
+export interface TestGetForResultQuestion {
+  id: number
+  testid: number
+  title: string
+  type: string
+  scores: number
+  answer: string
+  tags: string
+  explains: string
+  answers: TestGetForResultAnswer[]
+  answerid: number
+  comments?: any
+  studentanswer: string
+  studentscores: number
+}
+
+export interface TestGetForResultData {
+  id: number
+  title: string
+  info: string
+  addtime: string
+  teacherid: number
+  admin?: any
+  begintime: string
+  endtime: string
+  currenttime: string
+  limittime: number
+  qorder: number
+  aorder: number
+  num: number
+  pastnum: number
+  scores: number
+  pastscores: number
+  subjectnum: number
+  isshow: number
+  answershow: number
+  studentcounts: number
+  incomplete: number
+  limits?: any
+  markteachers?: any
+  students?: any
+  databaseid: number
+  state: number
+  result: string
+  studentScores: number
+  stuEndTime: string
+  questions: TestGetForResultQuestion[]
+}
+
+export interface TestGetLimit {
+  id: number
+  testid: number
+  techerid: number
+}
+
+export interface TestGetMarkteacher {
+  id: number
+  testid: number
+  techerid: number
+}
+
+export interface TestGetStudent {
+  id: number
+  testid: number
+  studentid: number
+}
+
+export interface TestGetAnswer {
+  id: number
+  answerno: string
+  questionid: number
+  content: string
+}
+
+export interface TestGetQuestion {
+  id: number
+  testid: number
+  title: string
+  type: string
+  scores: number
+  answer: string
+  tags: string
+  explains: string
+  answers: TestGetAnswer[]
+  answerid: number
+  comments?: any
+  studentanswer?: any
+  studentscores?: any
+}
+
+export interface TestGetData {
+  id: number
+  title: string
+  info: string
+  addtime: string
+  teacherid: number
+  admin?: any
+  begintime: string
+  endtime: string
+  limittime: number
+  qorder: number
+  aorder: number
+  num: number
+  pastnum: number
+  scores: number
+  pastscores: number
+  subjectnum: number
+  isshow: number
+  answershow: number
+
+  studentcounts: number
+  incomplete: number
+  currenttime: string
+  limits: TestGetLimit[]
+  markteachers: TestGetMarkteacher[]
+  students: TestGetStudent[]
+  databaseid: number
+  state: number
+  questions: TestGetQuestion[]
+}

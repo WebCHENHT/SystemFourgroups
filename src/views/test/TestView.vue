@@ -49,6 +49,12 @@
       <el-button type="primary" style="margin-left: 20px" @click="TestcharAt">查询</el-button>
     </el-col>
   </el-row>
+
+  <div style="margin-left: 20px; margin-bottom: 20px" v-if="Deletealls.ids != ''">
+    <el-button type="danger" @click="pldelTest">批量删除</el-button>
+    <el-button type="primary" @click="publishAdd">发布考试</el-button>
+    <el-button type="success" @click="Cancelpublication">取消发布</el-button>
+  </div>
   <TableangPage
     :TableData="TestDatas"
     :tableColums="tableColums"
@@ -57,9 +63,12 @@
     @sonhandleCurrentChange="sonhandleCurrentChange"
     :loading="loading"
     :total="total"
+    :isselect="true"
   >
     <template #title="{ data }">
-      <div style="color: #409eff; padding-bottom: 3px; cursor: pointer">{{ data.title }}</div>
+      <div style="color: #409eff; padding-bottom: 3px; cursor: pointer" @click="GetTestAt(data)">
+        {{ data.title }}
+      </div>
     </template>
     <template #state="{ data }">
       <div v-if="data.state === 1" style="color: #409eff; padding-bottom: 3px; cursor: pointer">
@@ -119,10 +128,12 @@
     @MySystemTransferAdd="MySystemTransferAdd"
     @DelSystemTransfer="DelSystemTransfer"
   ></SystemTransferVue>
+  <TestDogis ref="getDogis"></TestDogis>
 </template>
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+
 import type { TestDatatype, StudentLists } from '@/assets/TSinterface/SystemTest'
 import {
   TestLists,
@@ -133,7 +144,10 @@ import {
   TeacherList,
   StudentTest,
   TestGetlimit,
-  TestGetmarkteachers
+  TestGetmarkteachers,
+  TestGet,
+  TestUpdateStates,
+  TestDeleteall
 } from '@/assets/api/TestList/index'
 import dayjs from 'dayjs'
 import TableangPage from '@/components/TableangPage.vue'
@@ -142,6 +156,7 @@ import { debounce } from '@/untils/antishake'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import SystemTransferVue from '@/components/SystemTransfer.vue'
 import { useRouter } from 'vue-router'
+import TestDogis from '@/components/TestDogis.vue'
 //路由跳转
 let router = useRouter()
 //控制穿梭框显示隐藏和名称
@@ -170,6 +185,88 @@ const TestcharAt = debounce(() => {
   loading.value = true
   TestListdata()
 }, 500)
+//取消发布
+const Cancelpublication = async () => {
+  ElMessageBox.confirm('此操作将修改选中的考试状态, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      let res = await TestUpdateStates({
+        ids: Deletealls.value.ids,
+        state: 2
+      })
+      console.log(res)
+      if (res.errCode === 10000) {
+        Deletealls.value.ids = []
+        loading.value = true
+        TestListdata()
+        ElMessage.success('取消成功')
+      }
+    })
+    .catch((error) => {
+      console.log('')
+    })
+}
+//发布
+const publishAdd = async () => {
+  ElMessageBox.confirm('此操作将修改选中的考试状态, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      let res = await TestUpdateStates({
+        ids: Deletealls.value.ids,
+        state: 1
+      })
+      console.log(res)
+      if (res.errCode === 10000) {
+        Deletealls.value.ids = []
+        loading.value = true
+        TestListdata()
+        ElMessage.success('发布成功')
+      }
+    })
+    .catch((error) => {
+      console.log('')
+    })
+}
+//批量删除
+const pldelTest = () => {
+  ElMessageBox.confirm('此操作将修改选中的考试状态, 是否继续?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(async () => {
+      let res = await TestDeleteall({
+        ids: Deletealls.value.ids
+      })
+      console.log(res)
+      if (res.errCode === 10000) {
+        Deletealls.value.ids = []
+        loading.value = true
+        TestListdata()
+        ElMessage.success('删除成功')
+      }
+    })
+    .catch((error) => {
+      console.log('')
+    })
+}
+//多选
+let Deletealls: any = ref({
+  ids: []
+})
+const allTableData = (data: any[]) => {
+  let arr: any = []
+  data.forEach((item: any) => {
+    arr.push(item.id)
+  })
+  Deletealls.value.ids = [...new Set(arr)]
+}
 //穿梭框提交
 const MySystemTransferAdd = async (data: any) => {
   if (ishow.value === true) {
@@ -245,6 +342,21 @@ const DelSystemTransfer = () => {
   Testdatas.value = []
   TransferDatas.value = []
   ClassesDatas.value = []
+}
+//点击考试名称
+
+//获取弹出框的数据
+let getDogis = ref()
+const GetTestAt = async (data: any) => {
+  console.log(data.id)
+  let res = await TestGet({
+    id: data.id
+  })
+  if (res.errCode === 10000) {
+    console.log(res.data)
+    getDogis.value.dialogVisible = true
+    getDogis.value.getDogisTest = res.data
+  }
 }
 //学生
 //请求成功传给穿梭框的选泽框
@@ -369,8 +481,7 @@ const open = (data: any) => {
     }
   })
 }
-//多选
-const allTableData = (data: any) => {}
+
 //开放时间选则
 const radiotest = (data: any) => {
   if (data === '永久开放') {
