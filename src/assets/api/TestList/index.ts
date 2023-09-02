@@ -11,7 +11,9 @@ import type {
   TeacherType,
   StudentTestType,
   TestGetlimitType,
-  TestAnalyseData
+  TestAnalyseData,
+  TestGetForResultData,
+  TestGetData
 } from '@/assets/TSinterface/SystemTest'
 
 //考试列表
@@ -44,7 +46,7 @@ export const TeacherList = (data: { depid: number }) => {
 }
 
 //获取考试学生列表
-export const StudentTest = (data: { testid: number }) => {
+export const StudentTest = (data: {}) => {
   return index.get<StudentTestType>('student/test', data)
 }
 //获取考试可见范围
@@ -60,4 +62,27 @@ export const TestGetmarkteachers = (data: { testid: number }) => {
 //获取考试分析统计
 export const TestAnalyse = (data: { testid: number }) => {
   return index.get<TestAnalyseData>('test/analyse', data)
+}
+
+//获取考试结果
+
+export const TestGetForResult = (data: { testid: number; studentid: number }) => {
+  return index.get<TestGetForResultData>('test/getForResult', data)
+}
+
+//根据id获取单个考试信息
+export const TestGet = (data: { id: number }) => {
+  return index.get<TestGetData>('test/get', data)
+}
+
+//修改发布状态
+
+export const TestUpdateStates = (data: { ids: []; state: number }) => {
+  return index.post('test/updateState', data)
+}
+
+//批量删除试题
+
+export const TestDeleteall = (data: { ids: [] }) => {
+  return index.post('test/deleteall', data)
 }
