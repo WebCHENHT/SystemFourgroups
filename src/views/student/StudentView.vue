@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>学员管理</h3>
-    <div style="display: flex">
+    <div style="display: flex; margin-top: 20px">
       <div>
         <el-form-item label="学员名称">
           <el-input v-model="params.key" placeholder="请输入关键字" />
@@ -17,22 +17,80 @@
           <el-option v-for="(item, index) in arr" :key="index" :label="item.name" :value="index" />
         </el-select>
       </el-form-item>
+      &nbsp;&nbsp;&nbsp;
+      <el-button type="primary" @click="cha">查询</el-button>
+      &nbsp;&nbsp;
+      <div v-if="show">
+        <el-button type="danger" disabled>批量删除</el-button>
+      </div>
+      <div v-if="shows">
+        <el-button type="danger" @click="dels">批量删除</el-button>
+      </div>
+      <el-button style="position: absolute; left: 88%; top: 10px">批量添加</el-button>
+      <el-button type="primary" style="position: absolute; left: 93%; top: 10px" @click="add"
+        >添加学生</el-button
+      >
     </div>
+    <div>
+      <!-- 列表 -->
+      <TableangPage
+        :tableColums="tableColums"
+        :TableData="TableData"
+        :isselect="true"
+        :total="total"
+        @allTableData="allTableData"
+        @sonhandleSizeChange="handleSizeChange"
+        @sonhandleCurrentChange="handleCurrentChange"
+      >
+        <!-- 操作 -->
+        <template #default="scoped">
+          <el-button type="primary" link @click="resetting(scoped.data)">重置密码</el-button>
+          <el-button type="primary" link @click="edit(scoped.data)">编辑</el-button>
+          <el-button type="primary" link @click="del(scoped.data)">删除</el-button>
+        </template>
+      </TableangPage>
+    </div>
+    <!-- 添加 -->
+    <StudenAdd v-if="user" v-model="user" :falv="fal" :carr="carr"></StudenAdd>
+    <!-- 密码 -->
+    <StudenPassword v-if="users" v-model="users" :call="call" :fal="father"></StudenPassword>
   </div>
 </template>
 
 <script setup lang="ts">
-import { RoleList } from '@/assets/api/DepartMent/department';
+import { RoleList } from '@/assets/api/DepartMent/department'
 import { ClList } from '@/assets/api/classes/classe'
-
-import { reactive, ref, toRefs } from 'vue'
-
-let data = reactive({
+import { studentdelete, studentdeletes, studentlist } from '@/assets/api/studen/studen'
+import TableangPage from '@/components/TableangPage.vue'
+import { debounce } from '@/untils/antishake'
+import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
+import StudenAdd from '@/views/student/StudenAdd.vue'
+import StudenPassword from '@/views/student/StudenPassword.vue'
+import { reactive, ref, toRaw, toRefs, watch } from 'vue'
+// 批量删除默认隐藏
+const show = ref(true)
+const shows = ref(false)
+let ChangeData = ref([])
+let user = ref()
+let users = ref()
+//列表数据
+interface Iparams {
+  page: number //页码 默认是1
+  psize: number //每页显示多少条 默认是2
+  key: string //搜索关键字(名称)
+  depid: number //部门id
+  classid: string //班级id
+}
+// 约束类型
+interface T {
+  params: Iparams
+}
+let data = reactive<T>({
   params: {
     page: 1,
     psize: 10,
     depid: 0,
-    classid: 0,
+    classid: '',
     key: ''
   }
 })
@@ -46,8 +104,16 @@ const props2 = {
   emitPath: false //只获取级联选择器中最后一项
 }
 // 获取部门id
-const handleChange = (data: any) => {
+const handleChange = async (data: any) => {
   params.value.depid = data
+  // 班级列表
+  let res: any = await ClList({
+    page: 1,
+    psize: 0,
+    depid: data,
+    key: ''
+  })
+  arr.value = res.data.list
 }
 let options = ref([])
 // 部门列表
@@ -58,21 +124,149 @@ const deplist = async () => {
 deplist()
 let arr: any = ref([])
 // 班级列表
-let list = async () => {
-  let res: any = await ClList({
-    page: 1,
-    psize: 0,
-    depid: 0,
-    key: ''
+
+let tableColums = reactive([
+  {
+    label: '学生姓名',
+    prop: 'name'
+  },
+  {
+    label: '备注',
+    prop: 'remarks'
+  },
+  {
+    label: '所属部门',
+    prop: 'depname'
+  },
+  {
+    label: '所在班级',
+    prop: 'classname'
+  },
+  {
+    label: '账号',
+    prop: 'username'
+  },
+  {
+    label: '添加时间',
+    prop: 'addtime'
+  },
+  {
+    label: '操作',
+    isslot: true,
+    slotname: 'default'
+  }
+])
+let id: any = reactive([]) //定义多选数据
+// 多选
+const allTableData = (val: any) => {
+  ChangeData.value = val
+  const arr = val.map((item: { id: any }) => {
+    return item.id
   })
-  arr.value = res.data.list
-  console.log(res)
+  id = arr
 }
-list()
+// 点击复选框显示批量删除
+watch(
+  () => ChangeData.value,
+  (newVal) => {
+    if (newVal) {
+      show.value = false
+      shows.value = true
+    }
+    if (toRaw(ChangeData.value).length == 0) {
+      show.value = true
+      shows.value = false
+    }
+  }
+)
+let TableData = ref([])
+let total = ref()
+// 学员列表
+let studenlist = async () => {
+  let res: any = await studentlist(params.value)
+  TableData.value = res.data.list
+  total.value = res.data.counts
+}
+studenlist()
+// 分页
+const handleCurrentChange = (val: number) => {
+  params.value.page = val
+  studenlist()
+}
+const handleSizeChange = (val: number) => {
+  params.value.psize = val
+  studenlist()
+}
+// 删除
+const del = async (id: any) => {
+  confirmBox('确定要删除吗?', '你确定吗？', null)
+    .then(async () => {
+      let res = await studentdelete({ id: id.id })
+      if (res.errCode === 10000) {
+        succesMsg('删除成功？')
+        studenlist()
+      }
+    })
+    .catch(() => {
+      errorMsg('已取消')
+    })
+}
+// 批量删除
+const dels = () => {
+  confirmBox('确认要删除吗？', '确定吗?', null)
+    .then(async () => {
+      let data: any = {
+        ids: id
+      }
+      console.log(data)
+
+      let res = await studentdeletes(data)
+      if (res.errCode === 10000) {
+        succesMsg('删除成功')
+        // 调用列表
+        studenlist()
+      }
+    })
+    .catch(() => {
+      errorMsg('已取消')
+    })
+}
+// 查询
+const cha = debounce(() => {
+  studenlist()
+}, 500)
+
+// 点击添加
+const add = () => {
+  carr = {}
+  user.value = true
+}
+const fal = () => {
+  user.value = false
+}
+const father = () => {
+  users.value = false
+  studenlist()
+}
+// 重置密码
+let call = reactive({})
+const resetting = (val: any) => {
+  call = val
+  users.value = true
+}
+// 编辑
+let carr = reactive({})
+const edit = (val: any) => {
+  carr = val
+  user.value = true
+}
 </script>
 
 <style scoped>
 .el-input {
   width: 200px;
+}
+h3 {
+  font-size: 20px;
 }
 </style>
