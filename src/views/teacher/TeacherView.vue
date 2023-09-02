@@ -18,7 +18,6 @@
       :label="item.name"
       :value="item.id"
     />
-    
   </el-select>
   <el-button class="but" type="primary" @click="sou(ruform)">搜索</el-button>
   </div>
@@ -30,9 +29,8 @@
   @sonhandleSizeChange="handleSizeChange"
   >
     <template #actions="slotname: any">
-        <!-- <el-button type="primary" size="small" link @click="dialogVisible = true">重置密码</el-button> -->
         <el-button type="primary" size="small" link @click="ChongVisible(slotname.data)">重置密码</el-button>
-        <el-button type="primary" size="small" link>修改</el-button>
+        <el-button type="primary" size="small" link @click="teachedele(slotname.data)">修改</el-button>
         <!-- <el-button text @click="dele(slotname.data)" link>删除</el-button> -->
         <el-button type="primary" size="small" link @click="open(slotname.data)">删除</el-button>
       </template>
@@ -41,9 +39,7 @@
   <el-dialog
     v-model="dialogVisible"
     title="重置密码"
-    width="30%"
-    
-  >
+    width="30%">
     <el-form :model="form" label-width="120px">
       <el-form-item label="姓名:">
        {{ form.name }}
@@ -68,9 +64,8 @@
   <!-- 添加弹出框 -->
   <el-dialog
     v-model="dialogadd"
-    title="添加老师"
-    width="30%"
-  >
+    :title="formAdd.id>1?'编辑老师':'添加老师'"
+    width="30%">
     <el-form :model="form" label-width="120px">
       <el-form-item label="姓名">
         <el-input v-model="formAdd.name" />
@@ -100,7 +95,7 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogadd = false">取消</el-button>
+        <el-button @click="faAdd">取消</el-button>
         <el-button type="primary" @click="teacheAdd">
           确定
         </el-button>
@@ -108,9 +103,7 @@
     </template>
   </el-dialog>
 </div>
- 
 </template>
-
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import {teacherlist , teacherdelete, teacherchangePass, roleList,DepartmentList,teacherchangeAdd} from '@/assets/api/teacher/teacher'
@@ -121,11 +114,9 @@ let dialogVisible = ref(false)
 // 添加弹出框
 const dialogadd = ref(false)
 // 接连框
-
 let optionList:any = ref([])
 // 角色列表
 const roleLists = async()=>{
-
   let red = await roleList(0)
   // console.log(777,red);
   optionList.value = red.data.list
@@ -149,7 +140,6 @@ const add = async (val: any) => {
  console.log(ids);
  lid = [...ids.value].join(',').slice(0 - 4)
  ruform.depid = lid
-//  ruform.depid = [...ids.value].join(',').slice(0 - 4)
  console.log(9696,ruform.depid)
 }
 // 部门列表
@@ -157,11 +147,8 @@ const DeparList = async ()=>{
   let red:any = await DepartmentList()
   options.value = red.data.list
   // console.log(852,red)
-  // console.log(741,options);
-  
 }
 DeparList()
-
 // 列表数据
 const tableColum = reactive([
   {
@@ -229,8 +216,6 @@ const tealist = async()=>{
   
 }
 tealist()
-
-
 // 分页
 const handleSizeChange = (val: number) => {
   ruform.psize = val
@@ -240,7 +225,6 @@ const handleCurrentChange = (val: number) => {
   ruform.page = val
   tealist()
 }
-
 // 删除
 const open =  (id:any) => {
   ElMessageBox.confirm(
@@ -274,8 +258,6 @@ const open =  (id:any) => {
       })
     })
 }
-
-
 // 重置密码
 const ChongVisible = (val:any)=>{
   dialogVisible.value = true
@@ -286,8 +268,6 @@ const ChongVisible = (val:any)=>{
   console.log(form.oldpass);
   
 }
-
-
 // 重置密码
 const form = reactive({
   oldpass: '',
@@ -302,8 +282,19 @@ const Pass = async ()=>{
   dialogVisible.value = false
   
 }
+// 取消按钮
+const faAdd = ()=>{
+  formAdd.id = 0
+  formAdd.name = ''
+  formAdd.username = ''
+  formAdd.tel = ''
+  formAdd.pass =''
+  formAdd.depid = 0
+  formAdd.roleid = 0
+  dialogadd.value = false
+}
 // 添加
-const formAdd = reactive({
+let formAdd = reactive({
   id:0,
   name:'',
   username:'',
@@ -317,15 +308,22 @@ const teacheAdd = async ()=>{
   console.log(red);
   // console.log(123);
   dialogadd.value = false
+  succesMsg(formAdd.id>1?'修改成功':'添加成功')
   tealist()
 }
-
-
-
-
-
+// 修改
+const teachedele = async (val:any)=>{
+  dialogadd.value = true
+  formAdd.id = val.id
+  formAdd.name = val.name
+  formAdd.username = val.username
+  formAdd.tel = val.tel
+  formAdd.pass = val.pass
+  formAdd.depid = val.depid
+  formAdd.roleid = val.roleid
+  console.log(22,formAdd);
+}
 </script>
-
 <style scoped lang="less">
 .box{
   width: 100%;

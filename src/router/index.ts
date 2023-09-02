@@ -18,8 +18,12 @@ const router = createRouter({
       meta: {
         title: '菜单'
       },
-      component: () => import('../views/SystemMenu.vue')
-    }
+      component: () => import('../views/SystemMenu.vue'),
+      children:[
+      ]
+    },
+    
+   
   ]
 })
 router.beforeEach(async (to, form, next) => {
