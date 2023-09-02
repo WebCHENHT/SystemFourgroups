@@ -30,7 +30,10 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
+<<<<<<< HEAD
     ElTree: typeof import('element-plus/es')['ElTree']
+=======
+>>>>>>> d8fcffac26b3e35cf2a2e64670ef7e03069a939c
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SystemTransfer: typeof import('./src/components/SystemTransfer.vue')['default']

@@ -22,8 +22,9 @@
 </template>
 
 <script setup lang="ts">
+import { RoleList } from '@/assets/api/DepartMent/department';
 import { ClList } from '@/assets/api/classes/classe'
-import { RoleList } from '@/assets/api/department'
+
 import { reactive, ref, toRefs } from 'vue'
 
 let data = reactive({

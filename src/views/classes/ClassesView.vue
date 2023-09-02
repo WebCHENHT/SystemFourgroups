@@ -45,8 +45,9 @@
 </template>
 
 <script setup lang="ts">
+import { RoleList } from '@/assets/api/DepartMent/department'
 import { ClList, classesdelete, classesdeleteall } from '@/assets/api/classes/classe' //网络请求
-import { RoleList } from '@/assets/api/department'
+
 import TableangPage from '@/components/TableangPage.vue' //封装表格
 import { debounce } from '@/untils/antishake'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg' //提示
