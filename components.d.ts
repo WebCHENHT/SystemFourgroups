@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AddModifyRoles: typeof import('./src/components/AddRoles/AddModifyRoles.vue')['default']
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -34,6 +35,7 @@ declare module 'vue' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
+    ElTree: typeof import('element-plus/es')['ElTree']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SystemDrawer: typeof import('./src/components/SystemDrawer.vue')['default']

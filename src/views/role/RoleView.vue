@@ -2,30 +2,35 @@
   <div class="role">
     <div class="role-span">
       <span>角色管理</span>
-      <el-button type="primary">添加角色</el-button>
+      <el-button type="primary" @click="add">添加角色</el-button>
     </div>
     <TableangPage
-      :TableData="TableData"
+      :TableData="tableData"
       :tableColums="tableColums"
       :total="total"
       @sonhandleCurrentChange="sonhandleCurrentChange"
       @sonhandleSizeChange="sonhandleSizeChange"
     >
       <template #actions="slotname: any">
-        <el-button type="primary" size="small" link>编辑</el-button>
+        <el-button type="primary" size="small" link @click="add(slotname.data)">编辑</el-button>
         <el-button type="primary" size="small" link @click="del(slotname.data)">删除</el-button>
       </template>
     </TableangPage>
+
+    <!-- 添加/修改 -->
+    <AddModifyRoles v-model="showDialog" :addEditData="addEditData" @fatherDate="fatherDate"></AddModifyRoles>
   </div>
 </template>
 
 <script setup lang="ts">
-import { RoleDelete, RoleList } from '@/assets/api/Role'
+import { RoleDelete, RoleList } from '@/assets/api/Role/rols'
 import TableangPage from '@/components/TableangPage.vue'
+import AddModifyRoles from '@/components/AddRoles/AddModifyRoles.vue'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 import { reactive, ref } from 'vue'
-let TableData = ref([])
+let tableData = ref([])
 let total = ref(0)
+const showDialog = ref(false)
 const tableColums = reactive([
   {
     label: '名称',
@@ -39,14 +44,18 @@ const tableColums = reactive([
 ])
 let data = reactive({
   page: 1,
-  psize: 5
+  psize: 10
+})
+const addEditData = ref({
+  id: 0,
+  name: ''
 })
 // 角色列表
 const list = async () => {
   let res: any = await RoleList(data)
   console.log(res)
   if (res.errCode === 10000) {
-    TableData.value = res.data.list
+    tableData.value = res.data.list
     total.value = res.data.counts
   }
 }
@@ -66,6 +75,20 @@ const del = async (id: any) => {
       errorMsg('已取消')
     })
 }
+// 添加
+const add = (data: any) => {
+  if (data) {
+    addEditData.value = data;
+  }else{
+    addEditData.value.id = 0;
+  }
+  showDialog.value = true
+}
+//刷新页面
+const fatherDate = () => {
+  showDialog.value = false
+  list()
+}
 // 分页
 const sonhandleSizeChange = (val: number) => {
   data.psize = val
@@ -83,6 +106,32 @@ const sonhandleCurrentChange = (val: number) => {
     font-size: 20px;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
   }
 }
+::v-deep .el-table__row {
+  .el-table_1_column_1 {
+    text-align: left !important;
+  }
+  .el-table_1_column_2 {
+    text-align: right !important;
+  }
+  .el-tooltip {
+    padding-right: 70px;
+  }
+}
+
+::v-deep .el-table__header {
+  .el-table_1_column_1 {
+    text-align: left !important;
+  }
+  .el-table_1_column_2 {
+    text-align: right !important;
+    padding-right: 100px;
+  }
+}
+// .el-tree-node.is-expanded {
+//     display: block !important;
+//     display: flex !important;
+// }
 </style>

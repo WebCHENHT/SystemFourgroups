@@ -37,8 +37,8 @@
 </template>
 
 <script setup lang="ts">
+import { RoleList } from '@/assets/api/DepartMent/department';
 import { classesadd } from '@/assets/api/classes/classe'
-import { RoleList } from '@/assets/api/department'
 import { succesMsg } from '@/untils/msg' //成功按钮
 import type { FormInstance, FormRules } from 'element-plus'
 import { reactive, ref } from 'vue'
