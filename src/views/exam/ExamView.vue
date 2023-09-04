@@ -136,7 +136,8 @@ let total = ref(0)
     router.push({
       path:'SystemMenu/exam/ExamsTudent',
       query: {
-        id: val.id
+        id: val.id,
+        namexue:val.title
       }
     })
   }
