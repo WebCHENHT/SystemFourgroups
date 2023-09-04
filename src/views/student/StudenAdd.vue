@@ -3,22 +3,23 @@
     v-model="dialogVisible"
     :title="props.carr.id === undefined ? '添加' : '修改'"
     width="50%"
-    :before-close="handleClose"
   >
     <el-form ref="ruleFormRef" label-width="120px" class="demo-ruleForm" status-icon>
       <el-form-item label="姓名" prop="name">
-        <el-input />
+        <el-input v-model="AddForm.name" />
       </el-form-item>
       <el-form-item label="电话">
-        <el-input maxlength="11" />
+        <el-input v-model="AddForm.photo" maxlength="11" />
       </el-form-item>
 
       <el-form-item label="部门">
-        <el-cascader :options="options" :props="props2" @change="handleChange" clearable />
+        <el-select v-model="AddForm.depname" placeholder="请选择" @change="selectChange">
+          <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id" />
+        </el-select>
       </el-form-item>
       <el-form-item label="班级">
-        <el-select v-model="params.classid" placeholder="请选择">
-          <el-option v-for="(item, index) in arr" :key="index" :label="item.name" :value="index" />
+        <el-select v-model="AddForm.classid" placeholder="请选择">
+          <el-option v-for="item in arr" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item
@@ -26,13 +27,13 @@
         prop="remarks"
         style="border-bottom: solid 1px #eee; padding: 10px 0px"
       >
-        <el-input type="textarea" style="width: 300px" />
+        <el-input type="textarea" v-model="AddForm.remarks" style="width: 300px" />
       </el-form-item>
-      <el-form-item label="账号" prop="username">
-        <el-input />
+      <el-form-item label="账号" prop="username" v-if="AddForm.id === 0">
+        <el-input v-model="AddForm.username" />
       </el-form-item>
-      <el-form-item label="密码" prop="pass">
-        <el-input />
+      <el-form-item label="密码" prop="pass" v-if="AddForm.id === 0">
+        <el-input type="password" v-model="AddForm.pass" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -47,8 +48,10 @@
 <script lang="ts" setup>
 import { RoleList } from '@/assets/api/DepartMent/department'
 import { ClList } from '@/assets/api/classes/classe'
-import { ElMessageBox } from 'element-plus'
+import { classesadd } from '@/assets/api/studen/studen'
+import { succesMsg } from '@/untils/msg'
 import { reactive, ref, toRefs } from 'vue'
+const dialogVisible = ref(false)
 const props = defineProps({
   carr: {
     type: Object,
@@ -57,23 +60,58 @@ const props = defineProps({
   falv: {
     type: Function,
     required: true
+  },
+  getListDialog: {
+    type: Function,
+    required: true
   }
 })
 console.log(props.carr)
 
-const dialogVisible = ref(false)
-
-const handleClose = (done: () => void) => {
-  ElMessageBox.confirm('确定要退出吗? ')
-    .then(() => {
-      done()
-    })
-    .catch(() => {
-      // catch error
-    })
+interface Iadd {
+  //添加数据接口
+  id: number
+  name: string
+  classid: string
+  remarks: string
+  username: string
+  photo: string
+  pass: string
+  depname: string
 }
-const add = () => {
-  props.falv()
+interface Idatss {
+  AddForm: Iadd
+}
+const datss: Idatss = reactive({
+  //添加数据
+  AddForm: {
+    id: props.carr.id || 0,
+    name: props.carr.name,
+    remarks: props.carr.remarks,
+    classid: props.carr.classname,
+    photo: props.carr.mobile,
+    username: props.carr.username,
+    pass: props.carr.pass,
+    depname: props.carr.depname
+  }
+})
+const { AddForm } = toRefs(datss)
+// 添加或修改
+const add = async () => {
+  let res = await classesadd(AddForm.value)
+  if (AddForm.value.id === 0) {
+    if (res.errCode === 10000) {
+      succesMsg('添加成功！')
+      props.getListDialog()
+      props.falv()
+    }
+  } else {
+    if (res.errCode === 10000) {
+      succesMsg('修改成功！')
+      props.getListDialog()
+      props.falv()
+    }
+  }
 }
 const cancellation = () => {
   props.falv()
@@ -100,37 +138,22 @@ let data = reactive<T>({
   }
 })
 const { params } = toRefs(data)
-// 级联框
-const props2 = {
-  value: 'id',
-  label: 'name',
-  children: 'children',
-  checkStrictly: true, //点击单选框选中改点击整行选中
-  emitPath: false //只获取级联选择器中最后一项
-}
-let options = ref([])
+
+let options: any = ref([])
 // 部门列表
 const deplist = async () => {
   let res: any = await RoleList({ page: 1, psize: 12 })
   options.value = res.data.list
 }
 deplist()
-// 获取部门id
-const handleChange = async (data: any) => {
-  params.value.depid = data
-}
 let arr: any = ref([])
-// 班级列表
-const list = async () => {
-  let res: any = await ClList({
-    page: 1,
-    psize: 0,
-    depid: 0,
-    key: ''
-  })
+const selectChange = async (val: any) => {
+  console.log(val)
+  params.value.depid = val
+  // 班级列表
+  let res: any = await ClList(params.value)
   arr.value = res.data.list
 }
-list()
 </script>
 <style scoped>
 .dialog-footer button:first-child {

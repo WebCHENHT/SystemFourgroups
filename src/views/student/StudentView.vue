@@ -51,7 +51,7 @@
       </TableangPage>
     </div>
     <!-- 添加 -->
-    <StudenAdd v-if="user" v-model="user" :falv="fal" :carr="carr"></StudenAdd>
+    <StudenAdd v-if="user" v-model="user" :falv="fal" :carr="carr" :getListDialog="studenlist"></StudenAdd>
     <!-- 密码 -->
     <StudenPassword v-if="users" v-model="users" :call="call" :fal="father"></StudenPassword>
   </div>
@@ -113,6 +113,7 @@ const handleChange = async (data: any) => {
     depid: data,
     key: ''
   })
+
   arr.value = res.data.list
 }
 let options = ref([])
@@ -124,7 +125,6 @@ const deplist = async () => {
 deplist()
 let arr: any = ref([])
 // 班级列表
-
 let tableColums = reactive([
   {
     label: '学生姓名',

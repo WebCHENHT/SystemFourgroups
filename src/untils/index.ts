@@ -40,13 +40,22 @@ export default function () {
       }
       router.addRoute('SystemMenu', obj)
       router.addRoute('SystemMenu', {
-        path:'SystemMenu/exam/ExamsTudent',
+        path: 'SystemMenu/exam/ExamsTudent',
         name: 'ExamsTudent',
         meta: {
           title: '阅卷分析',
           url: '/exam'
         },
         component: () => import('../views/exam/ExamsTudent.vue')
+      })
+      router.addRoute('SystemMenu', {
+        path: 'SystemMenu/subjects/SubjectsAdd',
+        name: 'SubjectsAdd',
+        meta: {
+          title: '创建试卷',
+          url: '/SubjectsAdd'
+        },
+        component: () => import('../views/subjects/SubjctsAdd.vue')
       })
       router.addRoute('SystemMenu', {
         path: '/SystemMenu/test/Analyse',
