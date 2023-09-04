@@ -16,16 +16,20 @@
         <el-button type="primary" size="small" link @click="del(slotname.data)">删除</el-button>
       </template>
     </TableangPage>
-
     <!-- 添加/修改 -->
-    <AddModifyRoles v-model="showDialog" :addEditData="addEditData" @fatherDate="fatherDate"></AddModifyRoles>
+    <AddModifyRoles
+      v-model="showDialog"
+      :addEditData="addEditData"
+      @fatherDate="fatherDate"
+    ></AddModifyRoles>
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { RoleDelete, RoleList } from '@/assets/api/Role/rols'
-import TableangPage from '@/components/TableangPage.vue'
 import AddModifyRoles from '@/components/AddRoles/AddModifyRoles.vue'
+import TableangPage from '@/components/TableangPage.vue'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 import { reactive, ref } from 'vue'
 let tableData = ref([])
@@ -78,9 +82,9 @@ const del = async (id: any) => {
 // 添加
 const add = (data: any) => {
   if (data) {
-    addEditData.value = data;
-  }else{
-    addEditData.value.id = 0;
+    addEditData.value = data
+  } else {
+    addEditData.value.id = 0
   }
   showDialog.value = true
 }
