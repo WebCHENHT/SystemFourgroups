@@ -35,3 +35,13 @@ export interface databaseid{
 export interface deletealls {
   ids: any
 }
+export interface Limit {
+	id: number;
+}
+
+export interface DatabaseAdds {
+	id:any;
+	title: string;
+	isshow: number;
+	limits: any;
+}

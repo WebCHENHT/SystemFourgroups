@@ -57,6 +57,15 @@ export default function () {
         },
         component: () => import('../views/test/AnalyseView.vue')
       })
+      router.addRoute('SystemMenu', {
+        path: '/SystemMenu/databaselist/databasequestionlist',
+        name: 'databasequestionlist',
+        meta: {
+          title: '考试分析',
+          url: '/SystemMenu/databaselist'
+        },
+        component: () => import('../views/databaselist/databasequestionlist.vue')
+      })
     })
     router.addRoute({
       path: '/:pathMatch(.*)*',

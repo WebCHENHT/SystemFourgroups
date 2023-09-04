@@ -2,9 +2,9 @@
   <div class="database">
     <div class="database-span">
       <span>题库管理</span>
-      <el-button type="primary">创建题库</el-button>
+      <el-button type="primary" @click="Create">创建题库</el-button>
     </div>
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+    <el-form :inline="true" :model="data" class="demo-form-inline">
       <el-form-item label="题库名称:">
         <el-input v-model="data.key" placeholder="请输入题库名称" clearable />
       </el-form-item>
@@ -12,9 +12,14 @@
         <el-input v-model="data.admin" placeholder="请输入创建人" clearable />
       </el-form-item>
       <el-form-item>
-        <el-checkbox-group v-model="formInline.user">
-          <el-checkbox label="只看我创建的" name="type" />
-        </el-checkbox-group>
+        <el-checkbox
+          v-model="data.ismy"
+          :true-label="1"
+          :false-label="0"
+          label="只看我创建的"
+          size="large"
+          @change="onlyMine"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="query">查询</el-button>
@@ -31,33 +36,39 @@
       @allTableData="allTableData"
       @sonhandleCurrentChange="sonhandleCurrentChange"
       @sonhandleSizeChange="sonhandleSizeChange"
-    > 
+    >
       <template #actions="slotname: any">
-        <el-button type="primary" size="small" link>试题</el-button>
-        <el-button type="primary" size="small" link>编辑</el-button>
+        <el-button type="primary" size="small" link @click="shiti(slotname.data)">试题</el-button>
+        <el-button type="primary" size="small" link @click="edit(slotname.data)">编辑</el-button>
         <el-button type="primary" size="small" link @click="del(slotname.data)">删除</el-button>
       </template>
     </TableangPage>
+    <!-- 添加、修改 -->
+    <DatabaseList ref="flag" :addEditData="addEditData" :getListDialog="lists"></DatabaseList>
   </div>
 </template>
 
 <script setup lang="ts">
-import { DatabaseDelete, datalist ,deleteall} from '@/assets/api/databaselist/DatabaseList'
+import { DatabaseDelete, datalist, deleteall } from '@/assets/api/databaselist/DatabaseList'
+import DatabaseList from '@/components/Databaselist/Databaselists.vue'
 import TableangPage from '@/components/TableangPage.vue'
-import { debounce } from '@/untils/antishake';
+import { debounce } from '@/untils/antishake'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
-import { reactive, ref, toRaw, watch } from 'vue'
+import { nextTick, reactive, ref, toRaw, watch } from 'vue'
+import { useRouter } from 'vue-router'
+let router = useRouter()
 let display = ref(false) //批量删除显示按钮
 let conceal = ref(true) //批量删除隐藏按钮
 let tableData = ref([])
 let total = ref(0)
 let ChangeData = ref([])
+let flag = ref()
 let data = reactive({
   page: 1,
   psize: 10,
   key: '',
   admin: '',
-  ismy: '',
+  ismy: 1
 })
 const tableColums = reactive([
   {
@@ -85,13 +96,48 @@ const tableColums = reactive([
 // 题库列表
 const lists = async () => {
   let res: any = await datalist(data)
-  console.log(res)
+  // console.log(res)
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
   }
 }
 lists()
+let addEditData = reactive({
+  id: 0,
+  title: '',
+  isshow: 1
+})
+// 点击只看我的
+const onlyMine = (val: any) => {
+  if (val == 1) {
+    data.admin = ''
+    data.ismy = 1
+  }
+}
+
+// 试题
+const shiti = (val:any) => {
+  router.push({
+    path: '/SystemMenu/databaselist/databasequestionlist',
+    query: {
+      id: val.id
+    }
+  })
+}
+// 创建题库
+const Create = () => {
+  flag.value.dialogFormVisible = true
+}
+// 编辑题库
+const edit = (val: any) => {
+  flag.value.dialogFormVisible = true
+  nextTick(() => {
+    //延迟函数  回显
+    flag.value.formData.title = val.title
+    flag.value.formData.id = val.id
+  })
+}
 // 题库删除
 const del = async (id: any) => {
   confirmBox('确定删除吗???', '你确定吗？', null)
@@ -148,11 +194,6 @@ const delAll = () => {
       errorMsg('已取消')
     })
 }
-const formInline = reactive({
-  user: '',
-  region: '',
-  date: ''
-})
 // 搜索
 const query = debounce(() => {
   lists()
