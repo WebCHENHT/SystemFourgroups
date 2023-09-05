@@ -13,6 +13,7 @@ import '@/assets/icon/iconfont.css'
 import '@/assets/icon/exam/iconfont-exam.css'
 
 import './assets/reset.css'
+
 const app = createApp(App)
 app.use(ElementPlus, {
   locale: zhCn

@@ -19,6 +19,7 @@ interface ResultList {
 interface ResultDatas<T = any> extends ResultList {
   data: T
 }
+
 const URL: string = 'http://estate.eshareedu.cn/exam/api/'
 enum RequestEnums {
   TIMEOUT = 30000,
@@ -172,8 +173,8 @@ class RequestHttp {
   }
 
   // 常用方法封装
-  get<T>(url: string, params?: object, config = {}): Promise<ResultDatas<T>> {
-    return this.service.get(url, { params, ...config })
+  get<T>(url: string, params?: object, responseType?: object): Promise<ResultDatas<T>> {
+    return this.service.get(url, { params, ...responseType })
   }
   post<T>(url: string, params?: object): Promise<ResultDatas<T>> {
     return this.service.post(url, params)

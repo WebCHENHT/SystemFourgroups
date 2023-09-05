@@ -8,7 +8,10 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddModifyRoles: typeof import('./src/components/AddRoles/AddModifyRoles.vue')['default']
+<<<<<<< HEAD
     Databaselists: typeof import('./src/components/Databaselist/Databaselists.vue')['default']
+=======
+>>>>>>> a46119d45ea308e2076c42ecdd61a4c9646c885a
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBadge: typeof import('element-plus/es')['ElBadge']
@@ -21,8 +24,8 @@ declare module 'vue' {
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElItemForm: typeof import('element-plus/es')['ElItemForm']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
@@ -34,6 +37,9 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTabPan0e: typeof import('element-plus/es')['ElTabPan0e']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
     ElTree: typeof import('element-plus/es')['ElTree']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -42,6 +48,7 @@ declare module 'vue' {
     SystemTransfer: typeof import('./src/components/SystemTransfer.vue')['default']
     TableangPage: typeof import('./src/components/TableangPage.vue')['default']
     TestDogis: typeof import('./src/components/TestDogis.vue')['default']
+    TestExpor: typeof import('./src/components/TestExpor.vue')['default']
     WangEditor: typeof import('./src/components/WangEditor.vue')['default']
   }
   export interface ComponentCustomProperties {

@@ -78,13 +78,13 @@ let res = defineProps<{
   //班级
   ClassesDatas?: any[]
   //穿梭框数据
-  TransferDatas: any[]
+  TransferDatas?: any[]
 }>()
 
 let emits = defineEmits<{
   (name: 'MyDepartment', value: number): any
   (name: 'MyClasses', value: {}): any
-  (name: 'MySystemTransferAdd', value: number): any
+  (name: 'MySystemTransferAdd', value: any): any
   (name: 'DelSystemTransfer', value?: any): any
 }>()
 const dialogVisible = ref(false)
@@ -116,7 +116,7 @@ const getRightTransfer = (data: any) => {
 }
 //确定提交
 const SystemTransferAdd = () => {
-  emits('MySystemTransferAdd', res.TransferAddid)
+  emits('MySystemTransferAdd', Classes.value)
 }
 const getDepartment = (data: number) => {
   emits('MyDepartment', data)
@@ -125,7 +125,7 @@ const getClasses = (data: number) => {
   emits('MyClasses', { depid: Departmentvalue.value, classid: Classesvalue.value })
 }
 
-defineExpose({ dialogVisible, loading })
+defineExpose({ dialogVisible, loading ,Classes})
 </script>
 
 <style lang="less" scoped>
