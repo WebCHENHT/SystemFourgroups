@@ -48,9 +48,8 @@
 </template>
 
 <script setup lang="ts">
-import type { TestGetData } from '@/assets/TSinterface/SystemTest'
 import { ref } from 'vue'
-let getDogisTest = ref<TestGetData>([])
+let getDogisTest:any = ref([])
 const dialogVisible = ref(false)
 defineExpose({ dialogVisible, getDogisTest })
 </script>
