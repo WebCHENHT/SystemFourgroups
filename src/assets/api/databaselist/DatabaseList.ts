@@ -17,3 +17,7 @@ export const deleteall = (data: any) => {
 export const DatabaseAdd = (data: DatabaseAdds) => {
   return index.post<RootObject>('database/add', data)
 }
+// 题库试题列表
+export const  DatabaseList= (data: any) => {
+  return index.get<RootObject>('databasequestion/list',data)
+}
