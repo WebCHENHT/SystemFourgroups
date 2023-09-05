@@ -29,3 +29,7 @@ export const DatabaseDeleteall = (data: deletealls) => {
 export const Databasedel = (data: databaseid) => {
   return index.get<RootObject>('databasequestion/delete', data)
 }
+// 试题批量添加
+export const databasequestionAddlist = (data: any) => {
+  return index.post<RootObject>('databasequestion/addlist', data)
+}

@@ -7,7 +7,7 @@
       </template>
       <template #extra>
         <div class="flex items-center">
-          <el-button>添加试题</el-button>
+          <el-button @click="addTest">添加试题</el-button>
           <el-button type="primary" class="ml-2">批量添加试题</el-button>
         </div>
       </template>
@@ -60,6 +60,13 @@
 
     <!-- 单条试题详情的抽屉 -->
     <DatabaseDetail v-if="isDatabaseDetail" :getEestDetail="getEestDetail" @closeDrawer="closeDrawer"></DatabaseDetail>
+    <!-- 添加试题的抽屉 -->
+  <AddtestDrawer
+    v-if="isAddtestDrawer"
+    :getList="lists"
+    :questionData="questionData"
+    @closeDrawer="closeDrawer"
+  />
   </div>
 </template>
 
@@ -69,8 +76,8 @@ import * as XLSX from "xlsx"; // 导出文件
 import { reactive, ref, toRaw, toRefs, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {DatabaseDeleteall, DatabaseList , Databasedel} from '@/assets/api/databaselist/DatabaseList'
-import TableangPage from '@/components/TableangPage.vue'
 import DatabaseDetail from '@/components/Databaselist/DatabaseDetail.vue'
+import AddtestDrawer from '@/components/Databaselist/AddtestDrawer.vue'
 import { debounce } from '@/untils/antishake'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 let display = ref(false) //批量删除显示按钮
@@ -86,6 +93,7 @@ let title = route.query.title
 const back = () => {
   router.push('/SystemMenu/databaselist')
 }
+
 const data: any = reactive({
   databaseid: route.query.id, //题库id
   page: 1,
@@ -124,6 +132,18 @@ const tableColums = reactive([
     isslot: true
   }
 ])
+
+const Data=reactive({
+  questionData:{}
+
+})
+const { questionData } = toRefs(Data)
+
+// 添加试题
+const addTest = () => {
+  isAddtestDrawer.value = true;
+};
+
 // 列表
 const lists = async() => {
   let res:any = await DatabaseList(data)
