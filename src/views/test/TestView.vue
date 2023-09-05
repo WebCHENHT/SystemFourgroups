@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex; justify-content: space-between">
     <div style="font-size: 20px">考试管理</div>
-    <el-button type="primary">创建考试</el-button>
+    <el-button type="primary" @click="Addexam">创建考试</el-button>
   </div>
   <el-row :gutter="24">
     <el-col :span="3">
@@ -185,6 +185,12 @@ const TestcharAt = debounce(() => {
   loading.value = true
   TestListdata()
 }, 500)
+//创建考试
+const Addexam = () => {
+  router.push({
+    path: '/SystemMenu/test/TestAdd'
+  })
+}
 //取消发布
 const Cancelpublication = async () => {
   ElMessageBox.confirm('此操作将修改选中的考试状态, 是否继续?', '提示', {
@@ -353,7 +359,7 @@ const GetTestAt = async (data: any) => {
     id: data.id
   })
   if (res.errCode === 10000) {
-    console.log(res.data)
+    getDogis.value.testid = data.id
     getDogis.value.dialogVisible = true
     getDogis.value.getDogisTest = res.data
   }
@@ -442,6 +448,10 @@ const TestState = (data: any) => {
 }
 //考试分析
 const Examanalysis = (data: any) => {
+  if (data.studentcounts === 0) {
+    ElMessage.error('没有学生考试')
+    return
+  }
   if (data.incomplete === 0) {
     router.push({
       path: '/SystemMenu/test/Analyse',
