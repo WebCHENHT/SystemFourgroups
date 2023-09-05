@@ -8,10 +8,9 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddModifyRoles: typeof import('./src/components/AddRoles/AddModifyRoles.vue')['default']
-<<<<<<< HEAD
+    CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
+    DatabaseDetail: typeof import('./src/components/Databaselist/DatabaseDetail.vue')['default']
     Databaselists: typeof import('./src/components/Databaselist/Databaselists.vue')['default']
-=======
->>>>>>> a46119d45ea308e2076c42ecdd61a4c9646c885a
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBadge: typeof import('element-plus/es')['ElBadge']
@@ -22,10 +21,10 @@ declare module 'vue' {
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
-    ElItemForm: typeof import('element-plus/es')['ElItemForm']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
@@ -37,9 +36,6 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
-    ElTabPan0e: typeof import('element-plus/es')['ElTabPan0e']
-    ElTabPane: typeof import('element-plus/es')['ElTabPane']
-    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
     ElTree: typeof import('element-plus/es')['ElTree']
     RouterLink: typeof import('vue-router')['RouterLink']

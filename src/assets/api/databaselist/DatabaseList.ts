@@ -1,6 +1,6 @@
 // 角色
 import index from '@/untils/request'
-import type { RootObject, databaseid, DatabaseAdds, databaselist } from '@/assets/TSinterface/databaselist'
+import type { RootObject, databaseid, DatabaseAdds, databaselist, deletealls } from '@/assets/TSinterface/databaselist'
 // 题库列表
 export const datalist = (data: databaselist) => {
   return index.get<RootObject>('database/list', data)
@@ -20,4 +20,12 @@ export const DatabaseAdd = (data: DatabaseAdds) => {
 // 题库试题列表
 export const  DatabaseList= (data: any) => {
   return index.get<RootObject>('databasequestion/list',data)
+}
+// 试题批量删除
+export const DatabaseDeleteall = (data: deletealls) => {
+  return index.post<RootObject>('databasequestion/deleteall', data)
+}
+// 试题删除
+export const Databasedel = (data: databaseid) => {
+  return index.get<RootObject>('databasequestion/delete', data)
 }
