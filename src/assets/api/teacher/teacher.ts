@@ -15,8 +15,8 @@ export const teacherdelete = (data: teacherdele) => {
   return index.get<teacherdeletes>('teacher/delete', data)
 }
 // 师资密码重置
-export const teacherchangePass = (data: teacherchange) => {
-  return index.post<teacherchanges>('teacher/changePass', data)
+export const teacherchangePass = (data:any) => {
+  return index.post<any>('teacher/changePass', data)
 }
 // 角色 
 export const roleList = (data: Rolecan) => {

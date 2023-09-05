@@ -17,3 +17,12 @@ export interface department {
   page: number
   psize:number
 }
+export interface DepartmentAdd {
+  id: number
+  pid: number
+  name: string
+}
+export interface Delete{
+  id:number
+}
+  
