@@ -6,7 +6,7 @@
       <span data-v-ab382b7d="" style="padding-left: 17px">基本信息</span>
     </div>
     <el-form-item label="试卷名称" style="margin-left: 150px; margin-top: 10px">
-      <el-input />
+      <el-input v-model="pamsea.title" />
     </el-form-item>
     <div class="one">
       <span class="ones">2</span>
@@ -15,144 +15,231 @@
     <div style="display: flex">
       <!-- 分值 -->
       <div>
-        <div class="Score">
+        <div class="Score" v-show="show">
           <p>单选题1道</p>
           <p>每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分</p>
         </div>
-        <div class="Score">
-          <p>单选题1道</p>
+        <div class="Score" v-show="show">
+          <p>多选题1道</p>
           <p>每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分</p>
         </div>
-        <div class="Score">
-          <p>单选题1道</p>
+        <div class="Score" v-show="show">
+          <p>填空题1道</p>
           <p>每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分</p>
         </div>
-        <div class="Score">
-          <p>单选题1道</p>
+        <div class="Score" v-show="show">
+          <p>判断题1道</p>
           <p>每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分</p>
         </div>
-        <div class="Score">
-          <p>单选题1道</p>
+        <div class="Score" v-show="show">
+          <p>问答题1道</p>
           <p>每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分</p>
         </div>
       </div>
-      <!-- 内容 -->
-      <div style="display: flex; margin: 10px">
-        <div id="el-id-9465-1" class="el-form-item__label" style="width: 110px; margin-left: -25px">
-          试卷内容：
-        </div>
-        <div>
-          <!-- 上面 -->
-          <div class="god">
-            <b>试题列表</b>
-            <div class="right">
-              <span>总分：0</span>
-              <span>已添加0题</span>
+
+      <div>
+        <!-- 内容 -->
+        <div style="display: flex; margin: 10px; margin-left: 110px">
+          <div class="el-form-item__label" style="width: 110px">试卷内容：</div>
+          <div>
+            <!-- 上面 -->
+            <div class="god">
+              <b>试题列表</b>
+              <div class="right">
+                <span>总分：{{ table.scores }}</span>
+                <span>已添加{{ table.length }}题</span>
+                <button
+                  class="el-button"
+                  aria-disabled="false"
+                  type="button"
+                  style="font-size: 13px; margin-left: 30px"
+                  @click="del"
+                >
+                  清空
+                </button>
+              </div>
+            </div>
+            <!-- 中间 -->
+            <div class="gods Testboxs" v-if="adds">
+              <div v-for="(item, index) in table" :key="item.id">
+                <!-- 单选题 -->
+                <div v-if="item.type === '单选题'">
+                  <span>{{ index + 1 }}.{{ item.type }}</span
+                  >&nbsp;&nbsp;
+                  <span
+                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
+                  ></span>
+                  <span
+                    ><el-icon><EditPen /></el-icon
+                  ></span>
+                  <span @click="dels(index)"
+                    ><el-icon><Delete /></el-icon
+                  ></span>
+                  <div>{{ item.title }}</div>
+
+                  <div v-for="items in item.answers" :key="items.id">
+                    <div class="bo color" v-if="item.answer === items.answerno">
+                      <div class="box"></div>
+                      &nbsp; &nbsp;
+                      <span>{{ items.answerno }}：</span>
+                      <span>{{ items.content }}</span>
+                    </div>
+                    <div class="bo" v-if="item.answer != items.answerno">
+                      <div class="box"></div>
+                      &nbsp; &nbsp;
+                      <span>{{ items.answerno }}：</span>
+                      <span>{{ items.content }}</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- 多选题 -->
+                <div v-if="item.type === '多选题'">
+                  <span>{{ index + 1 }}.{{ item.type }}</span
+                  >&nbsp;&nbsp;
+                  <span
+                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
+                  ></span>
+                  <span
+                    ><el-icon><EditPen /></el-icon
+                  ></span>
+                  <span @click="dels(index)"
+                    ><el-icon><Delete /></el-icon
+                  ></span>
+                  <div>{{ item.title }}</div>
+
+                  <div v-for="items in item.answers" :key="items.id">
+                    <div
+                      class="bo color"
+                      v-if="
+                        item.answer.includes(items.answerno) ===
+                        items.answerno.includes(items.answerno)
+                      "
+                    >
+                      <div class="box"></div>
+                      &nbsp; &nbsp;
+                      <span>{{ items.answerno }}：</span>
+                      <span>{{ items.content }}</span>
+                    </div>
+                    <div
+                      class="bo"
+                      v-if="
+                        item.answer.includes(items.answerno) !=
+                        items.answerno.includes(items.answerno)
+                      "
+                    >
+                      <div class="box"></div>
+                      &nbsp; &nbsp;
+                      <span>{{ items.answerno }}：</span>
+                      <span>{{ items.content }}</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- 填空题 -->
+                <div v-if="item.type === '填空题'">
+                  <span>{{ index + 1 }}.{{ item.type }}</span
+                  >&nbsp;&nbsp;
+                  <span
+                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
+                  ></span>
+                  <span
+                    ><el-icon><EditPen /></el-icon
+                  ></span>
+                  <span @click="dels(index)"
+                    ><el-icon><Delete /></el-icon
+                  ></span>
+                  <div v-html="item.title.replace(/\[\]/g, '_____')"></div>
+
+                  <div v-if="item.type == '填空题' || item.type == '问答题'">
+                    <p v-if="item.type == '填空题'" class="Corrects">正确答案：{{ item.answer }}</p>
+
+                    <p class="parse">答案解析：{{ item.explains }}</p>
+                  </div>
+                  <div v-for="items in item.answers" :key="items.id"></div>
+                </div>
+                <!-- 判断题 -->
+                <div v-if="item.type === '判断题'">
+                  <span>{{ index + 1 }}.{{ item.type }}</span
+                  >&nbsp;&nbsp;
+                  <span
+                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
+                  ></span>
+                  <span
+                    ><el-icon><EditPen /></el-icon
+                  ></span>
+                  <span @click="dels(index)"
+                    ><el-icon><Delete /></el-icon
+                  ></span>
+                  <div>{{ item.title }}</div>
+                  <p class="CorrectAnswer">正确答案：{{ item.answer }}</p>
+                </div>
+                <!-- 问答题 -->
+                <div v-if="item.type === '问答题'">
+                  <span>{{ index + 1 }}.{{ item.type }}</span
+                  >&nbsp;&nbsp;
+                  <span
+                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
+                  ></span>
+                  <span
+                    ><el-icon><EditPen /></el-icon
+                  ></span>
+                  <span @click="dels(index)"
+                    ><el-icon><Delete /></el-icon
+                  ></span>
+                  <div v-html="item.title.replace(/\[\]/g, '_____')"></div>
+
+                  <div v-if="item.type == '填空题' || item.type == '问答题'">
+                    <p v-if="item.type == '填空题'" class="Corrects">正确答案：{{ item.answer }}</p>
+
+                    <p class="parse">答案解析：{{ item.explains }}</p>
+                  </div>
+                  <div v-for="items in item.answers" :key="items.id"></div>
+                </div>
+              </div>
+            </div>
+            <!-- 下面 -->
+            <div class="god">
+              <button class="el-button" aria-disabled="false" type="button" style="font-size: 13px">
+                添加题目
+              </button>
               <button
+                @click="Batch"
                 class="el-button"
                 aria-disabled="false"
                 type="button"
-                style="font-size: 13px; margin-left: 40px"
+                style="font-size: 13px"
               >
-                清空
+                批量导入
+              </button>
+              <button class="el-button" aria-disabled="false" type="button" style="font-size: 13px">
+                从题库中导入
               </button>
             </div>
-          </div>
-          <!-- 中间 -->
-          <div class="gods Testboxs">
-            <div>
-              <span>1.单选题</span>&nbsp;&nbsp;
-              <span
-                >分值:&nbsp;&nbsp;<el-input v-model="input" style="width: 50px"></el-input
-              ></span>
-              <span
-                ><el-icon><EditPen /></el-icon
-              ></span>
-              <span
-                ><el-icon><Delete /></el-icon
-              ></span>
-              <div>对vuex中的state说法正确的事</div>
-              <div class="bo">
-                <div class="box"></div>
-                &nbsp; A：state主要用来存储状态，数据的
-              </div>
-              <div class="bo">
-                <div class="box"></div>
-                &nbsp; B：state主要用来存储状态，数据的
-              </div>
-              <div class="bo color">
-                <div class="box"></div>
-                &nbsp; C：state主要用来存储状态，数据的
-              </div>
-              <div class="bo">
-                <div class="box"></div>
-                &nbsp; D：state主要用来存储状态，数据的
-              </div>
-            </div>
-            <!--  -->
-            <div>
-              <span>1.单选题</span>&nbsp;&nbsp;
-              <span
-                >分值:&nbsp;&nbsp;<el-input v-model="input" style="width: 50px"></el-input
-              ></span>
-              <span
-                ><el-icon><EditPen /></el-icon
-              ></span>
-              <span
-                ><el-icon><Delete /></el-icon
-              ></span>
-              <div>对vuex中的state说法正确的事</div>
-              <div class="bo color">
-                <div class="box"></div>
-                &nbsp; A：state主要用来存储状态，数据的
-              </div>
-              <div class="bo">
-                <div class="box"></div>
-                &nbsp; B：state主要用来存储状态，数据的
-              </div>
-              <div class="bo">
-                <div class="box"></div>
-                &nbsp; C：state主要用来存储状态，数据的
-              </div>
-              <div class="bo">
-                <div class="box"></div>
-                &nbsp; D：state主要用来存储状态，数据的
-              </div>
-            </div>
-            <!--  -->
-          </div>
-          <!-- 下面 -->
-          <div class="god">
-            <button class="el-button" aria-disabled="false" type="button" style="font-size: 13px">
-              添加题目
-            </button>
-            <button class="el-button" aria-disabled="false" type="button" style="font-size: 13px">
-              批量导入
-            </button>
-            <button class="el-button" aria-disabled="false" type="button" style="font-size: 13px">
-              从题库中导入
-            </button>
-          </div>
 
-          <div
-            id="el-id-9465-1"
-            class="el-form-item__label"
-            style="width: 110px; margin-left: -110px; margin-top: 20px"
-          >
-            试题存入题库：
+            <div
+              id="el-id-9465-1"
+              class="el-form-item__label"
+              style="width: 110px; margin-left: -110px; margin-top: 20px"
+            >
+              试题存入题库：
+            </div>
+            <el-select placeholder="请选择题库" v-model="pamsea.databaseid">
+              <el-option
+                v-for="item in arr"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id"
+                
+              />
+            </el-select>
+            <button
+              class="el-button"
+              aria-disabled="false"
+              type="button"
+              style="font-size: 13px; margin-left: 20px"
+            >
+              + 创建题库
+            </button>
           </div>
-          <el-select placeholder="请选择题库">
-            <el-option label="Zone one" value="shanghai" />
-            <el-option label="Zone two" value="beijing" />
-          </el-select>
-          <button
-            class="el-button"
-            aria-disabled="false"
-            type="button"
-            style="font-size: 13px; margin-left: 20px"
-          >
-            + 创建题库
-          </button>
         </div>
       </div>
     </div>
@@ -179,18 +266,87 @@
     </button>
   </div>
   <div style="margin-left: 210px; margin-top: 50px">
-    <el-button type="primary">提交</el-button>
+    <el-button type="primary" @click="add">提交</el-button>
     <el-button>取消</el-button>
   </div>
+  <BatchImport v-if="user" v-model="user" @allTableData="allTableData" :call="father"></BatchImport>
 </template>
 
 <script setup lang="ts">
+import { datalist } from '@/assets/api/databaselist/DatabaseList'
+import BatchImport from '@/components/BatchImport.vue'
 import { Delete, EditPen } from '@element-plus/icons-vue'
-import { ref } from 'vue'
+import { reactive, ref, toRefs } from 'vue'
+let user = ref(false)
+let show = ref(false)
+let adds = ref(false)
 let input = ref(10)
+let data = reactive({
+  pamsea: {
+    title: '',
+    databaseid: ''
+  }
+})
+let table: any = ref([])
+const allTableData = (val: any) => {
+  table.value = val
+  adds.value = true
+}
+
+const { pamsea } = toRefs(data)
+let arr: any = ref([])
+let list = async () => {
+  let res: any = await datalist({
+    page: 1,
+    psize: 10,
+    key: '',
+    admin: '',
+    ismy: ''
+  })
+  if (res.errCode === 10000) {
+    arr.value = res.data.list
+  }
+}
+list()
+// 添加
+const add = () => {
+  console.log(pamsea.value)
+}
+const father = () => {
+  user.value = false
+  list()
+}
+const Batch = () => {
+  user.value = true
+}
+// 清空
+const del = () => {
+  table.value = []
+  adds.value = false
+}
+// 单个删除
+const dels = (i: any) => {
+  table.value.splice(i, 1)
+}
 </script>
 
 <style scoped lang="less">
+.CorrectAnswer {
+  background-color: #f0faf6;
+  color: #84d5b1;
+  padding: 12px;
+}
+.Corrects {
+  background-color: #f0faf6;
+  color: #84d5b1;
+  padding: 12px;
+  margin-bottom: 15px;
+}
+.parse {
+  background-color: #f6faff;
+  color: #a0adbd;
+  padding: 12px;
+}
 .color {
   background-color: #eefaf6;
   padding-left: 10px;
