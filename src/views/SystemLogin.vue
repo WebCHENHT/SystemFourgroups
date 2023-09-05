@@ -104,7 +104,6 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
     if (valid) {
       Systemname.value = true
       let res = await TeacherChecklogin(LoginAdd)
-      console.log(res.data.token)
       if (res.errCode === 10000) {
         let resa = res.data.menu.filter((item: any) => {
           if (item.ico) {
@@ -125,6 +124,7 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
           })
         }, 200)
       } else {
+        Systemname.value = false
         errorMsg(res.errMsg)
       }
     } else {

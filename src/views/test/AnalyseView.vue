@@ -22,11 +22,11 @@
     <div style="width: 100%; display: flex; justify-content: space-around">
       <EcharTsVue
         ref="Echars"
-        style="width: 450px; height: 350px; -webkit-user-drag: none; user-select: none"
+        style="min-width: 450px; height: 350px; -webkit-user-drag: none; user-select: none"
       ></EcharTsVue>
       <EcharTsVue
         ref="Echarsa"
-        style="width: 600px; height: 350px; -webkit-user-drag: none; user-select: none"
+        style="min-width: 450px; height: 350px; -webkit-user-drag: none; user-select: none"
       ></EcharTsVue>
     </div>
     <div>
@@ -72,7 +72,7 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="chAkans"> 查询</el-button>
-              <el-button>导出</el-button>
+              <TestExpor :testid="route.query.id" :name="'导出'"></TestExpor>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -113,7 +113,7 @@ import EcharTsVue from '@/components/EcharTs.vue'
 import type { TabsPaneContext } from 'element-plus'
 import TableangPage from '@/components/TableangPage.vue'
 import SystemDrawer from '@/components/SystemDrawer.vue'
-
+import TestExpor from '@/components/TestExpor.vue'
 let route: any = useRoute()
 let router = useRouter()
 let loading = ref(true)

@@ -33,48 +33,60 @@ export default function () {
         path: '/SystemMenu' + item.url,
         name: item.url,
         meta: {
-          name: item.name,
+          title: item.name,
           url: '/SystemMenu' + item.url
         },
         component: viteComponent[viewsurl]
       }
       router.addRoute('SystemMenu', obj)
-      router.addRoute('SystemMenu', {
-        path: 'SystemMenu/exam/ExamsTudent',
-        name: 'ExamsTudent',
-        meta: {
-          title: '阅卷分析',
-          url: '/exam'
-        },
-        component: () => import('../views/exam/ExamsTudent.vue')
-      })
-      router.addRoute('SystemMenu', {
-        path: 'SystemMenu/subjects/SubjectsAdd',
-        name: 'SubjectsAdd',
-        meta: {
-          title: '创建试卷',
-          url: '/SubjectsAdd'
-        },
-        component: () => import('../views/subjects/SubjctsAdd.vue')
-      })
-      router.addRoute('SystemMenu', {
-        path: '/SystemMenu/test/Analyse',
-        name: 'AnalyseView',
-        meta: {
-          title: '考试分析',
-          url: '/SystemMenu/test'
-        },
-        component: () => import('../views/test/AnalyseView.vue')
-      })
-      router.addRoute('SystemMenu', {
-        path: '/SystemMenu/databaselist/databasequestionlist',
-        name: 'databasequestionlist',
-        meta: {
-          title: '考试分析',
-          url: '/SystemMenu/databaselist'
-        },
-        component: () => import('../views/databaselist/databasequestionlist.vue')
-      })
+    })
+
+    router.addRoute('SystemMenu', {
+      path: 'SystemMenu/exam/ExamsTudent',
+      name: 'ExamsTudent',
+      meta: {
+        title: '阅卷分析',
+        url: '/exam'
+      },
+      component: () => import('../views/exam/ExamsTudent.vue')
+    })
+
+    router.addRoute('SystemMenu', {
+      path: 'SystemMenu/subjects/SubjectsAdd',
+      name: 'SubjectsAdd',
+      meta: {
+        title: '创建试卷',
+        url: '/SubjectsAdd'
+      },
+      component: () => import('../views/subjects/SubjctsAdd.vue')
+    })
+
+    router.addRoute('SystemMenu', {
+      path: '/SystemMenu/databaselist/databasequestionlist',
+      name: 'databasequestionlist',
+      meta: {
+        title: '考试分析',
+        url: '/SystemMenu/databaselist'
+      },
+      component: () => import('../views/databaselist/databasequestionlist.vue')
+    })
+    router.addRoute('SystemMenu', {
+      path: '/SystemMenu/test/Analyse',
+      name: 'AnalyseView',
+      meta: {
+        title: '考试分析',
+        url: '/SystemMenu/test'
+      },
+      component: () => import('../views/test/AnalyseView.vue')
+    })
+    router.addRoute('SystemMenu', {
+      path: '/SystemMenu/test/TestAdd',
+      name: 'TestAdd',
+      meta: {
+        title: '创建考试',
+        url: '/SystemMenu/test'
+      },
+      component: () => import('../views/test/TestAddView.vue')
     })
     router.addRoute({
       path: '/:pathMatch(.*)*',

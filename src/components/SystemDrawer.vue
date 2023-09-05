@@ -28,7 +28,7 @@
           <div class="Oppositetopictitle">
             <div class="titlType">
               <div class="typeFsiz">{{ index + 1 }}</div>
-              <div class="typeTitle">单选题</div>
+              <div class="typeTitle">{{ item.type }}</div>
             </div>
             <span class="TitlScore"> {{ item.studentscores }}</span>
             <div :class="DrawerDatas.studentScores > 0 ? 'Drawsusson' : 'Drawerror'">
@@ -39,7 +39,7 @@
           <div class="xuzix" v-for="(item1, index1) in item.answers" :key="index1">
             <div
               :class="
-                item1.answerno.includes(item.answer.split('|').join())
+                item.studentanswer.split('|').includes(item1.answerno)
                   ? 'timiunxs timiunxscord'
                   : 'timiunxs'
               "
@@ -50,9 +50,17 @@
               </div>
             </div>
           </div>
-          <div class="timanswer">
+
+          <div class="timanswer" v-if="item.type === '单选题'">
             <span style="font-size: 15px; color: #90adca">正确答案：</span>
             <div class="Subutton">{{ item.answer }}</div>
+          </div>
+          <div class="timanswer" v-if="item.type === '多选题'">
+            <span style="font-size: 15px; color: #90adca">正确答案：</span>
+
+            <div class="Subutton" v-for="(itema, index) in item.answer.split('|')" :key="index">
+              {{ itema }}
+            </div>
           </div>
         </div>
       </div>
@@ -70,6 +78,10 @@ defineExpose({ Drawertableis, DrawerDatas })
 </script>
 
 <style lang="less" scoped>
+.wrong {
+  background-color: #fcf3f3;
+  border: 1px solid #0089ff;
+}
 .Drawtop {
   width: 100%;
   .DrawtopText {
