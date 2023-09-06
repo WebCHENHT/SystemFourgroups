@@ -5,7 +5,7 @@
       <span class="ones">1</span>
       <span data-v-ab382b7d="" style="padding-left: 17px">基本信息</span>
     </div>
-    <el-form-item label="试卷名称" style="margin-left: 150px; margin-top: 10px">
+    <el-form-item label="试卷名称：" style="margin-left: 150px; margin-top: 10px">
       <el-input v-model="pamsea.title" />
     </el-form-item>
     <div class="one">
@@ -13,34 +13,21 @@
       <span style="padding-left: 17px">内容设置</span>
     </div>
     <div style="display: flex">
-      <!-- 分值 -->
-      <div>
-        <div class="Score" v-show="show">
-          <p>单选题1道</p>
-          <p>每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分</p>
-        </div>
-        <div class="Score" v-show="show">
-          <p>多选题1道</p>
-          <p>每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分</p>
-        </div>
-        <div class="Score" v-show="show">
-          <p>填空题1道</p>
-          <p>每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分</p>
-        </div>
-        <div class="Score" v-show="show">
-          <p>判断题1道</p>
-          <p>每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分</p>
-        </div>
-        <div class="Score" v-show="show">
-          <p>问答题1道</p>
-          <p>每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分</p>
-        </div>
-      </div>
-
       <div>
         <!-- 内容 -->
         <div style="display: flex; margin: 10px; margin-left: 110px">
-          <div class="el-form-item__label" style="width: 110px">试卷内容：</div>
+          <div>
+            <span style="margin-left: 38px"> 试卷内容：</span>
+            <!-- 分值 -->
+            <div v-for="item in Arraytype" :key="item">
+              <div class="Score" v-if="item === '单选题'">
+                <p>{{ item }}道</p>
+                <p>
+                  每题&nbsp;&nbsp;<el-input v-model="input" style="width: 50px" />&nbsp;&nbsp;分
+                </p>
+              </div>
+            </div>
+          </div>
           <div>
             <!-- 上面 -->
             <div class="god">
@@ -75,7 +62,7 @@
                   <span @click="dels(index)"
                     ><el-icon><Delete /></el-icon
                   ></span>
-                  <div>{{ item.title }}</div>
+                  <div v-html="htmlEncode(item.title)"></div>
 
                   <div v-for="items in item.answers" :key="items.id">
                     <div class="bo color" v-if="item.answer === items.answerno">
@@ -279,7 +266,8 @@ import { datalist } from '@/assets/api/databaselist/DatabaseList'
 import BatchImport from '@/components/BatchImport.vue'
 import QuestionBank from '@/views/subjects/QuestionBank.vue'
 import { Delete, EditPen } from '@element-plus/icons-vue'
-import { reactive, ref, toRefs } from 'vue'
+import { computed, reactive, ref, toRefs } from 'vue'
+import { htmlEncode } from '../../untils/Dilist'
 let user = ref(false)
 let users = ref(false)
 let show = ref(false)
@@ -337,6 +325,18 @@ const dels = (i: any) => {
 const bank = () => {
   users.value = true
 }
+const Arraytype = ref<string[]>(['单选题', '多选题', '判断题', '填空题', '问答题'])
+const listarray = ref<any[]>([])
+const arraytest: any = computed(() => {
+  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+  listarray.value.splice(0)
+  Arraytype.value.forEach((item: any) => {
+    if (table.value.questions.find((items: any) => items.type == item)) {
+      listarray.value.push(table.value.questions.find((items: any) => items.type == item))
+    }
+  }) // })
+  return listarray.value
+})
 </script>
 
 <style scoped lang="less">
@@ -365,8 +365,8 @@ const bank = () => {
   height: 90px;
   border: 1px solid #dcdfe6;
   position: relative;
-  top: 50px;
-  left: 80px;
+  top: 10px;
+  left: -10px;
   font-size: 13px;
   color: #848484;
   text-align: center;

@@ -31,9 +31,10 @@
 </template>
 
 <script setup lang="ts">
-import { useCounterStore } from '@/stores/counter'
-import type { UploadInstance, UploadProps } from 'element-plus'
-import { reactive, ref } from 'vue'
+import { useCounterStore } from '@/stores/counter';
+import type { UploadInstance, UploadProps } from 'element-plus';
+import { reactive, ref } from 'vue';
+
 const dialogVisible = ref(false)
 let tatle = ref([])
 const upload = ref<UploadInstance>()
@@ -59,7 +60,10 @@ const cancellation = () => {
 }
 // 确定
 const add = () => {
-  emit('allTableData', tatle.value)
+  emit(
+    'allTableData',
+    tatle.value
+  )
   props.call()
 }
 </script>

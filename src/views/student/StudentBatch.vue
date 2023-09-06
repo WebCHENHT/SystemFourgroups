@@ -59,8 +59,10 @@ const cancellation = () => {
 }
 // 确定
 const add = () => {
-  emit('allTableDatas', tatle.value)
-  props.call()
+  console.log(tatle.value);
+  
+  // emit('allTableDatas', tatle.value)
+  // props.call()
 }
 </script>
 

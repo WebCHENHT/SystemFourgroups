@@ -62,7 +62,13 @@
     ></StudenAdd>
     <!-- 密码 -->
     <StudenPassword v-if="users" v-model="users" :call="call" :fal="father"></StudenPassword>
-    <!--  -->
+    <!-- 批量添加 -->
+    <StudentBatch
+      v-if="sersr"
+      v-model="sersr"
+      :call="fathers"
+      @allTableDatas="allTableDatas"
+    ></StudentBatch>
   </div>
 </template>
 
@@ -75,10 +81,12 @@ import { debounce } from '@/untils/antishake'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 import StudenAdd from '@/views/student/StudenAdd.vue'
 import StudenPassword from '@/views/student/StudenPassword.vue'
+import StudentBatch from '@/views/student/StudentBatch.vue'
 import { reactive, ref, toRaw, toRefs, watch } from 'vue'
 // 批量删除默认隐藏
 const show = ref(true)
 const shows = ref(false)
+let sersr = ref(false)
 let ChangeData = ref([])
 let user = ref()
 let users = ref()
@@ -268,6 +276,17 @@ let carr = reactive({})
 const edit = (val: any) => {
   carr = val
   user.value = true
+}
+// 批量添加
+const batch = () => {
+  sersr.value = true
+}
+const fathers = () => {
+  sersr.value = false
+  studenlist()
+}
+const allTableDatas = (val: any) => {
+  console.log(val)
 }
 </script>
 
