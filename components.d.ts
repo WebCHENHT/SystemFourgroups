@@ -8,8 +8,11 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddModifyRoles: typeof import('./src/components/AddRoles/AddModifyRoles.vue')['default']
+    AddtestDrawer: typeof import('./src/components/Databaselist/AddtestDrawer.vue')['default']
+    BatchImport: typeof import('./src/components/BatchImport.vue')['default']
+    CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
+    DatabaseDetail: typeof import('./src/components/Databaselist/DatabaseDetail.vue')['default']
     Databaselists: typeof import('./src/components/Databaselist/Databaselists.vue')['default']
-    Drawer: typeof import('./src/components/ExamsZu/Drawer.vue')['default']
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBadge: typeof import('element-plus/es')['ElBadge']
@@ -20,13 +23,11 @@ declare module 'vue' {
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
-    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
-    ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
@@ -44,6 +45,7 @@ declare module 'vue' {
     SystemTransfer: typeof import('./src/components/SystemTransfer.vue')['default']
     TableangPage: typeof import('./src/components/TableangPage.vue')['default']
     TestDogis: typeof import('./src/components/TestDogis.vue')['default']
+    TestExpor: typeof import('./src/components/TestExpor.vue')['default']
     WangEditor: typeof import('./src/components/WangEditor.vue')['default']
   }
   export interface ComponentCustomProperties {

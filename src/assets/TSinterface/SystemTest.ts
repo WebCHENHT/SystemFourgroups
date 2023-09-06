@@ -355,3 +355,56 @@ export interface TestGetData {
   state: number
   questions: TestGetQuestion[]
 }
+
+export interface TestAddLimit {
+  id: number
+}
+
+export interface TestAddMarkteacher {
+  id: number
+}
+
+export interface TestAddStudent {
+  studentid: number
+}
+
+export interface TestAddAnswer {
+  id: number
+  answerno: string
+  questionid: number
+  content: string
+}
+
+export interface TestAddQuestion {
+  id: number
+  testid: number
+  title: string
+  type: string
+  scores: number
+  answer: string
+  tags: string
+  explains: string
+  answers: TestAddAnswer[]
+}
+
+export interface TestAddObject {
+  id: number
+  title: string
+  info: string
+  admin: string
+  begintime: string
+  endtime: string
+  limittime: number
+  scores: number
+  pastscores: number
+  qorder: number
+  aorder: number
+  answershow: number
+  isshow: number
+  databaseid: number
+  state: number
+  limits: TestAddLimit[]
+  markteachers: TestAddMarkteacher[]
+  students: TestAddStudent[]
+  questions: TestAddQuestion[]
+}

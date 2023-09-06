@@ -13,7 +13,8 @@ import type {
   TestGetlimitType,
   TestAnalyseData,
   TestGetForResultData,
-  TestGetData
+  TestGetData,
+  TestAddQuestion
 } from '@/assets/TSinterface/SystemTest'
 
 //考试列表
@@ -85,4 +86,27 @@ export const TestUpdateStates = (data: { ids: []; state: number }) => {
 
 export const TestDeleteall = (data: { ids: [] }) => {
   return index.post('test/deleteall', data)
+}
+//Excle导出
+export const StudentExportExcel = (data: any, data1: any) => {
+  return index.get('student/exportExcel', data, data1)
+}
+
+//创建考试
+export const TestAdd = (data: TestAddQuestion) => {
+  return index.post('test/add', data)
+}
+//题库列表
+export const DatabaseList = (data?: any) => {
+  return index.post('database/list', data)
+}
+
+//题库添加
+export const DatabaseAdd = (data: {
+  id: number
+  title: string
+  isshow: number
+  limits: never[]
+}) => {
+  return index.post('database/add', data)
 }
