@@ -8,35 +8,15 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddModifyRoles: typeof import('./src/components/AddRoles/AddModifyRoles.vue')['default']
-<<<<<<< HEAD
     AddtestDrawer: typeof import('./src/components/Databaselist/AddtestDrawer.vue')['default']
-    AlladdQuestion: typeof import('./src/components/Databaselist/AlladdQuestion.vue')['default']
     BatchImport: typeof import('./src/components/BatchImport.vue')['default']
     CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
     DatabaseDetail: typeof import('./src/components/Databaselist/DatabaseDetail.vue')['default']
-=======
-<<<<<<< HEAD
-    BatchImport: typeof import('./src/components/BatchImport.vue')['default']
-    CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
-=======
-<<<<<<< HEAD
-    CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
-    DatabaseDetail: typeof import('./src/components/Databaselist/DatabaseDetail.vue')['default']
-=======
-<<<<<<< HEAD
-    BatchImport: typeof import('./src/components/BatchImport.vue')['default']
-=======
-<<<<<<< HEAD
->>>>>>> 20f2a341f7a37d80bc7cf8704bddae0e6de810ab
->>>>>>> 33af06888dbe395ff154992dc016de7fadc692d9
->>>>>>> f56a8186865d155f159f0b60c380da7d9ce1b980
->>>>>>> 625dffecb1803cfc2a9f9ff1230d61ddaeb93a6e
     Databaselists: typeof import('./src/components/Databaselist/Databaselists.vue')['default']
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
@@ -45,23 +25,18 @@ declare module 'vue' {
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
-    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
-    ElStep: typeof import('element-plus/es')['ElStep']
-    ElSteps: typeof import('element-plus/es')['ElSteps']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
-    ElTree: typeof import('element-plus/es')['ElTree']
-    ElUpload: typeof import('element-plus/es')['ElUpload']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SystemDrawer: typeof import('./src/components/SystemDrawer.vue')['default']
