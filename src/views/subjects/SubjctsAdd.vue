@@ -210,7 +210,13 @@
               >
                 批量导入
               </button>
-              <button class="el-button" aria-disabled="false" type="button" style="font-size: 13px">
+              <button
+                @click="bank"
+                class="el-button"
+                aria-disabled="false"
+                type="button"
+                style="font-size: 13px"
+              >
                 从题库中导入
               </button>
             </div>
@@ -223,13 +229,7 @@
               试题存入题库：
             </div>
             <el-select placeholder="请选择题库" v-model="pamsea.databaseid">
-              <el-option
-                v-for="item in arr"
-                :key="item.id"
-                :label="item.title"
-                :value="item.id"
-                
-              />
+              <el-option v-for="item in arr" :key="item.id" :label="item.title" :value="item.id" />
             </el-select>
             <button
               class="el-button"
@@ -269,15 +269,19 @@
     <el-button type="primary" @click="add">提交</el-button>
     <el-button>取消</el-button>
   </div>
+  <!-- 批量添加 -->
   <BatchImport v-if="user" v-model="user" @allTableData="allTableData" :call="father"></BatchImport>
+  <QuestionBank v-if="users" v-model="users"></QuestionBank>
 </template>
 
 <script setup lang="ts">
 import { datalist } from '@/assets/api/databaselist/DatabaseList'
 import BatchImport from '@/components/BatchImport.vue'
+import QuestionBank from '@/views/subjects/QuestionBank.vue'
 import { Delete, EditPen } from '@element-plus/icons-vue'
 import { reactive, ref, toRefs } from 'vue'
 let user = ref(false)
+let users = ref(false)
 let show = ref(false)
 let adds = ref(false)
 let input = ref(10)
@@ -327,6 +331,11 @@ const del = () => {
 // 单个删除
 const dels = (i: any) => {
   table.value.splice(i, 1)
+}
+//
+// bank
+const bank = () => {
+  users.value = true
 }
 </script>
 
