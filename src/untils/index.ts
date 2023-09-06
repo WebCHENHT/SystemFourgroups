@@ -65,7 +65,7 @@ export default function () {
       path: '/SystemMenu/databaselist/databasequestionlist',
       name: 'databasequestionlist',
       meta: {
-        title: '考试分析',
+        title: '试题详情',
         url: '/SystemMenu/databaselist'
       },
       component: () => import('../views/databaselist/databasequestionlist.vue')

@@ -26,7 +26,9 @@
       <div v-if="shows">
         <el-button type="danger" @click="dels">批量删除</el-button>
       </div>
-      <el-button style="position: absolute; left: 88%; top: 10px">批量添加</el-button>
+      <el-button style="position: absolute; left: 88%; top: 10px" @click="batch"
+        >批量添加</el-button
+      >
       <el-button type="primary" style="position: absolute; left: 93%; top: 10px" @click="add"
         >添加学生</el-button
       >
@@ -51,9 +53,16 @@
       </TableangPage>
     </div>
     <!-- 添加 -->
-    <StudenAdd v-if="user" v-model="user" :falv="fal" :carr="carr" :getListDialog="studenlist"></StudenAdd>
+    <StudenAdd
+      v-if="user"
+      v-model="user"
+      :falv="fal"
+      :carr="carr"
+      :getListDialog="studenlist"
+    ></StudenAdd>
     <!-- 密码 -->
     <StudenPassword v-if="users" v-model="users" :call="call" :fal="father"></StudenPassword>
+    <!--  -->
   </div>
 </template>
 

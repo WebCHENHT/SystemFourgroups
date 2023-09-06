@@ -37,6 +37,16 @@
       @sonhandleCurrentChange="sonhandleCurrentChange"
       @sonhandleSizeChange="sonhandleSizeChange"
     >
+     <!-- 题库名称 -->
+        <template #default="scoped">
+          <el-button type="primary" link @click="paper(scoped.data)">{{
+            scoped.data.title
+          }}</el-button>
+        </template>
+        <!-- 时间 -->
+        <template #addtime="scoped">
+          {{ scoped.data.addtime.substring(0, 16) }}
+        </template>
       <template #actions="slotname: any">
         <el-button type="primary" size="small" link @click="shiti(slotname.data)">试题</el-button>
         <el-button type="primary" size="small" link @click="edit(slotname.data)">编辑</el-button>
@@ -72,6 +82,8 @@ let data = reactive({
 })
 const tableColums = reactive([
   {
+    slotname: 'default',
+    isslot: true,
     label: '题库',
     prop: 'title'
   },
@@ -80,8 +92,9 @@ const tableColums = reactive([
     prop: 'counts'
   },
   {
+    slotname: 'addtime',
+    isslot: true,
     label: '创建时间',
-    prop: 'addtime'
   },
   {
     label: '创建人',
@@ -93,6 +106,16 @@ const tableColums = reactive([
     isslot: true
   }
 ])
+// 题库名称
+const paper = async (val: any) => {
+   router.push({
+    path: '/SystemMenu/databaselist/databasequestionlist',
+    query: {
+      id: val.id,
+      title:val.title
+    }
+  })
+}
 // 题库列表
 const lists = async () => {
   let res: any = await datalist(data)
@@ -117,11 +140,11 @@ const onlyMine = (val: any) => {
 }
 
 // 试题
-const shiti = (val:any) => {
+const shiti = (id:any) => {
   router.push({
     path: '/SystemMenu/databaselist/databasequestionlist',
     query: {
-      id: val.id
+      id: id
     }
   })
 }
