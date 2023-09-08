@@ -18,6 +18,9 @@ const app = createApp(App)
 app.use(ElementPlus, {
   locale: zhCn
 })
+//试题上传
+app.provide('url', 'http://estate.eshareedu.cn/exam/api/test/upload')
+
 app.use(createPinia())
 app.use(router)
 

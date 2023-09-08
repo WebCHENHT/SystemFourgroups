@@ -12,7 +12,7 @@ export default function () {
       },
       component: () => import('../views/SystemMenu.vue'),
       children: [],
-      redirect: '/SystemMenu/test'
+      redirect: '/SystemMenu' + store.url
     })
 
     const menu: any[] = store.menus

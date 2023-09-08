@@ -84,8 +84,8 @@ interface RuleForm {
 }
 let Systemname = ref(false)
 const LoginAdd = reactive<RuleForm>({
-  username: 'admin',
-  pass: 'admin'
+  username: 'asdfgz',
+  pass: 'chen123'
 })
 const Loginrules = reactive<FormRules<RuleForm>>({
   username: [
@@ -110,7 +110,10 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
             return item
           }
         })
-        
+        console.log(resa)
+        store.url = resa[0].url
+        console.log(store.url)
+
         store.LeftArrDatas = resa
         store.token = res.data.token
         store.menus = res.data.menu
@@ -120,7 +123,7 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
         setTimeout(() => {
           succesMsg('登录成功')
           router.push({
-            path: '/SystemMenu'
+            path: '/SystemMenu' + store.url
           })
         }, 200)
       } else {

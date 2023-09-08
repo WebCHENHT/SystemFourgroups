@@ -98,7 +98,7 @@ export const TestAdd = (data: TestAddQuestion) => {
 }
 //题库列表
 export const DatabaseList = (data?: any) => {
-  return index.post('database/list', data)
+  return index.get('database/list', data)
 }
 
 //题库添加
@@ -109,4 +109,23 @@ export const DatabaseAdd = (data: {
   limits: never[]
 }) => {
   return index.post('database/add', data)
+}
+
+//题库列表
+export const DatabasequestionList = (data?: any) => {
+  return index.get('databasequestion/list', data)
+}
+
+//获取试卷列表
+export const SubjectsList = (data: any) => {
+  return index.get('subjects/list', data)
+}
+//获取单条试卷信息
+export const SubjectsGet = (data: any) => {
+  return index.get('subjects/get', data)
+}
+
+//考试单个删除
+export const TestDelete = (data: any) => {
+  return index.get('/test/delete', data)
 }

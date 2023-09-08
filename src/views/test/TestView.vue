@@ -109,8 +109,10 @@
         </div>
         <div class="caozuobutton" style="margin-top: 15px">
           <el-button type="primary" link @click="Examanalysis(data)">分析</el-button>
-          <el-button type="primary" link>编辑</el-button>
-          <el-button type="danger" link style="border-right: none">删除</el-button>
+          <el-button type="primary" link @click="bianjis(data)">编辑</el-button>
+          <el-button type="danger" link style="border-right: none" @click="delTest(data.id)"
+            >删除</el-button
+          >
         </div>
       </div>
     </template>
@@ -147,7 +149,8 @@ import {
   TestGetmarkteachers,
   TestGet,
   TestUpdateStates,
-  TestDeleteall
+  TestDeleteall,
+  TestDelete
 } from '@/assets/api/TestList/index'
 import dayjs from 'dayjs'
 import TableangPage from '@/components/TableangPage.vue'
@@ -157,6 +160,8 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import SystemTransferVue from '@/components/SystemTransfer.vue'
 import { useRouter } from 'vue-router'
 import TestDogis from '@/components/TestDogis.vue'
+import { useCounterStore } from '@/stores/counter'
+let Store = useCounterStore()
 //路由跳转
 let router = useRouter()
 //控制穿梭框显示隐藏和名称
@@ -185,11 +190,28 @@ const TestcharAt = debounce(() => {
   loading.value = true
   TestListdata()
 }, 500)
+//删除单个
+const delTest = async (id: any) => {
+  let res = await TestDelete({
+    id: id
+  })
+  if (res.errCode === 10000) {
+    ElMessage.success('删除成功')
+    loading.value = true
+    TestListdata()
+  }
+}
+
 //创建考试
 const Addexam = () => {
   router.push({
     path: '/SystemMenu/test/TestAdd'
   })
+}
+//编辑题库
+const bianjis = async (data: any) => {
+  Store.TestAddid = data.id as any
+  router.push('/SystemMenu/test/TestAdd')
 }
 //取消发布
 const Cancelpublication = async () => {
