@@ -2,7 +2,7 @@
   <div class="box">
     <el-page-header class="top_dao" @back="goBack">
       <template #content>
-        <span class="text-large font-600 mr-3">{{namexue }} </span>
+        <span class="text-large font-600 mr-3">{{namexue}} </span>
       </template>
     </el-page-header>
     <div class="top_dao">
@@ -45,42 +45,57 @@
       </template>
     </TableangPage>
     <!-- 抽屉 -->
-      <el-drawer class="drawers" v-model="drawer" :title="marginState.name" :direction="direction" :before-close="handleClose" >
+      <el-drawer class="drawers" v-model="drawer" :title="`${marginState.name}${'的试卷'}`" :direction="direction" :before-close="handleClose" >
         <div class="ti_box" v-for="item in paperdata" :key="item.id">
           <div class="ti_top">1、{{ item.type }}<span class="tex_hui">分值：{{ item.scores }}</span></div>
-          <div class="ti_mu">{{ item.title }}</div>
+          <div class="ti_mu">{{ item.title.replace(/\[\]/g, '_____')}}</div>
+          <div class="huida">回答：</div>
           <div class="ti_da">
             <div class="tiTop">
               <span class="pi">打分:</span>
-              <el-input class="text" v-model="ruform.key" />
+              <el-input class="text" v-model="item.studentscores" />
             </div>
             <el-form-item  class="wenben" label="批注:">
-              <el-input v-model="textarea" type="textarea" />
+              <el-input v-model="item.comments"  type="textarea" />
             </el-form-item>
           </div>
         </div>
         <template #footer>
           <div style="flex: auto">
             <el-button @click="cancelClick">取消</el-button>
-            <el-button type="primary" @click="confirmClick">阅卷完毕</el-button>
+            <el-button type="primary" @click="confirmClick()">阅卷完毕</el-button>
           </div>
         </template>
       </el-drawer>
+      <!-- 抽屉 -->
+      <!-- <ExamDrawer v-if="isShows" :getList="DeparList" :quertionData="quertionData" @closeDrawer="closeDrawer"></ExamDrawer> -->
   </div>
 </template>
 
 <script setup lang="ts">
+import ExamDrawer from '@/components/ExamsZu/ExamDrawer.vue'
 import TableangPage from '@/components/TableangPage.vue'
 import {DepartmentList} from '@/assets/api/teacher/teacher'
-import {studentlist,classeslist,queslist} from '@/assets/api/Exam/Exam'
-import { ref , reactive} from 'vue'
+import {studentlist,classeslist,queslist,studentanswer} from '@/assets/api/Exam/Exam'
+import { ref , reactive, toRefs} from 'vue'
 import { useRouter ,useRoute} from 'vue-router'
 import type { Examcans,classdata } from '@/assets/TSinterface/Exam';
+// import { textProps } from 'element-plus'
+import{succesMsg} from '@/untils/msg'
 let router = useRouter()
 let route: any = useRoute()
 const goBack = () => {
   router.push('/SystemMenu/exam')
 }
+const Data = reactive({
+  quertionData:{}
+})
+const {quertionData} = toRefs(Data)
+const closeDrawer = (val:any)=>{
+  isShows.value = val
+}
+
+
 // 状态
 const optionList = [
   {
@@ -150,6 +165,7 @@ const tableColum = reactive([
     {
       label: '状态',
       prop: 'state',
+      // isslot: true,
       // width: '120'
     },
     {
@@ -210,7 +226,9 @@ const handleCurrentChange = (val: number) => {
 }
 // 阅卷
 const drawer = ref(false)
+// const isShows = ref(false)
 const open = (val: any)=>{
+  // isShows.value = true
   console.log('获取到的数据------',val);
   drawer.value = true
   marginState.name = val.name
@@ -218,6 +236,7 @@ const open = (val: any)=>{
   marginState.studentid = val.id
   console.log(123456,marginState);
   paperlist()
+
 }
 // 头部×号
 const direction = ref('rtl')
@@ -228,9 +247,15 @@ const handleClose = (done: () => void) => {
 function cancelClick() {
   drawer.value = false
 }
-// 完成
-function confirmClick() {
+// 阅卷完毕
+const confirmClick = async ()=>{
   drawer.value = false
+  let red = await studentanswer(paperdata.value)
+  console.log(741,red);
+  if(red.errCode==10000){
+    succesMsg('您已经判完卷了')
+  }
+  studentlists()
 }
 // 阅卷传参
 const marginState = reactive<any>({
@@ -244,14 +269,9 @@ const paperlist = async ()=>{
   let red = await queslist(marginState)
   console.log('试卷列表',red);
   paperdata.value = red.data.list
-}
-// 文本域
-const textarea = ref('')  
-// 阅卷完毕参数
-let paperform = ref({
-  fen:'',
+  console.log(666,paperdata.value);
   
-})
+}
 
 
 </script>

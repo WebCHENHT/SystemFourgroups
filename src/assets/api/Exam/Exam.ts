@@ -36,6 +36,11 @@ export const classeslist = (data: classdata) => {
 export const queslist = (data: optionList) => {
   return index.get<optiondata>('question/listforstu', data)
 }
+// 阅卷完毕
+export const studentanswer = (data: any) => {
+  return index.post<any>('studentanswer/update', data)
+}
+
 
 
 

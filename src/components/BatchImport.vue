@@ -2,7 +2,7 @@
   <el-dialog v-model="dialogVisible" title="批量添加" width="40%">
     <div style="height: 130px">
       <el-steps direction="vertical">
-        <el-step title="下载试题模板，批量导入试题" />
+        <el-step   :title="'下载' + title + '模板，批量导入试题'" />
         <el-step title="上传填写好的试题表" />
       </el-steps>
       <p class="p">
@@ -13,7 +13,7 @@
     <el-upload
       ref="upload"
       class="upload-demo"
-      action="http://estate.eshareedu.cn/exam/api/test/upload"
+      :action="rado"
       :headers="headerObj"
       :on-success="handleAvatarSuccess"
     >
@@ -31,9 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import { useCounterStore } from '@/stores/counter';
-import type { UploadInstance, UploadProps } from 'element-plus';
-import { reactive, ref } from 'vue';
+import { useCounterStore } from '@/stores/counter'
+import { htmlEncode } from '@/untils/Dilist';
+import { errorMsg } from '@/untils/msg'
+import type { UploadInstance, UploadProps } from 'element-plus'
+import { reactive, ref } from 'vue'
 
 const dialogVisible = ref(false)
 let tatle = ref([])
@@ -43,6 +45,14 @@ let props = defineProps({
   call: {
     type: Function,
     required: true
+  },
+  title: {
+    type: String,
+    default: ''
+  },
+   rado: {
+    type: String as any,
+    default: ''
   }
 })
 const emit = defineEmits(['allTableData'])
@@ -52,7 +62,11 @@ const headerObj = reactive({
 })
 // 发送网络请求
 const handleAvatarSuccess: UploadProps['onSuccess'] = (response, uploadFile) => {
-  tatle.value = response.data
+  if (response.errCode === 10000) {
+    tatle.value = response.data
+  } else {
+    errorMsg(response.errMsg)
+  }
 }
 // 取消
 const cancellation = () => {
@@ -60,10 +74,7 @@ const cancellation = () => {
 }
 // 确定
 const add = () => {
-  emit(
-    'allTableData',
-    tatle.value
-  )
+  emit('allTableData', tatle.value.map((item: any) => ({...item,title:htmlEncode(item.title)})))
   props.call()
 }
 </script>

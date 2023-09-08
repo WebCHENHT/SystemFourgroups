@@ -40,7 +40,7 @@
         </template>
         <!-- 操作 -->
         <template #defaults="scoped">
-          <el-button type="primary" link>编辑</el-button>|
+          <el-button type="primary" link @click="edit(scoped.data)">编辑</el-button>|
           <el-button type="primary" link @click="del(scoped.data)">删除</el-button>
         </template>
       </TableangPage>
@@ -169,6 +169,17 @@ let del = async (val: any) => {
 const cuan = () => {
   router.push({
     path: 'SystemMenu/subjects/SubjectsAdd'
+  })
+}
+// 编辑试卷
+const edit = (row: any) => {
+  console.log(row)
+
+  router.push({
+    path: 'SystemMenu/subjects/SubjectsAdd',
+    query: {
+      id: row.id
+    }
   })
 }
 //  分页

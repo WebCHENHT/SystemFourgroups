@@ -28,15 +28,15 @@
     </TableangPage>
     <!-- 重置密码弹出框 @click="Pass" -->
     <el-dialog v-model=" dialogVisible " title="重置密码" width="30%">
-      <el-form :model=" form " label-width="120px">
+      <el-form :model=" form " :rules="rules" label-width="120px">
         <el-form-item label="姓名:">
           {{ form.name }}
           <!-- <el-input v-model="form.name" /> -->
         </el-form-item>
-        <el-form-item label="密码:">
+        <el-form-item label="密码:" prop="confirmPass">
           <el-input v-model=" form.confirmPass " />
         </el-form-item>
-        <el-form-item label="确认密码:">
+        <el-form-item label="确认密码:" prop="pass">
           <el-input v-model=" form.pass " />
         </el-form-item>
       </el-form>
@@ -51,25 +51,25 @@
     </el-dialog>
     <!-- 添加弹出框 -->
     <el-dialog v-model=" dialogadd " :title=" formAdd.id > 1 ? '编辑老师' : '添加老师' " width="30%">
-      <el-form :model=" formAdd " label-width="120px">
-        <el-form-item label="姓名">
-          <el-input v-model=" formAdd.name " />
+      <el-form :model=" formAdd " :rules="rulesadd" label-width="120px">
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model=" formAdd.name "  />
         </el-form-item>
         <el-form-item label="电话">
           <el-input v-model=" formAdd.tel " />
         </el-form-item>
-        <el-form-item label="部门">
+        <el-form-item label="部门" prop="depid">
           <el-cascader v-model=" formAdd.depid " class="text" :options=" options " :props=" props " clearable />
         </el-form-item>
-        <el-form-item label="角色">
+        <el-form-item label="角色" prop="roleid">
           <el-select v-model=" formAdd.roleid " clearable placeholder="请选择">
             <el-option v-for="  item   in   optionList  " :key=" item.id " :label=" item.name " :value=" item.id " />
           </el-select>
         </el-form-item>
-        <el-form-item label="账号">
+        <el-form-item label="账号" prop="username">
           <el-input v-model=" formAdd.username " />
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" prop="pass">
           <el-input v-model=" formAdd.pass " />
         </el-form-item>
       </el-form>
@@ -225,7 +225,7 @@ const open = (id: any) => {
       })
     })
 }
-// 重置密码
+// 重置密码赋值
 const ChongVisible = (val: any) => {
   dialogVisible.value = true
   console.log(66, val);
@@ -238,7 +238,7 @@ const ChongVisible = (val: any) => {
   form.depid = val.depid
   form.username = val.username
 }
-// 重置密码
+// 重置密码参数
 const form = reactive({
   confirmPass:"",//新密码
   depid:0,//
@@ -252,12 +252,25 @@ const form = reactive({
   tel:"",//手机号
   username:"",//账号
 })
+// 密码重置表单验证
+const rules = reactive({
+  confirmPass: [
+    { required: true, message: '密码不能为空', trigger: 'blur' },
+    { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
+  ],
+  pass: [
+    { required: true, message: '密码不能为空', trigger: 'blur' },
+    { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
+  ],
+})
 // 密码重置
 const Pass = async () => {
   let red = await teacherchangeAdd(form)
   console.log(22, red);
   dialogVisible.value = false
-  succesMsg('密码重置成功')
+  if(red.errCode==10000){
+    succesMsg('密码重置成功')
+  }
   form.name = '',
   form.oldpass = '',
   form.qq = '',
@@ -277,6 +290,7 @@ const pwead = ()=>{
   form.id = 0,
   form.depid =0,
   form.username = ''
+  dialogVisible.value = false
 }
 // 取消按钮
 const faAdd = () => {
@@ -304,10 +318,32 @@ const teacheAdd = async () => {
   let red: any = await teacherchangeAdd(formAdd)
   console.log(red);
   // console.log(123);
-  dialogadd.value = false
-  succesMsg(formAdd.id > 1 ? '修改成功' : '添加成功')
-  tealist()
+  if(red.errCode==10000){
+    dialogadd.value = false
+    succesMsg(formAdd.id > 1 ? '修改成功' : '添加成功')
+    tealist()
+  }
+  
 }
+// 添加表单验证
+const rulesadd = reactive({
+  name: [
+    { required: true, message: '姓名不能为空', trigger: 'blur' },
+  ],
+  depid: [
+    { required: true, message: '部门不能为空', trigger: 'blur' },
+  ],
+  roleid: [
+    { required: true, message: '角色不能为空', trigger: 'blur' },
+  ],
+  username: [
+    { required: true, message: '部门不能为空', trigger: 'blur' },
+  ],
+  pass: [
+    { required: true, message: '密码不能为空', trigger: 'blur' },
+    { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
+  ],
+})
 // 修改
 const teachedele = async (val: any) => {
   dialogadd.value = true
