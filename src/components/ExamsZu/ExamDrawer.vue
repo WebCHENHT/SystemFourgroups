@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-drawer 
+    title=""
     class="drawers" 
     v-model="drawer" 
     :direction="direction" 
@@ -21,6 +22,7 @@ const props = ({
     type:Object
   }
 })
+const direction = ref('rtl')
 const drawer = ref(true)
 const emit = defineEmits(['updata:value','blur','closeDrawer'])
 const handleClose = ()=>{
@@ -30,4 +32,4 @@ const handleClose = ()=>{
 
 <style scoped>
 
-</style>
+</style> 

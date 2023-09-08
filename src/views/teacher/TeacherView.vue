@@ -253,15 +253,43 @@ const form = reactive({
   username:"",//账号
 })
 // 密码重置表单验证
+// const rules = reactive({
+//   confirmPass: [
+//     { required: true, message: '密码不能为空', trigger: 'blur' },
+//     { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
+//   ],
+//   pass: [
+//     { required: true, message: '密码不能为空', trigger: 'blur' },
+//     { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
+//   ],
+// })
+// 表单验证
+const validatePass = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('请输入6-12位新密码'))
+  } else {
+    if (form.pass !== '') {
+      if (!form.value) return
+      form.value.validateField('checkPass', () => null)
+    }
+    callback()
+  }
+}
+const validatePass2 = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('请输入6-12位新密码'))
+  } else if (value !== form.confirmPass) {
+    callback(new Error("确认密码与确认新密码不同!"))
+  } else {
+    callback()
+  }
+}
 const rules = reactive({
-  confirmPass: [
-    { required: true, message: '密码不能为空', trigger: 'blur' },
-    { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
-  ],
-  pass: [
-    { required: true, message: '密码不能为空', trigger: 'blur' },
-    { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
-  ],
+  confirmPass: [{ validator: validatePass, trigger: 'blur' },
+  { required: true, message: '请输入新密码 ', trigger: 'blur' }],
+  pass: [{ validator: validatePass2, trigger: 'blur' },
+  { required: true, message: '请输入新密码 ', trigger: 'blur' }],
+  
 })
 // 密码重置
 const Pass = async () => {
