@@ -8,7 +8,7 @@
       <template #extra>
         <div class="flex items-center">
           <el-button @click="addTest">添加试题</el-button>
-          <el-button type="primary" class="ml-2">批量添加试题</el-button>
+          <el-button type="primary" class="ml-2" @click="isShowAdd=true">批量添加试题</el-button>
         </div>
       </template>
     </el-page-header>
@@ -67,6 +67,13 @@
     :questionData="questionData"
     @closeDrawer="closeDrawer"
   />
+   <!-- 批量上传试题 -->
+  <AlladdQuestion
+    @closeDialog="closeDialog"
+    :addUrl="addTestUrl"
+    :getList="lists"
+    v-if="isShowAdd"
+  />
   </div>
 </template>
 
@@ -79,6 +86,7 @@ import {DatabaseDeleteall, DatabaseList , Databasedel} from '@/assets/api/databa
 import DatabaseDetail from '@/components/Databaselist/DatabaseDetail.vue'
 import AddtestDrawer from '@/components/Databaselist/AddtestDrawer.vue'
 import { debounce } from '@/untils/antishake'
+import AlladdQuestion from '@/components/Databaselist/AlladdQuestion.vue'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 let display = ref(false) //批量删除显示按钮
 let conceal = ref(true) //批量删除隐藏按钮
@@ -89,6 +97,7 @@ let total = ref(0)
 const router = useRouter()
 let red = route.query.id
 let title = route.query.title
+const addTestUrl = ref('http://estate.eshareedu.cn/exam/upload/question.xlsx');
 // 返回上一级
 const back = () => {
   router.push('/SystemMenu/databaselist')
@@ -165,6 +174,12 @@ const state: any = reactive({
 const { getEestDetail } = toRefs(state);
 const isDatabaseDetail = ref(false);
 const isAddtestDrawer = ref(false)
+
+const isShowAdd = ref(false); //批量添加
+// 接受子组件传过来的值  关闭弹窗
+const closeDialog = (val: any) => {
+  isShowAdd.value = val;
+};
 
 // 接收从子组件传过来的值  关闭抽屉
 const closeDrawer = (val: any) => {

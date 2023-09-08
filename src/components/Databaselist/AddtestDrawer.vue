@@ -225,7 +225,7 @@ const data: Idata = reactive({
 // 点击删除一行选项
 const delTab = () => {
   if(addData.answers.length <= 4){
-    errorMsg('最少要有2个选项')
+    errorMsg('最少要有4个选项')
     return
   }
   addData.answers.pop()

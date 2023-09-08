@@ -129,3 +129,4 @@ export const SubjectsGet = (data: any) => {
 export const TestDelete = (data: any) => {
   return index.get('/test/delete', data)
 }
+

@@ -11,8 +11,7 @@ export default function () {
         title: '菜单'
       },
       component: () => import('../views/SystemMenu.vue'),
-      children: [],
-      redirect: '/SystemMenu' + store.url
+      children: []
     })
 
     const menu: any[] = store.menus
@@ -60,6 +59,8 @@ export default function () {
       },
       component: () => import('../views/subjects/SubjctsAdd.vue')
     })
+    
+
 
     router.addRoute('SystemMenu', {
       path: '/SystemMenu/databaselist/databasequestionlist',
@@ -88,6 +89,7 @@ export default function () {
       },
       component: () => import('../views/test/TestAddView.vue')
     })
+
     router.addRoute({
       path: '/:pathMatch(.*)*',
       name: '404',

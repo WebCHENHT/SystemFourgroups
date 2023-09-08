@@ -71,6 +71,7 @@ let store = useCounterStore()
 
 let route = useRoute()
 let router = useRouter()
+let resget = router.getRoutes()
 const data = reactive({
   LeftArrDatas: [] as any,
   userInfo: {} as any,
@@ -91,8 +92,12 @@ const SystemLists = (data: any) => {
 //去出本地用户数据
 const SignOut = () => {
   router.replace('/')
+  store.menus=[]
+  store.LeftArrDatas=[]
+  store.model={}
   store.token = ''
-
+  store.type = ''
+  store.url = ''
   ElMessage({
     message: '退出登录成功',
     type: 'success'

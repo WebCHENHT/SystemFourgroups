@@ -19,11 +19,8 @@ const router = createRouter({
         title: '菜单'
       },
       component: () => import('../views/SystemMenu.vue'),
-      children:[
-      ]
-    },
-    
-   
+      children: []
+    }
   ]
 })
 router.beforeEach(async (to, form, next) => {
@@ -32,7 +29,7 @@ router.beforeEach(async (to, form, next) => {
   const routers = router.getRoutes()
   if (token) {
     if (to.path === '/') {
-      next('/SystemMenu')
+      next('/SystemMenu' + store.url)
     } else {
       if (routers.length > 2 && to.path !== 'undefined') {
         next()
@@ -40,7 +37,6 @@ router.beforeEach(async (to, form, next) => {
         await indexfors()
         next({ ...to, replace: true })
       }
-      next()
     }
   } else {
     if (to.path === '/') {
