@@ -26,7 +26,26 @@
           <el-radio-group v-model="ruleForm.isshow">
             <el-radio :label="1">允许所有老师使用</el-radio>
             <el-radio :label="2">不允许任何老师使用</el-radio>
-            <el-radio :label="3" @click="bufenxs">允许部分老师使用</el-radio>
+            <el-radio :label="3" @click="bufenxs">
+              <div style="display: flex">
+                <div>允许部分老师使用</div>
+                <div
+                  v-if="ruleForm.limits.length >= 1"
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    background-color: #409eff;
+                    border-radius: 50%;
+                    color: #fff;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  {{ ruleForm.limits.length }}
+                </div>
+              </div>
+            </el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -70,14 +89,6 @@ const formSize = ref('default')
 const Transfer = ref()
 const datas: any = ref([])
 const TransferDatas = ref()
-
-const Departmentdata = async () => {
-  let res = await DepartmentList()
-  if (res.errCode === 10000) {
-    datas.value = res.data.list
-  }
-}
-Departmentdata()
 
 const ruleForm = reactive({
   id: 0,
@@ -129,7 +140,11 @@ const MyDepartment = async (data: any) => {
   }
 }
 const dialogVisible = ref(false)
-const bufenxs = () => {
+const bufenxs = async () => {
+  let res = await DepartmentList()
+  if (res.errCode === 10000) {
+    datas.value = res.data.list
+  }
   Transfer.value.dialogVisible = true
 }
 defineExpose({ dialogVisible })

@@ -38,7 +38,7 @@
           <span class="titleres" v-html="item.title"></span>
           <!-- 判断题 -->
           <div v-if="item.type === '判断题'">
-            <div v-if="item.answer === '错误'">
+            <div v-if="item.studentanswer === '错误'">
               <div class="optionsLi">
                 <div class="left">
                   <div class="opt"></div>
@@ -61,7 +61,7 @@
               </div>
             </div>
 
-            <div v-if="item.answer === '正确'">
+            <div v-if="item.studentanswer === '正确'">
               <div class="optionsLi">
                 <div class="left">
                   <div class="opt"></div>

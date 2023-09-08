@@ -53,7 +53,7 @@
           {{ scopeds.data.addtime.substring(0, 16) }}
         </template>
         <template #actions="slotname:any">
-        <el-button type="primary" size="small" link>编辑</el-button>
+        <el-button type="primary" size="small" link @click="compile(slotname.data)">编辑</el-button>
         <el-button type="primary" size="small" link @click="del(slotname.data.id)">删除</el-button>
       </template>
     </TableangPage>
@@ -89,7 +89,7 @@ let total = ref(0)
 const router = useRouter()
 let red = route.query.id
 let title = route.query.title
-// 返回
+// 返回上一级
 const back = () => {
   router.push('/SystemMenu/databaselist')
 }
@@ -143,7 +143,11 @@ const { questionData } = toRefs(Data)
 const addTest = () => {
   isAddtestDrawer.value = true;
 };
-
+const compile = (data: any) => {
+  console.log('编辑',data);
+  questionData.value= data
+  isAddtestDrawer.value = true
+}
 // 列表
 const lists = async() => {
   let res:any = await DatabaseList(data)
@@ -159,13 +163,13 @@ const state: any = reactive({
   getEestDetail:{}
 });
 const { getEestDetail } = toRefs(state);
-
 const isDatabaseDetail = ref(false);
 const isAddtestDrawer = ref(false)
+
 // 接收从子组件传过来的值  关闭抽屉
 const closeDrawer = (val: any) => {
   isAddtestDrawer.value = val;
-  isDatabaseDetail.value=val
+  isDatabaseDetail.value = val
 };
 // 试题单条数据详情
 const testDetail = (val:any) => {
@@ -173,8 +177,7 @@ const testDetail = (val:any) => {
   isDatabaseDetail.value = true
   state.getEestDetail=val
 }
-
-// 导出
+// 导出excel
 let excel = () => {
  // 1.创建工作表
  let data = XLSX.utils.json_to_sheet(tableData.value)
@@ -185,11 +188,7 @@ let excel = () => {
  // 4.生成文件并下载
  XLSX.writeFile(wb,title+'.xlsx')
 }
-
-// 搜索
-const query = debounce(() => {
-  lists()
-}, 500)
+let id: any = reactive([]) //定义多选数据
 //多选获取id
 const allTableData = (val: any) => {
   ChangeData.value = val
@@ -212,7 +211,6 @@ watch(
     }
   }
 )
-let id: any = reactive([]) //定义多选数据
 // 试题批量删除
 const delAll = () => {
   confirmBox('确定删除吗???', '你确定吗？', null)
@@ -257,6 +255,10 @@ const sonhandleCurrentChange = (val: number) => {
   data.page = val
   lists()
 }
+// 搜索
+const query = debounce(() => {
+  lists()
+}, 500)
 </script>
 
 <style scoped lang="less">
