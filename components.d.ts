@@ -14,6 +14,7 @@ declare module 'vue' {
     DatabaseDetail: typeof import('./src/components/Databaselist/DatabaseDetail.vue')['default']
     Databaselists: typeof import('./src/components/Databaselist/Databaselists.vue')['default']
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
+    Editor: typeof import('./src/components/Databaselist/Editor.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
@@ -27,7 +28,9 @@ declare module 'vue' {
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
@@ -59,10 +62,6 @@ declare module 'vue' {
     TestAddWangEditor: typeof import('./src/components/TestAddWangEditor.vue')['default']
     TestDogis: typeof import('./src/components/TestDogis.vue')['default']
     TestExpor: typeof import('./src/components/TestExpor.vue')['default']
-    TestpaperListView: typeof import('./src/components/TestpaperListView.vue')['default']
-    Testquestiondetails: typeof import('./src/components/Testquestiondetails.vue')['default']
-    TestquestiondetailsView: typeof import('./src/components/TestquestiondetailsView.vue')['default']
-    TestStepsDialog: typeof import('./src/components/TestStepsDialog.vue')['default']
     WangEditor: typeof import('./src/components/WangEditor.vue')['default']
   }
   export interface ComponentCustomProperties {
