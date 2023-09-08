@@ -449,8 +449,6 @@ const releaseadd = async (name: string) => {
     ElMessage.error('考试说明不能为空')
   } else if (TestData.value.questions.length <= 0) {
     ElMessage.error('请添加考试内容')
-  } else if (TestData.value.begintime === '' || TestData.value.endtime === '') {
-    ElMessage.error('请选择开始时间和结束时间')
   } else if (TestData.value.limits.length <= 0) {
     ElMessage.error('请选择可见老师')
   } else if (TestData.value.students.length <= 0) {

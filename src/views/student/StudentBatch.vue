@@ -13,7 +13,7 @@
     <el-upload
       ref="upload"
       class="upload-demo"
-      action="http://estate.eshareedu.cn/exam/api/student/upload"
+      action="http://apis.90000p.com/exam2212/api/student/upload"
       :headers="headerObj"
       :on-success="handleAvatarSuccess"
     >

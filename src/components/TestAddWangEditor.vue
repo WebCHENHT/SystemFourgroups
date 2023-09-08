@@ -264,6 +264,7 @@ const inputs = (data: any) => {
     ElMessage.error('分值不能为空')
   }
 }
+
 watch(
   () => questionsData.value,
   (a: any, b) => {
@@ -367,7 +368,6 @@ const gattabtype = (data: any) => {
 //获取输入框
 const getsoumInput = (data: any) => {
   questionsData.value.answer = input.value.join('|')
-  console.log(questionsData.value.answer)
 }
 //多选
 const getduoxu = (data: string[]) => {
@@ -381,7 +381,8 @@ const delinput = (data: any, key: any) => {
     questionsData.value.answers = questionsData.value.answers.filter((item: any, index) => {
       return index !== key
     })
-    questionsData.value.answers = questionsData.value.answers.filter((item: any, index) => {
+
+    questionsData.value.answers = questionsData.value.answers.map((item: any, index) => {
       return {
         ...item,
         answerno: yinwens.value[index]

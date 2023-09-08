@@ -17,11 +17,11 @@ interface ResultList {
 
 // 请求响应参数，包含data
 interface ResultDatas<T = any> extends ResultList {
-counts: string
+  counts: string
   data: T
 }
 
-const URL: string = 'http://estate.eshareedu.cn/exam/api/'
+const URL: string = 'http://apis.90000p.com/exam2212/api/'
 enum RequestEnums {
   TIMEOUT = 30000,
   OVERDUE = 600, // 登录失效

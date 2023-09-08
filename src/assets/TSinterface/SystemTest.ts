@@ -2,12 +2,13 @@ export interface TestDatatype {
   page: number
   psize: number
   key: string
-  admin: string
-  ismy: string
-  opentime: string
-  begindate: string
-  enddate: string
-  state: string
+  admin?: string
+  ismy?: string
+  opentime?: string
+  begindate?: string
+  enddate?: string
+  state?: string
+  result: string
 }
 
 export interface TestDataupdateState {
