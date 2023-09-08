@@ -4,16 +4,16 @@
     <div>
       <div style="display: flex; margin-top: 20px">
         <el-form-item label="关键字">
-          <el-input placeholder="考试名称" />
+          <el-input placeholder="考试名称" v-model="params.key" />
         </el-form-item>
         &nbsp; &nbsp; &nbsp; &nbsp;
         <el-form-item label="创建人">
-          <el-input placeholder="创建人" />
+          <el-input placeholder="创建人" v-model="params.admin" @input="inputs" />
         </el-form-item>
         &nbsp;&nbsp;
-        <el-checkbox>只看我创建的</el-checkbox>
+        <el-checkbox @change="duoxuans" v-model="vuels">只看我创建的</el-checkbox>
         &nbsp;&nbsp;
-        <el-button type="primary">查询</el-button>
+        <el-button type="primary" @click="Csnds">查询</el-button>
         <el-button type="primary" style="position: absolute; left: 93%; top: 10px" @click="cuan"
           >创建试卷</el-button
         >
@@ -111,19 +111,8 @@ let tableColums = reactive([
 ])
 // 条数
 let total = ref()
-//列表数据
-interface Iparams {
-  page: number //页码 默认是1
-  psize: number //每页显示多少条 默认是2
-  key: string //搜索关键字(名称)
-  admin: string //创建人
-  ismy: string //只看我的 >0
-}
-// 约束类型
-interface T {
-  params: Iparams
-}
-let data = reactive<T>({
+let loading = ref(true)
+let data = reactive<any>({
   params: {
     page: 1,
     psize: 10,
@@ -189,6 +178,26 @@ const handleCurrentChange = (val: number) => {
 }
 const nhandleSizeChange = (val: number) => {
   params.value.psize = val
+  list()
+}
+// 搜索
+let vuels = ref(false)
+const inputs = (data: any) => {
+  if (params.value.admin !== '') {
+    vuels.value = false
+    params.value.ismy = 0
+  }
+}
+const duoxuans = (data: any) => {
+  if (data === true) {
+    params.value.ismy = 1
+    params.value.admin = ''
+  } else {
+    params.value.ismy = 0
+  }
+}
+const Csnds = () => {
+  loading.value = true
   list()
 }
 </script>

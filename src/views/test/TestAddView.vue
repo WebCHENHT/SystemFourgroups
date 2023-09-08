@@ -670,10 +670,7 @@ const ishow = ref(true)
 //弹框名称
 const names = ref('')
 
-//打开题库弹框
-const chujians = () => {
-  Questions.value.dialogVisible = true
-}
+
 //题库
 let baseDatas = ref()
 const DatabaseData = async () => {

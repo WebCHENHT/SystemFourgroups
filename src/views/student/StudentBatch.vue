@@ -27,15 +27,19 @@
         <el-button type="primary" @click="add"> 确定 </el-button>
       </span>
     </template>
+    <!-- 批量添加列表 -->
+    <BatchAdd v-if="isshow" v-model="isshow" :call="arr"></BatchAdd>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { useCounterStore } from '@/stores/counter'
+import BatchAdd from '@/views/student/BatchAdd.vue'
 import type { UploadInstance, UploadProps } from 'element-plus'
 import { reactive, ref } from 'vue'
 const dialogVisible = ref(false)
 let tatle = ref([])
+let isshow = ref(false)
 const upload = ref<UploadInstance>()
 let store = useCounterStore()
 let props = defineProps({
@@ -58,11 +62,11 @@ const cancellation = () => {
   props.call()
 }
 // 确定
+let arr = ref({})
 const add = () => {
-  console.log(tatle.value);
-  
-  // emit('allTableDatas', tatle.value)
-  // props.call()
+  arr.value = tatle.value
+  console.log(arr)
+  isshow.value = true
 }
 </script>
 

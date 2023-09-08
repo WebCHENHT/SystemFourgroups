@@ -223,7 +223,7 @@
             <div class="god">
               <el-button @click="Wangtitle"> 添加题目 </el-button>
               <el-button @click="Batch"> 批量导入 </el-button>
-              <el-button @click="bank"> 从题库中导入 </el-button>
+              <el-button @click="questionbank"> 从题库中导入 </el-button>
             </div>
 
             <div
@@ -241,6 +241,7 @@
               aria-disabled="false"
               type="button"
               style="font-size: 13px; margin-left: 20px"
+               @click="chujians"
             >
               + 创建题库
             </button>
@@ -285,7 +286,9 @@
     :title="title"
   ></BatchImport>
   <!-- 题库添加 -->
-  <QuestionBank v-if="users" v-model="users" :fal="fat"></QuestionBank>
+  <QuestionBankLogView ref="Questio" @myQunstions="myQunstions"></QuestionBankLogView>
+  <!-- 创建题库 -->
+<CreatetestQuestions ref="Questions" @MybaseAdd="MybaseAdd"></CreatetestQuestions>
   <!-- 单个添加 -->
   <TestAddWangEditor ref="WangAdd" :id="from.id" @MywangAdd="MywangAdd"></TestAddWangEditor>
   <!-- 穿梭框 -->
@@ -293,12 +296,14 @@
 </template>
 
 <script setup lang="ts">
+import { DatabaseAdd, DatabaseList } from '@/assets/api/TestList'
 import { datalist } from '@/assets/api/databaselist/DatabaseList'
 import { subjectsadd, subjectsget } from '@/assets/api/subjects/subjects'
 import BatchImport from '@/components/BatchImport.vue'
+import CreatetestQuestions from '@/components/CreatetestQuestions.vue'
+import QuestionBankLogView from '@/components/QuestionBankLogView.vue'
 import TestAddWangEditor from '@/components/TestAddWangEditor.vue'
 import { errorMsg, succesMsg } from '@/untils/msg'
-import QuestionBank from '@/views/subjects/QuestionBank.vue'
 import QuestionBanklist from '@/views/subjects/QuestionBanklist.vue'
 import { Delete, EditPen } from '@element-plus/icons-vue'
 import { computed, reactive, ref, toRefs } from 'vue'
@@ -316,7 +321,8 @@ let { MultipleChoice, Multiplechoicequestions, trueorfalse, fillintheblanks, ess
 let useroute = useRoute()
 let userouter = useRouter()
 let user = ref(false)
-let users = ref(false)
+const Questio = ref()
+const Questions = ref()
 let adds = ref(false)
 let shows = ref(false)
 let from: any = ref({
@@ -440,9 +446,30 @@ const dels = (i: any) => {
   }
   from.value.questions.splice(i, 1)
 }
-// 从题库中导入
-const bank = () => {
-  users.value = true
+//打开题库列表
+const questionbank = () => {
+  Questio.value.dialogVisible = true
+}
+//试题提交
+const myQunstions = (data: any) => {
+  from.value.questions = data
+}
+//题库
+let baseDatas = ref()
+const DatabaseData = async () => {
+  let res: any = await DatabaseList()
+  if (res.errCode === 10000) {
+    baseDatas.value = res.data.list
+  }
+}
+DatabaseData()
+//添加题库
+const MybaseAdd = async (data: any) => {
+  let res = await DatabaseAdd(data)
+  if (res.errCode === 10000) {
+    Questions.value.dialogVisible = false
+    DatabaseData()
+  }
 }
 const Arraytype = ref<string[]>(['单选题', '多选题', '判断题', '填空题', '问答题'])
 const listarray = ref<any[]>([])
@@ -461,14 +488,18 @@ const WangAdd = ref()
 const Wangtitle = () => {
   WangAdd.value.drawer = true
 }
-
+//打开题库弹框
+const chujians = () => {
+  Questions.value.dialogVisible = true
+}
 //题型添加
 const MywangAdd = (data: any) => {
-  console.log(data)
-
   if (data.id === 0) {
     from.value.questions.push(data)
     adds.value = true
+    WangAdd.value.drawer = false
+  } else {
+    from.value.questions[data.id - 1] = data
     WangAdd.value.drawer = false
   }
 }
@@ -477,7 +508,6 @@ const getTestadd = (data: any, key: number) => {
   WangAdd.value.drawer = true
   WangAdd.value.questionsData = JSON.parse(JSON.stringify(data))
   WangAdd.value.questionsData.id = key
-  console.log(WangAdd.value.questionsData)
 }
 const Markingteacher = () => {
   shows.value = true
@@ -498,10 +528,7 @@ const flase = () => {
   shows.value = false
   list()
 }
-const fat = () => {
-  users.value = false
-  list()
-}
+
 const Batch = () => {
   user.value = true
 }
