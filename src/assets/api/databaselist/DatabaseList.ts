@@ -33,3 +33,7 @@ export const Databasedel = (data: databaseid) => {
 export const databasequestionAddlist = (data: any) => {
   return index.post<RootObject>('databasequestion/addlist', data)
 }
+// 试题添加
+export const databasequestionadd = (data: any) => {
+  return index.post<RootObject>('databasequestion/add', data)
+}

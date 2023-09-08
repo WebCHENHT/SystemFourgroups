@@ -48,7 +48,7 @@
           {{ scoped.data.addtime.substring(0, 16) }}
         </template>
       <template #actions="slotname: any">
-        <el-button type="primary" size="small" link @click="shiti(slotname.data)">试题</el-button>
+        <el-button type="primary" size="small" link @click="paper(slotname.data)">试题</el-button>
         <el-button type="primary" size="small" link @click="edit(slotname.data)">编辑</el-button>
         <el-button type="primary" size="small" link @click="del(slotname.data)">删除</el-button>
       </template>
