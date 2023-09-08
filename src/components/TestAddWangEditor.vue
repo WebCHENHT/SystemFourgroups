@@ -110,6 +110,7 @@
               type="text"
               v-model="questionsData.scores"
               style="width: 77px; height: 28px"
+              @blur="inputs($event)"
             />
           </el-form-item>
           <el-form-item>
@@ -258,24 +259,14 @@ const baocuns = () => {
     }
   }
 }
+const inputs = (data: any) => {
+  if ((questionsData.value.scores as any) == '') {
+    ElMessage.error('分值不能为空')
+  }
+}
 watch(
   () => questionsData.value,
   (a: any, b) => {
-    if (a.scores < 1) {
-      let res = setInterval(() => {
-        ElMessage.warning('分数不能低于1')
-
-        clearInterval(res)
-      }, 1000)
-      questionsData.value.scores = 1
-    } else if (a.scores > 15) {
-      setTimeout(() => {
-        ElMessage.warning('单题分数最高15分')
-      }, 200)
-
-      questionsData.value.scores = 15
-    }
-
     if (a.answer !== '') {
       if (String(a.answer).indexOf('|') !== -1) {
         input.value = a.answer.split('|')
@@ -415,7 +406,7 @@ const modelValue = (data: any) => {
 }
 const direction = ref('rtl')
 
-defineExpose({ drawer })
+defineExpose({ drawer, questionsData })
 </script>
 
 <style lang="less" scoped>

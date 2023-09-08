@@ -7,7 +7,9 @@ export const useCounterStore = defineStore('counter', {
       menus: [],
       model: '',
       type: '',
-      LeftArrDatas: []
+      LeftArrDatas: [],
+      TestAddid: 0,
+      url: ''
     }
   },
   actions: {},
