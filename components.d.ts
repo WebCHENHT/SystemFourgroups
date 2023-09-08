@@ -17,20 +17,21 @@ declare module 'vue' {
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     Editor: typeof import('./src/components/Databaselist/Editor.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
-<<<<<<< HEAD
-    ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
-=======
->>>>>>> 46eafd6d030f52e12f75d3a4542ba1da3c99b63c
     ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
+    ElDialog: typeof import('element-plus/es')['ElDialog']
+    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElMain: typeof import('element-plus/es')['ElMain']
-<<<<<<< HEAD
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
     ElPagination: typeof import('element-plus/es')['ElPagination']
@@ -45,8 +46,6 @@ declare module 'vue' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
     ElUpload: typeof import('element-plus/es')['ElUpload']
-=======
->>>>>>> 46eafd6d030f52e12f75d3a4542ba1da3c99b63c
     ExamDrawer: typeof import('./src/components/ExamsZu/ExamDrawer.vue')['default']
     ListtoftestView: typeof import('./src/components/ListtoftestView.vue')['default']
     QuestionBankLogView: typeof import('./src/components/QuestionBankLogView.vue')['default']
@@ -63,5 +62,8 @@ declare module 'vue' {
     TestStepsDialog: typeof import('./src/components/TestStepsDialog.vue')['default']
     TransFer: typeof import('./src/components/Databaselist/TransFer.vue')['default']
     WangEditor: typeof import('./src/components/WangEditor.vue')['default']
+  }
+  export interface ComponentCustomProperties {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }
