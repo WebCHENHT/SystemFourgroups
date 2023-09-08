@@ -8,10 +8,14 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddModifyRoles: typeof import('./src/components/AddRoles/AddModifyRoles.vue')['default']
+<<<<<<< HEAD
+    CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
+=======
     AddtestDrawer: typeof import('./src/components/Databaselist/AddtestDrawer.vue')['default']
     BatchImport: typeof import('./src/components/BatchImport.vue')['default']
     CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
     DatabaseDetail: typeof import('./src/components/Databaselist/DatabaseDetail.vue')['default']
+>>>>>>> 6fc8d63012938fa07d38951878bc3bb8c188b2a7
     Databaselists: typeof import('./src/components/Databaselist/Databaselists.vue')['default']
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     Editor: typeof import('./src/components/Databaselist/Editor.vue')['default']
@@ -39,18 +43,24 @@ declare module 'vue' {
     ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
-    ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+<<<<<<< HEAD
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElTransfer: typeof import('element-plus/es')['ElTransfer']
+=======
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
     ElTree: typeof import('element-plus/es')['ElTree']
     ExamDrawer: typeof import('./src/components/ExamsZu/ExamDrawer.vue')['default']
+>>>>>>> 6fc8d63012938fa07d38951878bc3bb8c188b2a7
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SystemDrawer: typeof import('./src/components/SystemDrawer.vue')['default']
     SystemTransfer: typeof import('./src/components/SystemTransfer.vue')['default']
     TableangPage: typeof import('./src/components/TableangPage.vue')['default']
+    TestAddWangEditor: typeof import('./src/components/TestAddWangEditor.vue')['default']
     TestDogis: typeof import('./src/components/TestDogis.vue')['default']
     TestExpor: typeof import('./src/components/TestExpor.vue')['default']
     TransFer: typeof import('./src/components/Databaselist/TransFer.vue')['default']

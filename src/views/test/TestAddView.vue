@@ -40,66 +40,87 @@
               </div>
             </div>
             <div class="Calculationtopic" v-if="TestData.questions.length >= 1">
-              <div class="Calculatidan">
-                <div style="margin-left: 10px">单选题道</div>
-                <div class="meiti">每题<el-input />分</div>
-              </div>
-              <div class="Calculatidan">
-                <div style="margin-left: 10px">多选题道</div>
-                <div class="meiti">每题<el-input />分</div>
-              </div>
-              <div class="Calculatidan">
-                <div style="margin-left: 10px">判断题道</div>
-                <div class="meiti">每题<el-input />分</div>
-              </div>
-              <div class="Calculatidan">
-                <div style="margin-left: 10px">填空题道</div>
-                <div class="meiti">每题<el-input />分</div>
-              </div>
-              <div class="Calculatidan">
-                <div style="margin-left: 10px">问答题道</div>
-                <div class="meiti">每题<el-input />分</div>
+              <div v-for="(item, index) in TestData.questions" :key="index">
+                <div class="Calculatidan" v-if="item.type === '单选题'">
+                  <div style="margin-left: 10px">单选题道</div>
+                  <div class="meiti">每题<el-input />分</div>
+                </div>
+                <div class="Calculatidan" v-if="item.type === '多选题'">
+                  <div style="margin-left: 10px">多选题道</div>
+                  <div class="meiti">每题<el-input />分</div>
+                </div>
+                <div class="Calculatidan" v-if="item.type === '判断题'">
+                  <div style="margin-left: 10px">判断题道</div>
+                  <div class="meiti">每题<el-input />分</div>
+                </div>
+                <div class="Calculatidan" v-if="item.type === '填空题'">
+                  <div style="margin-left: 10px">填空题道</div>
+                  <div class="meiti">每题<el-input />分</div>
+                </div>
+                <div class="Calculatidan" v-if="item.type === '问答题'">
+                  <div style="margin-left: 10px">问答题道</div>
+                  <div class="meiti">每题<el-input />分</div>
+                </div>
               </div>
             </div>
             <div class="concsTitle">
               <div class="TestContent" v-if="TestData.questions.length >= 1">
-                <div class="TestContentTop">
-                  <div class="TestContentLeft">
-                    <div>1.单选题</div>
-                    <div style="padding: 0 10px">分值</div>
-                    <el-form-item>
-                      <el-input style="width: 82px; height: 32px" />
-                    </el-form-item>
+                <div v-for="(item, index) in TestData.questions" :key="index">
+                  <div class="TestContentTop">
+                    <div class="TestContentLeft">
+                      <div>{{ index + 1 }}.{{ item.type }}</div>
+                      <div style="padding: 0 10px">分值</div>
+                      <el-form-item>
+                        <el-input v-model="item.scores" style="width: 82px; height: 32px" />
+                      </el-form-item>
+                    </div>
+                    <div class="TestContentRight">
+                      <span
+                        ><EditPen
+                          style="width: 1em; height: 1em; margin-right: 8px; cursor: pointer"
+                      /></span>
+                      <span>
+                        <Delete style="width: 1em; height: 1em; margin-right: 8px; cursor: pointer"
+                      /></span>
+                    </div>
                   </div>
-                  <div class="TestContentRight">
-                    <span
-                      ><EditPen style="width: 1em; height: 1em; margin-right: 8px; cursor: pointer"
-                    /></span>
-                    <span>
-                      <Delete style="width: 1em; height: 1em; margin-right: 8px; cursor: pointer"
-                    /></span>
+                  <div class="TestcontTitle" v-html="getitle(item)"></div>
+                  <div v-if="item.type === '填空题' || item.type === '问答题'">
+                    <div class="judge" v-if="item.type === '填空题'">
+                      <span>正确答案</span>
+                      <span style="margin-left: 20px">{{ item.answer }}</span>
+                    </div>
+                    <div class="jud">
+                      <span>答案分析:</span> <span>{{ item.explains }}</span>
+                    </div>
                   </div>
-                </div>
-                <div class="TestcontTitle">阿萨十大</div>
-                <div>
-                  <div class="Testone">
-                    <el-radio :label="3"> A:</el-radio>
-                    <div>啊萨达萨达十大</div>
+                  <div v-if="item.type === '单选题' || item.type === '多选题'">
+                    <div v-for="(item1, index1) in item.answers" :key="index1">
+                      <div
+                        :class="
+                          !item.answer.split('|').includes(item1.answerno)
+                            ? 'Testone'
+                            : 'Testone Testonesoum'
+                        "
+                      >
+                        <el-radio :label="3"> {{ item1.answerno }}:</el-radio>
+                        <div>{{ item1.content }}</div>
+                      </div>
+                    </div>
                   </div>
-                  <div class="Testone">
-                    <el-radio :label="3"> B:</el-radio>
-                    <div>啊萨达萨达十大</div>
-                  </div>
-                  <div class="Testone">
-                    <el-radio :label="3"> C:</el-radio>
-                    <div>啊萨达萨达十大</div>
+
+                  <div v-if="item.type === '判断题'">
+                    <div class="judge">
+                      <span>正确答案</span>
+                      <span style="margin-left: 20px">{{ item.answer }}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="TestButtom">
-              <el-button>添加题目</el-button>
+              <el-button @click="Wangtitle">添加题目</el-button>
               <el-button>批量导入</el-button>
               <el-button>从题库中导入</el-button>
               <el-button>选择已有试卷</el-button>
@@ -241,13 +262,14 @@
     @DelSystemTransfer="DelSystemTransfer"
   ></SystemTransfer>
   <CreatetestQuestions ref="Questions" @MybaseAdd="MybaseAdd"></CreatetestQuestions>
+  <TestAddWangEditor ref="WangAdd" :id="TestData.id" @MywangAdd="MywangAdd"></TestAddWangEditor>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { Delete, EditPen } from '@element-plus/icons-vue'
 import SystemTransfer from '@/components/SystemTransfer.vue'
-
+import TestAddWangEditor from '@/components/TestAddWangEditor.vue'
 import {
   DepartmentList,
   TeacherList,
@@ -259,8 +281,9 @@ import {
 import dayjs from 'dayjs'
 import CreatetestQuestions from '@/components/CreatetestQuestions.vue'
 const value = ref('')
+const WangAdd = ref()
 const Questions = ref()
-let TestData = ref({
+let TestData: any = ref({
   id: 0,
   title: '',
   info: '',
@@ -280,27 +303,29 @@ let TestData = ref({
   limits: [],
   markteachers: [],
   students: [],
-  questions: [
-    {
-      id: 0,
-      testid: 0,
-      title: '对vuex中的state说法正确的事',
-      type: '单选题',
-      scores: 2.0,
-      answer: 'A',
-      tags: '',
-      explains: '',
-      answers: [
-        {
-          id: 0,
-          answerno: 'A',
-          questionid: 0,
-          content: 'state主要用来存储状态，数据的'
-        }
-      ]
-    }
-  ]
+  questions: []
 })
+//添加标题处理
+const getitle = (data: any) => {
+  // data.title.replace(/\[\]/g, '')
+  let res = data.answer.split('|')
+
+  res.forEach((item: any, index: any) => {
+    data.title.replace(/\[\]/g, `<span class="as">${item}</span>,`)
+  })
+  return data.title.replace
+}
+//题型添加
+const MywangAdd = (data: any) => {
+  TestData.value.questions.push(data)
+  console.log(TestData.value.questions)
+
+  WangAdd.value.drawer = false
+}
+//打开编辑器
+const Wangtitle = () => {
+  WangAdd.value.drawer = true
+}
 //获取弹框暴露属性
 let Transfe = ref()
 //控制班级显示隐藏
@@ -453,6 +478,25 @@ const shortcuts = [
 </script>
 
 <style lang="less" scoped>
+.as {
+  padding: 2px 10px;
+  border-bottom: 1px solid #000;
+  min-width: 40px;
+  display: inline-block;
+  text-align: center;
+  height: 25px;
+}
+.jud {
+  background-color: #f5faff;
+  color: #9dadbc;
+  padding: 8px;
+  margin-top: 10px;
+}
+.judge {
+  background-color: #eefaf6;
+  color: #5acda6;
+  padding: 8px;
+}
 .Testboxs {
   padding-left: 228px;
   margin-top: 46px;
