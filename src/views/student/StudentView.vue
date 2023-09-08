@@ -43,6 +43,7 @@
         @allTableData="allTableData"
         @sonhandleSizeChange="handleSizeChange"
         @sonhandleCurrentChange="handleCurrentChange"
+        :loading="loading"
       >
         <!-- 操作 -->
         <template #default="scoped">
@@ -87,7 +88,7 @@ import { reactive, ref, toRaw, toRefs, watch } from 'vue'
 // 批量删除默认隐藏
 const show = ref(true)
 const shows = ref(false)
-
+let loading = ref(true)
 let sersr = ref(false)
 let ChangeData = ref([])
 let user = ref()
@@ -203,8 +204,11 @@ let total = ref()
 // 学员列表
 let studenlist = async () => {
   let res: any = await studentlist(params.value)
-  TableData.value = res.data.list
-  total.value = res.data.counts
+  if (res.errCode === 10000) {
+    loading.value = false
+    TableData.value = res.data.list
+    total.value = res.data.counts
+  }
 }
 studenlist()
 const allTableDatas = (val: any) => {
@@ -212,10 +216,12 @@ const allTableDatas = (val: any) => {
 }
 // 分页
 const handleCurrentChange = (val: number) => {
+  loading.value = true
   params.value.page = val
   studenlist()
 }
 const handleSizeChange = (val: number) => {
+  loading.value = true
   params.value.psize = val
   studenlist()
 }

@@ -28,7 +28,7 @@
       </span>
     </template>
     <!-- 批量添加列表 -->
-    <BatchAdd v-if="isshow" v-model="isshow" :call="arr"></BatchAdd>
+    <BatchAdd v-if="isshow" v-model="isshow" :call="arr" :fal="fetch"></BatchAdd>
   </el-dialog>
 </template>
 
@@ -48,7 +48,7 @@ let props = defineProps({
     required: true
   }
 })
-const emit = defineEmits(['allTableDatas'])
+const emit = defineEmits(['allTableDatas', 'aaa'])
 // 获取token
 const headerObj = reactive({
   Authorization: store.token
@@ -67,6 +67,9 @@ const add = () => {
   arr.value = tatle.value
   console.log(arr)
   isshow.value = true
+}
+let fetch = () => {
+  props.call()
 }
 </script>
 
