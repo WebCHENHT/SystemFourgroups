@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AddModifyRoles: typeof import('./src/components/AddRoles/AddModifyRoles.vue')['default']
     AddtestDrawer: typeof import('./src/components/Databaselist/AddtestDrawer.vue')['default']
+    AlladdQuestion: typeof import('./src/components/Databaselist/AlladdQuestion.vue')['default']
     BatchImport: typeof import('./src/components/BatchImport.vue')['default']
     CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
     DatabaseDetail: typeof import('./src/components/Databaselist/DatabaseDetail.vue')['default']
@@ -18,6 +19,7 @@ declare module 'vue' {
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -43,21 +45,11 @@ declare module 'vue' {
     ElSteps: typeof import('element-plus/es')['ElSteps']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
-<<<<<<< HEAD
-    ElTransfer: typeof import('element-plus/es')['ElTransfer']
-    ExamDrawer: typeof import('./src/components/ExamsZu/ExamDrawer.vue')['default']
-=======
-    ElTabPane: typeof import('element-plus/es')['ElTabPane']
-    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     ExamDrawer: typeof import('./src/components/ExamsZu/ExamDrawer.vue')['default']
     ListtoftestView: typeof import('./src/components/ListtoftestView.vue')['default']
-    Questionbanklog: typeof import('./src/components/Questionbanklog.vue')['default']
-    QuestionBanklog: typeof import('./src/components/QuestionBanklog.vue')['default']
-    QuestionBankLog: typeof import('./src/components/QuestionBankLog.vue')['default']
     QuestionBankLogView: typeof import('./src/components/QuestionBankLogView.vue')['default']
->>>>>>> 88f2f068be3678acf6374da736a553e5d045fc26
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SystemDrawer: typeof import('./src/components/SystemDrawer.vue')['default']
@@ -66,6 +58,10 @@ declare module 'vue' {
     TestAddWangEditor: typeof import('./src/components/TestAddWangEditor.vue')['default']
     TestDogis: typeof import('./src/components/TestDogis.vue')['default']
     TestExpor: typeof import('./src/components/TestExpor.vue')['default']
+    TestpaperListView: typeof import('./src/components/TestpaperListView.vue')['default']
+    TestquestiondetailsView: typeof import('./src/components/TestquestiondetailsView.vue')['default']
+    TestStepsDialog: typeof import('./src/components/TestStepsDialog.vue')['default']
+    TransFer: typeof import('./src/components/Databaselist/TransFer.vue')['default']
     WangEditor: typeof import('./src/components/WangEditor.vue')['default']
   }
   export interface ComponentCustomProperties {
