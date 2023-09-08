@@ -8,21 +8,16 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AddModifyRoles: typeof import('./src/components/AddRoles/AddModifyRoles.vue')['default']
-<<<<<<< HEAD
-    CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
-=======
     AddtestDrawer: typeof import('./src/components/Databaselist/AddtestDrawer.vue')['default']
     BatchImport: typeof import('./src/components/BatchImport.vue')['default']
     CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
     DatabaseDetail: typeof import('./src/components/Databaselist/DatabaseDetail.vue')['default']
->>>>>>> 6fc8d63012938fa07d38951878bc3bb8c188b2a7
     Databaselists: typeof import('./src/components/Databaselist/Databaselists.vue')['default']
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     Editor: typeof import('./src/components/Databaselist/Editor.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -46,15 +41,8 @@ declare module 'vue' {
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
-<<<<<<< HEAD
-    ElTabPane: typeof import('element-plus/es')['ElTabPane']
-    ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
-=======
-    ElTransfer: typeof import('element-plus/es')['ElTransfer']
-    ElTree: typeof import('element-plus/es')['ElTree']
     ExamDrawer: typeof import('./src/components/ExamsZu/ExamDrawer.vue')['default']
->>>>>>> 6fc8d63012938fa07d38951878bc3bb8c188b2a7
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SystemDrawer: typeof import('./src/components/SystemDrawer.vue')['default']

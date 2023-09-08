@@ -6,7 +6,6 @@
     @on-change="handleChange" />
   </div>
 </template>
- 
 <script setup lang="ts">
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import {onBeforeUnmount, ref, shallowRef} from 'vue'
@@ -58,6 +57,8 @@ const handleChange = (editor:any) => {
  
 </script>
  
-<style scoped lang="less">
-
+<style lang="less">
+.w-e-text-container {
+  height: 500px !important; /*!important是重点，因为原div是行内样式设置的高度300px*/
+}
 </style>
