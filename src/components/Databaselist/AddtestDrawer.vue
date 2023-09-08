@@ -121,6 +121,7 @@ import { errorMsg, succesMsg } from '@/untils/msg'
 import {databasequestionadd} from '@/assets/api/databaselist/DatabaseList'
 import { CircleClose, CirclePlus } from '@element-plus/icons-vue'
 import type { FormInstance, FormRules } from 'element-plus'
+import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 const formSize = ref('default')
@@ -224,7 +225,7 @@ const data: Idata = reactive({
 // 点击删除一行选项
 const delTab = () => {
   if(addData.answers.length <= 4){
-    errorMsg('最少要有2个选项')
+    errorMsg('最少要有4个选项')
     return
   }
   addData.answers.pop()
@@ -254,7 +255,6 @@ watch(()=>props.questionData,(newVal,oldVal)=>{
     if(newVal.answer){
       checkList.value=newVal.answer.split('|')
     }
-    console.log(2222,newVal.answer);
   }
 },{deep:true,immediate:true})
 // 点击保存
