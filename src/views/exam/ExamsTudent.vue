@@ -51,13 +51,23 @@
           <div class="ti_mu">{{ item.title.replace(/\[\]/g, '_____')}}</div>
           <div class="huida">回答：</div>
           <div class="ti_da">
-            <div class="tiTop">
-              <span class="pi">打分:</span>
-              <el-input class="text" v-model="item.studentscores" />
-            </div>
-            <el-form-item  class="wenben" label="批注:">
-              <el-input v-model="item.comments"  type="textarea" />
-            </el-form-item>
+            <el-form :inline="true" :model="item" status-icon class="demo-form-inline">
+              <div class="tiTop">
+                <el-form-item  class="wenben" label="打分:" prop="stefen">
+                  <el-input class="textsfne" v-model="item.studentscores" />
+                </el-form-item>
+              </div>
+              <el-form-item  class="wenben" label="批注:">
+                <el-input
+                  v-model="item.comments"
+                  maxlength="30"
+                  show-word-limit
+                  type="textarea"
+                />
+                <!-- <el-input v-model="item.comments" maxlength="300  " type="textarea" /> -->
+              </el-form-item>
+            </el-form>
+            
           </div>
         </div>
         <template #footer>
@@ -68,7 +78,7 @@
         </template>
       </el-drawer>
       <!-- 抽屉 -->
-      <!-- <ExamDrawer v-if="isShows" :getList="DeparList" :quertionData="quertionData" @closeDrawer="closeDrawer"></ExamDrawer> -->
+      <!-- <ExamDrawer v-if="isShows" title:title :getList="DeparList" :quertionData="quertionData" @closeDrawer="closeDrawer"></ExamDrawer> -->
   </div>
 </template>
 
@@ -80,7 +90,6 @@ import {studentlist,classeslist,queslist,studentanswer} from '@/assets/api/Exam/
 import { ref , reactive, toRefs} from 'vue'
 import { useRouter ,useRoute} from 'vue-router'
 import type { Examcans,classdata } from '@/assets/TSinterface/Exam';
-// import { textProps } from 'element-plus'
 import{succesMsg} from '@/untils/msg'
 let router = useRouter()
 let route: any = useRoute()
@@ -226,9 +235,9 @@ const handleCurrentChange = (val: number) => {
 }
 // 阅卷
 const drawer = ref(false)
-// const isShows = ref(false)
+const isShows = ref(false)
 const open = (val: any)=>{
-  // isShows.value = true
+  isShows.value = true
   console.log('获取到的数据------',val);
   drawer.value = true
   marginState.name = val.name
@@ -249,8 +258,11 @@ function cancelClick() {
 }
 // 阅卷完毕
 const confirmClick = async ()=>{
+  let PassworData = []
+  // 接口需要传的参数名称吧值重新赋给这个参数
+  PassworData = paperdata.value.map((item:any)=>({...item,scores:item.studentscores}))
   drawer.value = false
-  let red = await studentanswer(paperdata.value)
+  let red = await studentanswer(PassworData)
   console.log(741,red);
   if(red.errCode==10000){
     succesMsg('您已经判完卷了')
@@ -272,7 +284,12 @@ const paperlist = async ()=>{
   console.log(666,paperdata.value);
   
 }
-
+// 阅卷验证
+// const rules = reactive({
+//   stefen: [
+//     { required: true, message: '请输入分数', trigger: 'blur' },
+//   ],
+// })
 
 </script>
 
@@ -324,5 +341,8 @@ const paperlist = async ()=>{
   // margin-bottom: 2%;
   padding-bottom: 2%;
   width: 50%;
+}
+.textsfne{
+  width: 80px;
 }
 </style>
