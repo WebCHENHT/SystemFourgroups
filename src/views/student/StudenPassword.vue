@@ -18,13 +18,16 @@
       </span>
     </template>
   </el-dialog>
+ 
 </template>
 
 <script lang="ts" setup>
 import { classesadd } from '@/assets/api/studen/studen'
 import { succesMsg } from '@/untils/msg'
+
 import { ElMessageBox } from 'element-plus'
 import { reactive, ref } from 'vue'
+
 const props = defineProps({
   call: {
     type: Object,

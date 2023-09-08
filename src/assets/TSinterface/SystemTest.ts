@@ -8,7 +8,7 @@ export interface TestDatatype {
   begindate?: string
   enddate?: string
   state?: string
-  result: string
+  result?: string
 }
 
 export interface TestDataupdateState {
