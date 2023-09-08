@@ -5,7 +5,7 @@ export const useCounterStore = defineStore('counter', {
     return {
       token: '',
       menus: [],
-      model: '',
+      model: {},
       type: '',
       LeftArrDatas: [],
       TestAddid: 0,

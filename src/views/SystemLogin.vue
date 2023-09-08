@@ -74,6 +74,7 @@ import { useCounterStore } from '@/stores/counter'
 import type { LoginAddObject } from '@/assets/TSinterface/SystemLoginInterface'
 import { useRouter } from 'vue-router'
 let router = useRouter()
+let resget = router.getRoutes()
 const store: LoginAddObject | any = useCounterStore()
 const formSize = ref('default')
 const ruleFormRef = ref<FormInstance>()
@@ -111,9 +112,8 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
           }
         })
         console.log(resa)
+        location.reload()
         store.url = resa[0].url
-        console.log(store.url)
-
         store.LeftArrDatas = resa
         store.token = res.data.token
         store.menus = res.data.menu
