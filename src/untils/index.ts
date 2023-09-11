@@ -45,7 +45,7 @@ export default function () {
       name: 'ExamsTudent',
       meta: {
         title: '阅卷分析',
-        url: '/exam'
+        url: '/SystemMenu/exam'
       },
       component: () => import('../views/exam/ExamsTudent.vue')
     })
@@ -55,12 +55,20 @@ export default function () {
       name: 'SubjectsAdd',
       meta: {
         title: '创建试卷',
-        url: '/SubjectsAdd'
+        url: '/SystemMenu/subjects'
       },
       component: () => import('../views/subjects/SubjctsAdd.vue')
     })
-    
 
+    router.addRoute('SystemMenu', {
+      path: '/SystemMenu/stutest/examprepare',
+      name: 'stutest',
+      meta: {
+        title: '考试详情',
+        url: '/SystemMenu/stutest'
+      },
+      component: () => import('../views/stutest/ExamprepareView.vue')
+    })
 
     router.addRoute('SystemMenu', {
       path: '/SystemMenu/databaselist/databasequestionlist',

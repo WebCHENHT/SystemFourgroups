@@ -21,7 +21,7 @@
     <el-upload
       v-model:file-list="fileList"
       class="upload-demo"
-      action="http://estate.eshareedu.cn/exam/api/test/upload"
+      action="http://apis.90000p.com/exam2212/api/test/upload"
       multiple
       :headers="data"
       :on-success="onSuccess"

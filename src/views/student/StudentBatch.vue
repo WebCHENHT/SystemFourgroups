@@ -13,7 +13,7 @@
     <el-upload
       ref="upload"
       class="upload-demo"
-      action="http://estate.eshareedu.cn/exam/api/student/upload"
+      action="http://apis.90000p.com/exam2212/api/student/upload"
       :headers="headerObj"
       :on-success="handleAvatarSuccess"
     >
@@ -27,15 +27,19 @@
         <el-button type="primary" @click="add"> 确定 </el-button>
       </span>
     </template>
+    <!-- 批量添加列表 -->
+    <BatchAdd v-if="isshow" v-model="isshow" :call="arr" :fal="fetch"></BatchAdd>
   </el-dialog>
 </template>
 
 <script setup lang="ts">
 import { useCounterStore } from '@/stores/counter'
+import BatchAdd from '@/views/student/BatchAdd.vue'
 import type { UploadInstance, UploadProps } from 'element-plus'
 import { reactive, ref } from 'vue'
 const dialogVisible = ref(false)
 let tatle = ref([])
+let isshow = ref(false)
 const upload = ref<UploadInstance>()
 let store = useCounterStore()
 let props = defineProps({
@@ -44,7 +48,7 @@ let props = defineProps({
     required: true
   }
 })
-const emit = defineEmits(['allTableDatas'])
+const emit = defineEmits(['allTableDatas', 'aaa'])
 // 获取token
 const headerObj = reactive({
   Authorization: store.token
@@ -58,8 +62,13 @@ const cancellation = () => {
   props.call()
 }
 // 确定
+let arr = ref({})
 const add = () => {
-  emit('allTableDatas', tatle.value)
+  arr.value = tatle.value
+  console.log(arr)
+  isshow.value = true
+}
+let fetch = () => {
   props.call()
 }
 </script>

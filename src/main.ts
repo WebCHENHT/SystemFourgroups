@@ -19,7 +19,7 @@ app.use(ElementPlus, {
   locale: zhCn
 })
 //试题上传
-app.provide('url', 'http://estate.eshareedu.cn/exam/api/test/upload')
+app.provide('url', 'http://apis.90000p.com/exam2212/api/test/upload')
 
 app.use(createPinia())
 app.use(router)
