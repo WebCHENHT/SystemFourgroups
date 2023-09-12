@@ -241,7 +241,7 @@
               aria-disabled="false"
               type="button"
               style="font-size: 13px; margin-left: 20px"
-               @click="chujians"
+              @click="chujians"
             >
               + 创建题库
             </button>
@@ -288,7 +288,7 @@
   <!-- 题库添加 -->
   <QuestionBankLogView ref="Questio" @myQunstions="myQunstions"></QuestionBankLogView>
   <!-- 创建题库 -->
-<CreatetestQuestions ref="Questions" @MybaseAdd="MybaseAdd"></CreatetestQuestions>
+  <CreatetestQuestions ref="Questions" @MybaseAdd="MybaseAdd"></CreatetestQuestions>
   <!-- 单个添加 -->
   <TestAddWangEditor ref="WangAdd" :id="from.id" @MywangAdd="MywangAdd"></TestAddWangEditor>
   <!-- 穿梭框 -->
@@ -612,15 +612,21 @@ b {
 }
 
 .el-badge__content--primary {
+  background-color: var(--el-color-primary);
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
   width: 15px;
   height: 15px;
-  border-radius: 50%;
+  padding: 2px 2px;
+  text-align: center;
+  white-space: nowrap;
   position: absolute;
   top: 0;
-  right: 5px;
+  right: 10px;
   transform: translateY(-50%) translate(100%);
-  background-color: var(--el-color-primary);
-  font-size: 12px;
 }
 .Testboxs {
   max-height: 74vh;

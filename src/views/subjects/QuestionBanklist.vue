@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="可见老师" width="40%">
+  <el-dialog v-model="dialogVisible" title="可见老师" width="40%" :before-close="handleClose">
     <el-form :model="form" label-width="50px">
       <el-form-item label="部门">
         <el-select v-model="form.region" placeholder="请选择">
@@ -32,6 +32,7 @@
 <script setup lang="ts">
 import { DepartmentList, TestGetlimit } from '@/assets/api/TestList'
 import { teacherlist } from '@/assets/api/teacher/teacher'
+import { ElMessageBox } from 'element-plus';
 import { reactive, ref } from 'vue'
 let props = defineProps({
   fla: {
@@ -86,6 +87,15 @@ let add = async () => {
       Classes.value.map((item: any) => ({ ...item, id: item }))
     )
   }
+}
+const handleClose = (done: () => void) => {
+  ElMessageBox.confirm('确认要退出吗？')
+    .then(() => {
+      done()
+    })
+    .catch(() => {
+      // catch error
+    })
 }
 </script>
 

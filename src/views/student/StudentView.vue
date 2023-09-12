@@ -120,7 +120,7 @@ const props2 = {
   value: 'id',
   label: 'name',
   children: 'children',
-  checkStrictly: true, //点击单选框选中改点击整行选中
+  // checkStrictly: true, //点击单选框选中改点击整行选中
   emitPath: false //只获取级联选择器中最后一项
 }
 // 获取部门id
