@@ -27,7 +27,10 @@ declare module 'vue' {
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
+<<<<<<< HEAD
+=======
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
+>>>>>>> 9468d7726ca1825454d0b2edb4c5c1266800e938
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
