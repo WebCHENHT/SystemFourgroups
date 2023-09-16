@@ -4,6 +4,7 @@
     width="40%"
     v-model="dialogTableVisible"
     :title="a.carr.ids === undefined ? '添加' : '修改'"
+    :before-close="handleClose"
   >
     <el-form
       ref="ruleFormRef"
@@ -37,10 +38,10 @@
 </template>
 
 <script setup lang="ts">
-import { RoleList } from '@/assets/api/DepartMent/department';
+import { RoleList } from '@/assets/api/DepartMent/department'
 import { classesadd } from '@/assets/api/classes/classe'
 import { succesMsg } from '@/untils/msg' //成功按钮
-import type { FormInstance, FormRules } from 'element-plus'
+import { ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { reactive, ref } from 'vue'
 const dialogTableVisible = ref(false)
 const a = defineProps({
@@ -80,7 +81,7 @@ const props = {
   value: 'id',
   label: 'name',
   children: 'children',
-  checkStrictly: true, //点击单选框选中改点击整行选中
+  // checkStrictly: true, //点击单选框选中改点击整行选中
   emitPath: false //只获取级联选择器中最后一项
 }
 const dataa = reactive({
@@ -116,6 +117,15 @@ const add = async (formEl: FormInstance | undefined) => {
 }
 const fal = () => {
   a.fal()
+}
+const handleClose = (done: () => void) => {
+  ElMessageBox.confirm('确认要退出吗？')
+    .then(() => {
+      done()
+    })
+    .catch(() => {
+      // catch error
+    })
 }
 </script>
 
