@@ -34,7 +34,7 @@
             class="stutesli"
             v-for="(item, index) in StutesDatas"
             :key="index"
-            @click="tioazhs(item)"
+            @click="tioazhs(item, item.result)"
           >
             <div class="stutesboxtop">
               <img
@@ -109,9 +109,22 @@ let StutestModel = reactive({
 })
 let StutesDatas: any = ref([])
 
-const tioazhs = (data: any) => {
-  console.log(data.id)
-  router.push({ path: '/SystemMenu/stutest/examprepare' })
+const tioazhs = (data: any, status: any) => {
+  if (status === '未考试') {
+    router.push({
+      path: '/SystemMenu/stutest/examprepare',
+      query: {
+        id: data.id
+      }
+    })
+  } else {
+    router.push({
+      path: '/SystemMenu/stutest/examresults',
+      query: {
+        id: data.id
+      }
+    })
+  }
 }
 const StutestDatas = async () => {
   let res = await TestLists(StutestModel)
