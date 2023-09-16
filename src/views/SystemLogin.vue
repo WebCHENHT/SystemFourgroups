@@ -79,15 +79,19 @@ const store: LoginAddObject | any = useCounterStore()
 const formSize = ref('default')
 const ruleFormRef = ref<FormInstance>()
 let Loginishow = ref(true)
+//定义登录接口类型
 interface RuleForm {
   username: string
   pass: string
 }
+//登录时控制登录中显示隐藏
 let Systemname = ref(false)
+//登录接口需要的数据
 const LoginAdd = reactive<RuleForm>({
   username: 'asdfgz',
   pass: 'chen123'
 })
+//登录校验
 const Loginrules = reactive<FormRules<RuleForm>>({
   username: [
     { required: true, message: '用户名不能为空', trigger: 'blur' },
@@ -135,6 +139,13 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
     }
   })
 }, 1000)
+let fuuhsah = () => {
+  history.pushState(null, null as unknown as string, document.URL)
+  window.addEventListener('popstate', function () {
+    history.pushState(null, null as unknown as string, document.URL)
+  })
+}
+fuuhsah()
 </script>
 
 <style lang="less" scoped>

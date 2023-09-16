@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-if="dialogVisible"
     v-model="dialogVisible"
     :title="res.names"
     width="50%"
@@ -17,7 +18,7 @@
             @change="getDepartment"
           >
             <el-option
-              v-for="item in res.datas"
+              v-for="item in Testdatast"
               :key="item.id"
               :label="item.name"
               :value="item.id"
@@ -65,29 +66,40 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onUpdated, ref } from 'vue'
+import {
+  ClassesList,
+  StudentList,
+  TeacherList,
+  TestlimitAdd,
+  TestmarkteacherAdd,
+  TeststudentsAdd,
+  TestGetstudents,
+  DepartmentList,
+  TestGetlimit,
+  TestGetmarkteachers
+} from '@/assets/api/TestList/index'
+import { ElMessage } from 'element-plus'
+
 let res = defineProps<{
   //控制班级显示隐藏
   ishow: boolean
   //弹框名称
   names: string
-  //添加id
-  TransferAddid?: any
-  //部门数据
-  datas: any[]
-  //班级
-  ClassesDatas?: any[]
-  //穿梭框数据
-  TransferDatas?: any[]
+  //编辑时需要id
+  testid?: number
 }>()
 
 let emits = defineEmits<{
-  (name: 'MyDepartment', value: number): any
-  (name: 'MyClasses', value: {}): any
   (name: 'MySystemTransferAdd', value: any): any
-  (name: 'DelSystemTransfer', value?: any): any
 }>()
 const dialogVisible = ref(false)
+//部门数据
+let Testdatast: any = ref([])
+//班级数据
+let ClassesDatas: any = ref([])
+//穿梭框数据
+let TransferDatas: any = ref([])
 //获取穿梭框左侧id
 const Classes: any = ref([])
 //加载
@@ -100,32 +112,204 @@ let Classesvalue = ref('')
 const getLeftTransfer = (data: any) => {
   Classes.value = [...Classes.value, ...data]
 }
-//关闭回调
-const DelSystemTransfer = () => {
-  emits('DelSystemTransfer')
+//穿梭框右侧选中
+const getRightTransfer = (data: any) => {
+  let resa = Classes.value.filter((item: string, index: number) => {
+    return !data.includes(item)
+  })
+  Classes.value = resa
+}
+//编辑时使用
+const gethuisxia = async () => {
+  if (res.testid != 0) {
+    if (res.names === '学生考试列表') {
+      let reesa: any = await TestGetstudents({
+        testid: res.testid
+      })
+      if (reesa.errCode === 10000) {
+        console.log(reesa)
+
+        let resas = reesa.data.map((item: any) => item.id)
+        Classes.value = resas
+        TransferDatas.value = reesa.data
+      }
+    } else {
+      if (res.names === '可见老师') {
+        let resasTeches = await TestGetlimit({
+          testid: res.testid as unknown as number
+        })
+        if (resasTeches.errCode === 10000) {
+          let arr = resasTeches.data.map((item: any) => {
+            return item.id
+          })
+          Classes.value = arr
+          TransferDatas.value = resasTeches.data
+        }
+      } else {
+        let resyuejuans = await TestGetmarkteachers({
+          testid: res.testid as unknown as number
+        })
+        if (resyuejuans.errCode === 10000) {
+          let resas = resyuejuans.data.map((item: any) => {
+            return item.id
+          })
+          Classes.value = resas
+          TransferDatas.value = resyuejuans.data
+        }
+      }
+    }
+  }
+  Testdatast.value = []
   Classes.value = []
   Departmentvalue.value = ''
   Classesvalue.value = ''
+  TransferDatas.value = []
+  let resDepartems = await DepartmentList()
+  if (resDepartems.errCode === 10000) {
+    Testdatast.value = resDepartems.data.list as any
+  }
 }
-//穿梭框右侧选中
-const getRightTransfer = (data: any) => {
-  let res = Classes.value.filter((item: string, index: number) => {
-    return !data.includes(item)
+onUpdated(() => {
+  gethuisxia()
+})
+//部门选中
+const getDepartment = async (data: number) => {
+  if (res.ishow === true) {
+    let res = await ClassesList({
+      depid: data
+    })
+    if (res.errCode === 10000) {
+      ClassesDatas.value = res.data.list
+    }
+  } else {
+    loading.value = true
+    let resa = await TeacherList({
+      depid: data
+    })
+    if (resa.errCode === 10000) {
+      loading.value = false
+      if (res.testid !== 0) {
+        getTransadd(resa.data.list)
+      } else {
+        TransferDatas.value = resa.data.list
+      }
+    }
+  }
+}
+//班级选中
+const getClasses = async () => {
+  loading.value = true
+  let resa = await StudentList({
+    depid: Departmentvalue.value as unknown as number,
+    classid: Classesvalue.value as unknown as number
   })
-  Classes.value = res
-}
-//确定提交
-const SystemTransferAdd = () => {
-  emits('MySystemTransferAdd', Classes.value)
-}
-const getDepartment = (data: number) => {
-  emits('MyDepartment', data)
-}
-const getClasses = (data: number) => {
-  emits('MyClasses', { depid: Departmentvalue.value, classid: Classesvalue.value })
+  if (resa.errCode === 10000) {
+    loading.value = false
+    if (res.testid !== 0) {
+      getTransadd(resa.data.list)
+    } else {
+      TransferDatas.value = resa.data.list
+    }
+  }
 }
 
-defineExpose({ dialogVisible, loading ,Classes})
+//编辑合并
+const getTransadd = (data: any) => {
+  let resid = data.map((item: any) => item.id)
+  let resas = TransferDatas.value.filter(
+    (item: any) => Classes.value.includes(item.id) && !resid.includes(item.id)
+  )
+  TransferDatas.value = [...data, ...resas]
+}
+
+//确定提交
+const SystemTransferAdd = () => {
+  console.log(TransferDatas.value)
+  let resas = TransferDatas.value.filter((item: any, index: any) => {
+    return Classes.value.includes(item.id)
+  })
+  if (res.testid !== 0) {
+    MySystemTransferAdd(resas)
+  } else {
+    emits('MySystemTransferAdd', resas)
+  }
+}
+//穿梭框提交
+const MySystemTransferAdd = async (data: any) => {
+  console.log(data)
+
+  if (res.ishow === true) {
+    if (data.length <= 0) {
+      ElMessage.warning('数据不能为空')
+    } else {
+      let list = data.map((item: any) => {
+        return {
+          studentid: item.id,
+          testid: res.testid
+        }
+      })
+      let Teststudentsres = await TeststudentsAdd({
+        testid: res.testid,
+        list
+      })
+      if (Teststudentsres.errCode === 10000) {
+        ElMessage.success('更改成功')
+        dialogVisible.value = false
+      }
+    }
+  } else {
+    if (res.names === '可见老师') {
+      //考试可见老师修改
+      if (data.length <= 0) {
+        ElMessage.warning('数据不能为空')
+      } else {
+        let list = data.map((item: any) => {
+          return {
+            id: item.id
+          }
+        })
+        let Testlimitres = await TestlimitAdd({
+          testid: res.testid,
+          list
+        })
+        if (Testlimitres.errCode === 10000) {
+          ElMessage.success('更改成功')
+          dialogVisible.value = false
+        }
+      }
+    } else {
+      //考试判卷老师修改
+      if (data.length <= 0) {
+        ElMessage.warning('数据不能为空')
+      } else {
+        let list = data.map((item: any) => {
+          return {
+            id: item.id
+          }
+        })
+        let Testmarkres = await TestmarkteacherAdd({
+          testid: res.testid,
+          list
+        })
+        if (Testmarkres.errCode === 10000) {
+          ElMessage.success('更改成功')
+          dialogVisible.value = false
+        }
+      }
+    }
+  }
+}
+
+//关闭回调
+const DelSystemTransfer = () => {
+  dialogVisible.value = false
+  Testdatast.value = []
+  Classes.value = []
+  Departmentvalue.value = ''
+  Classesvalue.value = ''
+  TransferDatas.value = []
+}
+defineExpose({ dialogVisible, loading })
 </script>
 
 <style lang="less" scoped>
@@ -163,5 +347,8 @@ defineExpose({ dialogVisible, loading ,Classes})
 }
 /deep/.el-transfer-panel__body {
   height: 55vh;
+}
+/deep/.el-transfer-panel__list {
+  height: 60vh;
 }
 </style>

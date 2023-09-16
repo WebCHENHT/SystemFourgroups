@@ -18,6 +18,7 @@ import type {
 } from '@/assets/TSinterface/SystemTest'
 
 //考试列表
+
 export const TestLists = (data: TestDatatype) => {
   return index.get<SystemTest>('test/list', data)
 }
@@ -67,7 +68,7 @@ export const TestAnalyse = (data: { testid: number }) => {
 
 //获取考试结果
 
-export const TestGetForResult = (data: { testid: number; studentid: number }) => {
+export const TestGetForResult = (data: { testid: number; studentid?: number }) => {
   return index.get<TestGetForResultData>('test/getForResult', data)
 }
 
@@ -130,3 +131,31 @@ export const TestDelete = (data: any) => {
   return index.get('/test/delete', data)
 }
 
+//获取考试题目（开始考试）
+export const TestStart = (data: { testid: number | string }) => {
+  return index.get('/test/start', data)
+}
+//根据id下载单个考试试题列表
+
+export const TestExportExcel = (data: any, data1: any) => {
+  return index.get('/test/exportExcel', data, data1)
+}
+//考试可见老师添加
+export const TestlimitAdd = (data: any) => {
+  return index.post('/testlimit/add', data)
+}
+
+//考试判卷老师添加
+export const TestmarkteacherAdd = (data: any) => {
+  return index.post('/testmarkteacher/add', data)
+}
+
+//考试学生添加
+export const TeststudentsAdd = (data: any) => {
+  return index.post('/teststudents/add', data)
+}
+
+//获取可以参加考试的学生
+export const TestGetstudents = (data: any) => {
+  return index.get('/test/getstudents', data)
+}

@@ -86,7 +86,7 @@
     <template #time="{ data }">
       <div>
         {{
-          data.begintime === null && data.endtime === null
+          data.begintime == null && data.endtime == null
             ? '不限'
             : `${data.begintime}至${data.endtime}`
         }}
@@ -109,7 +109,7 @@
         </div>
         <div class="caozuobutton" style="margin-top: 15px">
           <el-button type="primary" link @click="Examanalysis(data)">分析</el-button>
-          <el-button type="primary" link @click="bianjis(data)">编辑</el-button>
+          <el-button type="primary" link @click="bianjis(data, data.studentcounts)">编辑</el-button>
           <el-button type="danger" link style="border-right: none" @click="delTest(data.id)"
             >删除</el-button
           >
@@ -120,33 +120,20 @@
   <SystemTransferVue
     ref="dialog"
     :names="dialogname"
-    :datas="Testdatas"
     :ishow="ishow"
-    :TransferAddid="TransferAddid"
-    :ClassesDatas="ClassesDatas"
-    :TransferDatas="TransferDatas"
-    @MyDepartment="MyDepartment"
-    @MyClasses="MyClasses"
-    @MySystemTransferAdd="MySystemTransferAdd"
+    :testid="testid"
     @DelSystemTransfer="DelSystemTransfer"
   ></SystemTransferVue>
   <TestDogis ref="getDogis"></TestDogis>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
 
-import type { TestDatatype, StudentLists } from '@/assets/TSinterface/SystemTest'
+import type { TestDatatype } from '@/assets/TSinterface/SystemTest'
 import {
   TestLists,
   TestUpdateState,
-  DepartmentList,
-  ClassesList,
-  StudentList,
-  TeacherList,
-  StudentTest,
-  TestGetlimit,
-  TestGetmarkteachers,
   TestGet,
   TestUpdateStates,
   TestDeleteall,
@@ -201,7 +188,6 @@ const delTest = async (id: any) => {
     TestListdata()
   }
 }
-
 //创建考试
 const Addexam = () => {
   router.push({
@@ -209,9 +195,13 @@ const Addexam = () => {
   })
 }
 //编辑题库
-const bianjis = async (data: any) => {
-  Store.TestAddid = data.id as any
-  router.push('/SystemMenu/test/TestAdd')
+const bianjis = async (data: any, num: string | number) => {
+  if (num === 0) {
+    Store.TestAddid = data.id as any
+    router.push('/SystemMenu/test/TestAdd')
+  } else {
+    ElMessage.warning('本场考试已有学生参加，不可编辑')
+  }
 }
 //取消发布
 const Cancelpublication = async () => {
@@ -295,33 +285,6 @@ const allTableData = (data: any[]) => {
   })
   Deletealls.value.ids = [...new Set(arr)]
 }
-//穿梭框提交
-const MySystemTransferAdd = async (data: any) => {
-  if (ishow.value === true) {
-    let res = await StudentTest({
-      testid: data
-    })
-    if (res.errCode === 10000) {
-      dialog.value.dialogVisible = false
-    }
-  } else {
-    if (dialogname.value === '可见老师') {
-      let res = await TestGetlimit({
-        testid: data
-      })
-      if (res.errCode === 10000) {
-        dialog.value.dialogVisible = false
-      }
-    } else {
-      let res = await TestGetmarkteachers({
-        testid: data
-      })
-      if (res.errCode === 10000) {
-        dialog.value.dialogVisible = false
-      }
-    }
-  }
-}
 //表单数据
 const tableColums = ref([
   {
@@ -367,9 +330,7 @@ const tableColums = ref([
 ])
 //关闭操作
 const DelSystemTransfer = () => {
-  Testdatas.value = []
-  TransferDatas.value = []
-  ClassesDatas.value = []
+  Testdatast.value = []
 }
 //点击考试名称
 
@@ -388,64 +349,15 @@ const GetTestAt = async (data: any) => {
 }
 //学生
 //请求成功传给穿梭框的选泽框
-let Testdatas: any = ref([])
-let TransferAddid = ref<number>(0)
-const student = async (name: string, ishows: boolean, data: any) => {
-  console.log(data)
-  let res = await DepartmentList()
-  console.log(res)
-  if (res.errCode === 10000) {
-    Testdatas.value = res.data.list
-    dialog.value.dialogVisible = true
-    dialogname.value = name
-    TransferAddid.value = data.id
-    ishow.value = ishows
-  }
-}
-//部门选泽框选中的ID获取班级数据
-let ClassesDatas: any = ref([])
-const MyDepartment = async (data: any) => {
-  if (ishow.value === true) {
-    let res = await ClassesList({
-      depid: data
-    })
-    if (res.errCode === 10000) {
-      ClassesDatas.value = res.data.list
-    }
-  } else {
-    if (dialogname.value === '可见老师') {
-      dialog.value.loading = true
-      let res = await TeacherList({
-        depid: data
-      })
-      if (res.errCode === 10000) {
-        dialog.value.loading = false
-        TransferDatas.value = res.data.list
-      }
-    } else {
-      dialog.value.loading = true
-      let res = await TeacherList({
-        depid: data
-      })
-      if (res.errCode === 10000) {
-        dialog.value.loading = false
-        TransferDatas.value = res.data.list
-      }
-    }
-  }
-}
-//选中部门列表获取id请求数据
-let TransferDatas = ref<any[]>([])
+let Testdatast: any = ref([])
+let testid = ref(0)
+const student = debounce(async (name: string, ishows: boolean, data: any) => {
+  testid.value = data.id
+  ishow.value = ishows
+  dialogname.value = name
+  dialog.value.dialogVisible = true
+}, 300)
 
-const MyClasses = async (data: any) => {
-  dialog.value.loading = true
-  let res = await StudentList(data)
-  if (res.errCode === 10000) {
-    TransferDatas.value = res.data.list
-    dialog.value.loading = false
-  }
-  // let res=
-}
 //表单数据条数和是否开启loading
 let loading = ref<boolean>(true)
 let total = ref(0)

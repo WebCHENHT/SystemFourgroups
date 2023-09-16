@@ -25,7 +25,13 @@
           </div>
         </div>
       </div>
-      <TestExpor :testid="testid" :name="'导出excel'"></TestExpor>
+
+      <TestExpor
+        :id="testid"
+        :name="'导出excel'"
+        :wenjis="getDogisTest.title"
+        :url="TestExportExcel"
+      ></TestExpor>
     </div>
     <div class="Testboxs">
       <div class="Testboxskao" v-for="(item, index) in getDogisTest.questions" :key="index">
@@ -87,8 +93,9 @@
 import { ref } from 'vue'
 import type { TestGetData } from '@/assets/TSinterface/SystemTest'
 import TestExpor from './TestExpor.vue'
+import { TestExportExcel } from '@/assets/api/TestList/index'
 let testid = ref(0)
-let getDogisTest = ref<TestGetData>([])
+let getDogisTest = ref<TestGetData | any>([])
 const dialogVisible = ref(false)
 defineExpose({ dialogVisible, getDogisTest, testid })
 </script>

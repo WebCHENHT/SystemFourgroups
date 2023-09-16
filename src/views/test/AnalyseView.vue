@@ -72,7 +72,12 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="chAkans"> 查询</el-button>
-              <TestExpor :testid="route.query.id" :name="'导出'"></TestExpor>
+              <TestExpor
+                :url="StudentExportExcel"
+                :testid="route.query.id"
+                :wenjis="systemAnalyObj.title + '的成绩单'"
+                :name="'导出'"
+              ></TestExpor>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -104,11 +109,11 @@ import {
   DepartmentList,
   ClassesList,
   StudentTest,
-  TestGetForResult
+  TestGetForResult,
+  StudentExportExcel
 } from '@/assets/api/TestList'
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import type { TestAnalyseModel } from '@/assets/TSinterface/SystemTest'
 import EcharTsVue from '@/components/EcharTs.vue'
 import type { TabsPaneContext } from 'element-plus'
 import TableangPage from '@/components/TableangPage.vue'

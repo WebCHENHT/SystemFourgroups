@@ -24,8 +24,9 @@
         @sonhandleSizeChange="sonhandleSizeChange"
       >
         <template #title="{ data }">
+          <!-- {{ data }} -->
           <el-radio-group v-model="Listtoft.DatabasequestObj.databaseid">
-            <el-radio :label="data.id">{{ data.title }}</el-radio>
+            <el-radio :label="data.id">{{ data.title === '' ? '' : data.title }}</el-radio>
           </el-radio-group>
         </template>
       </TableangPage>
