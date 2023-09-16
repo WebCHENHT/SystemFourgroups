@@ -2,7 +2,7 @@
   <el-dialog v-model="dialogVisible" title="批量添加" width="40%">
     <div style="height: 130px">
       <el-steps direction="vertical">
-        <el-step   :title="'下载' + title + '模板，批量导入试题'" />
+        <el-step :title="'下载' + title + '模板，批量导入试题'" @click="download"/>
         <el-step title="上传填写好的试题表" />
       </el-steps>
       <p class="p">
@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { useCounterStore } from '@/stores/counter'
-import { htmlEncode } from '@/untils/Dilist';
+import { htmlEncode } from '@/untils/Dilist'
 import { errorMsg } from '@/untils/msg'
 import type { UploadInstance, UploadProps } from 'element-plus'
 import { reactive, ref } from 'vue'
@@ -50,7 +50,7 @@ let props = defineProps({
     type: String,
     default: ''
   },
-   rado: {
+  rado: {
     type: String as any,
     default: ''
   }
@@ -74,8 +74,15 @@ const cancellation = () => {
 }
 // 确定
 const add = () => {
-  emit('allTableData', tatle.value.map((item: any) => ({...item,title:htmlEncode(item.title)})))
+  emit(
+    'allTableData',
+    tatle.value.map((item: any) => ({ ...item, title: htmlEncode(item.title) }))
+  )
   props.call()
+}
+const download = () => {
+  let a = document.createElement('a')
+  a.href=''
 }
 </script>
 
@@ -86,5 +93,8 @@ const add = () => {
   font-size: 13px;
   position: absolute;
   top: 120px;
+}
+.el-step {
+  cursor: pointer;
 }
 </style>
