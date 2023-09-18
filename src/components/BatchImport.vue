@@ -2,7 +2,7 @@
   <el-dialog v-model="dialogVisible" title="批量添加" width="40%">
     <div style="height: 130px">
       <el-steps direction="vertical">
-        <el-step :title="'下载' + title + '模板，批量导入试题'" @click="download"/>
+        <el-step :title="'下载' + title + '模板，批量导入试题'" @click="download" />
         <el-step title="上传填写好的试题表" />
       </el-steps>
       <p class="p">
@@ -33,6 +33,7 @@
 <script setup lang="ts">
 import { useCounterStore } from '@/stores/counter'
 import { htmlEncode } from '@/untils/Dilist'
+import { Download } from '@/untils/Downloadfilesdirectly'
 import { errorMsg } from '@/untils/msg'
 import type { UploadInstance, UploadProps } from 'element-plus'
 import { reactive, ref } from 'vue'
@@ -81,8 +82,7 @@ const add = () => {
   props.call()
 }
 const download = () => {
-  let a = document.createElement('a')
-  a.href=''
+  Download('http://apis.90000p.com/exam2212/upload/question.xlsx', '试题')
 }
 </script>
 

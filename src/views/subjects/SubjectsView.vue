@@ -134,9 +134,9 @@ list()
 // 试卷名称
 let getDogis = ref()
 const paper = async (row: any) => {
-  let res = await subjectsget({ id: row.id })
+  let res: any = await subjectsget({ id: row.id })
   if (res.errCode === 10000) {
-    console.log(res.data)
+    getDogis.value.id = row.id
     getDogis.value.dialogVisible = true
     getDogis.value.getDogisTest = res.data
   }
