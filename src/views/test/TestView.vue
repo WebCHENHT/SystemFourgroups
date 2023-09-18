@@ -18,23 +18,23 @@
     </el-col>
     <el-col :span="16" style="padding-right: 5px; padding-left: 5px">
       <div class="grid-content ep-bg-purple" />
-      <el-checkbox v-model="value1" label="我创建的" @change="isxuanze" />
+      <el-checkbox v-model="created" label="我创建的" @change="isxuanze" />
       <el-form-item label="开放时间" style="margin-left: 15px">
-        <el-radio-group v-model="value3" @change="radiotest">
+        <el-radio-group v-model="Openinghours" @change="radiotest">
           <el-radio label="永久开放" style="margin-right: 10px" />
           <el-radio label="部分时段" style="margin-right: 0px" />
         </el-radio-group>
       </el-form-item>
       <el-form-item label="部分时段" style="margin-left: 15px; width: 300px">
         <el-date-picker
-          v-model="value2"
+          v-model="Partialtime"
           @change="tiems"
           type="daterange"
           unlink-panels
           range-separator="至"
           start-placeholder="开始时间"
           end-placeholder="结束时间"
-          :disabled="value3 === '永久开放' ? true : false"
+          :disabled="Openinghours === '永久开放' ? true : false"
           :shortcuts="shortcuts"
           :size="size"
         />
@@ -170,9 +170,9 @@ let TestData: TestDatatype = reactive({
   enddate: '',
   state: ''
 })
-let value1 = ref<string>('')
-let value2 = ref<string>('')
-let value3 = ref<string>('永久开放')
+let created = ref<string>('')
+let Partialtime = ref<string>('')
+let Openinghours = ref<string>('永久开放')
 const TestcharAt = debounce(() => {
   loading.value = true
   TestListdata()
@@ -374,6 +374,7 @@ const sonhandleSizeChange = (data: number) => {
   loading.value = true
   TestListdata()
 }
+
 //状态选中
 const TestState = (data: any) => {
   TestData.state = data
@@ -463,14 +464,14 @@ const isxuanze = (data: any) => {
 //判断input框是否输入值做操作
 const AdminInput = (data: any) => {
   if (data !== '') {
-    value1.value = ''
+    created.value = ''
     TestData.ismy = ''
   }
 }
 //element选中之后时间显示
 const shortcuts = [
   {
-    text: 'Last week',
+    text: '近一周',
     value: () => {
       const end = new Date()
       const start = new Date()
@@ -479,7 +480,7 @@ const shortcuts = [
     }
   },
   {
-    text: 'Last month',
+    text: '近一个月',
     value: () => {
       const end = new Date()
       const start = new Date()
@@ -488,7 +489,7 @@ const shortcuts = [
     }
   },
   {
-    text: 'Last 3 months',
+    text: '近三个月',
     value: () => {
       const end = new Date()
       const start = new Date()

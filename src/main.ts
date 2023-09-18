@@ -18,6 +18,8 @@ const app = createApp(App)
 app.use(ElementPlus, {
   locale: zhCn
 })
+
+
 //试题上传
 app.provide('url', 'http://apis.90000p.com/exam2212/api/test/upload')
 

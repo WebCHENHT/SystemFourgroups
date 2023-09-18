@@ -17,12 +17,11 @@ interface ResultList {
 
 // 请求响应参数，包含data
 interface ResultDatas<T = any> extends ResultList {
-[x: string]: any
+  [x: string]: any
   counts: string
   data: T
 }
 
-const URL: string = 'http://apis.90000p.com/exam2212/api/'
 enum RequestEnums {
   TIMEOUT = 30000,
   OVERDUE = 600, // 登录失效
@@ -31,7 +30,7 @@ enum RequestEnums {
 }
 const config = {
   // 默认地址
-  baseURL: URL as string,
+  baseURL: import.meta.env.VITE_APP_BASE_URL as string,
   // 设置超时时间
   timeout: RequestEnums.TIMEOUT as number
   // 跨域时候允许携带凭证
