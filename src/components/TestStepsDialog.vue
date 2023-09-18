@@ -9,7 +9,9 @@
       </div>
       <div class="batchRight">
         <p class="Righttitle">
-          下载 <span style="color: rgb(19, 79, 253); cursor: pointer">试题模板</span>，批量导入试题
+          下载
+          <span style="color: rgb(19, 79, 253); cursor: pointer" @click="xiazias">试题模板</span
+          >，批量导入试题
         </p>
         <p class="Rightbody">
           注:从其他Excel或Word复制试题时请使用选择性粘贴 Word:右键一选择性粘贴-文本，
@@ -51,6 +53,8 @@ import type { UploadProps } from 'element-plus'
 import { useCounterStore } from '@/stores/counter'
 import { htmlEncodeByRegExp } from '@/untils/htmlCode'
 import { ElMessage } from 'element-plus'
+import { Download } from '@/untils/Downloadfilesdirectly'
+
 let emits = defineEmits<{
   (name: 'MyStepsAdd', value: any): void
 }>()
@@ -63,6 +67,10 @@ const url = inject('url')
 const dialogVisible = ref(false)
 //传给试题
 let TestStepsDialogdatas = ref([])
+//下载试题
+const xiazias = () => {
+  Download('http://apis.90000p.com/exam2212/upload/question.xlsx', 'question')
+}
 //点击确定
 const Dialogdetermine = () => {
   if (TestStepsDialogdatas.value.length <= 0) {

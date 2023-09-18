@@ -20,7 +20,6 @@ declare module 'vue' {
     ElAside: typeof import('element-plus/es')['ElAside']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
-    ElButtton: typeof import('element-plus/es')['ElButtton']
     ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
@@ -29,16 +28,14 @@ declare module 'vue' {
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
-<<<<<<< HEAD
-=======
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
->>>>>>> 9468d7726ca1825454d0b2edb4c5c1266800e938
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
+    ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElRadio: typeof import('element-plus/es')['ElRadio']
@@ -65,6 +62,7 @@ declare module 'vue' {
     SystemTransfer: typeof import('./src/components/SystemTransfer.vue')['default']
     TableangPage: typeof import('./src/components/TableangPage.vue')['default']
     TestAddWangEditor: typeof import('./src/components/TestAddWangEditor.vue')['default']
+    TestBView: typeof import('./src/components/TestBView.vue')['default']
     TestDogis: typeof import('./src/components/TestDogis.vue')['default']
     TestExpor: typeof import('./src/components/TestExpor.vue')['default']
     TestpaperListView: typeof import('./src/components/TestpaperListView.vue')['default']

@@ -32,7 +32,12 @@
         >题，剩余题<span>{{ list.length }}</span
         >未完成
       </p>
-      <el-popconfirm width="220" :title="`你还有${list.length} 题未答，确定要提交吗?`">
+      <el-popconfirm
+        width="220"
+        :title="`你还有${list.length} 题未答，确定要提交吗?`"
+        @confirm="confirmEvent"
+        @cancel="cancelEvent"
+      >
         <template #reference>
           <el-button type="primary">交卷</el-button>
         </template>
@@ -43,10 +48,73 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-
+import { useCounterStore } from '@/stores/counter'
+import { StudentanswerAdd } from '@/assets/api/TestList'
+import { useRoute, useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+let store: any = useCounterStore()
+let router = useRouter()
+let route = useRoute()
 let props = defineProps<{
   Questionlists: any[]
 }>()
+//确定操作
+const confirmEvent = async () => {
+  let res = props.Questionlists.map((item: any) => {
+    return {
+      testid: item.testid,
+      studentid: store.model.id,
+      questionid: item.id,
+      answer: item.studentanswer == null ? '' : item.studentanswer,
+      scores: quanduans(item.answer, item.studentanswer, item.scores, item.type)
+    }
+  })
+  let Student = await StudentanswerAdd(res)
+  if (Student.errCode === 10000) {
+    localStorage.removeItem('data' + route.query.id)
+    ElMessage.success('答卷完毕')
+    router.push({
+      path: '/SystemMenu/stutest/examresults',
+      query: {
+        id: route.query.id
+      }
+    })
+  }
+}
+let quanduans = (answer: any, studentanswer: any, scores: number, type: string) => {
+  if (type === '单选题' || type === '判断题') {
+    return answer === studentanswer ? scores : 0
+  }
+  if (type === '多选题') {
+    if (studentanswer === null) {
+      return 0
+    } else {
+      let arr = studentanswer.split('|').sort()
+      let res = arr.filter((item: any, index: any) => {
+        return !answer.split('|').includes(item)
+      })
+      if (res.length > 0) {
+        return 0
+      } else {
+        let res = answer.split('|').filter((item: any, index: any) => {
+          return item !== arr[index]
+        })
+        if (res.length > 0) {
+          return 0
+        } else {
+          return scores
+        }
+      }
+    }
+  }
+  if (type === '问答题' || type === '填空题') {
+    return null
+  }
+}
+//取消操作
+const cancelEvent = () => {
+  console.log('cancel!')
+}
 let list = computed(() => {
   return props.Questionlists.filter((item: any) => {
     return item.studentanswer == null
@@ -57,6 +125,7 @@ const modians = (index: number) => {
     .getElementById(`id${index}`)
     ?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' })
 }
+defineExpose({ confirmEvent })
 </script>
 
 <style lang="less" scoped>
