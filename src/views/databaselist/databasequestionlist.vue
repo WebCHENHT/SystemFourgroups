@@ -82,12 +82,13 @@ import { ArrowLeft } from '@element-plus/icons-vue'
 import * as XLSX from "xlsx"; // 导出文件
 import { reactive, ref, toRaw, toRefs, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import {DatabaseDeleteall, DatabaseList , Databasedel} from '@/assets/api/databaselist/DatabaseList'
+import {DatabaseDeleteall, DatabaseList , Databasedel, exportExcel} from '@/assets/api/databaselist/DatabaseList'
 import DatabaseDetail from '@/components/Databaselist/DatabaseDetail.vue'
 import AddtestDrawer from '@/components/Databaselist/AddtestDrawer.vue'
 import { debounce } from '@/untils/antishake'
 import AlladdQuestion from '@/components/Databaselist/AlladdQuestion.vue'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
+import { Downblob } from '@/untils/down';
 let display = ref(false) //批量删除显示按钮
 let conceal = ref(true) //批量删除隐藏按钮
 let tableData = ref([])
@@ -193,15 +194,9 @@ const testDetail = (val:any) => {
   state.getEestDetail=val
 }
 // 导出excel
-let excel = () => {
- // 1.创建工作表
- let data = XLSX.utils.json_to_sheet(tableData.value)
- // 2.创建工作簿
- let wb = XLSX.utils.book_new()
- // 3.把工作表放到工作簿中
- XLSX.utils.book_append_sheet(wb,data,"data")
- // 4.生成文件并下载
- XLSX.writeFile(wb,title+'.xlsx')
+let excel = async() => {
+  let res = await exportExcel(red).catch(() => {});
+  Downblob(res, title + '.xlsx');
 }
 let id: any = reactive([]) //定义多选数据
 //多选获取id

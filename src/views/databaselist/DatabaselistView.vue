@@ -78,7 +78,7 @@ let data = reactive({
   psize: 10,
   key: '',
   admin: '',
-  ismy: 1
+  ismy: 0
 })
 const tableColums = reactive([
   {

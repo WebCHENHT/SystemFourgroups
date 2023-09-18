@@ -197,6 +197,7 @@ const handleNodeClick = (data: any) => {
   }
   .content {
     display: flex;
+    height: 87vh;
     .content-left {
       width: 500px;
       max-height: 87vh;
