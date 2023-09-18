@@ -303,13 +303,8 @@
     ref="Transfe"
     :ishow="ishow"
     :names="names"
-    :datas="datas"
-    :TransferDatas="TransferDatas"
-    :ClassesDatas="ClassesDatas"
-    @MyDepartment="MyDepartment"
+    :testid="0"
     @MySystemTransferAdd="MySystemTransferAdd"
-    @MyClasses="MyClasses"
-    @DelSystemTransfer="DelSystemTransfer"
   ></SystemTransfer>
   <CreatetestQuestions ref="Questions" @MybaseAdd="MybaseAdd"></CreatetestQuestions>
   <TestAddWangEditor ref="WangAdd" :id="TestData.id" @MywangAdd="MywangAdd"></TestAddWangEditor>
@@ -329,22 +324,17 @@ import TestpaperListView from '@/components/TestpaperListView.vue'
 import { ElMessage } from 'element-plus'
 import {
   DepartmentList,
-  TeacherList,
-  ClassesList,
-  StudentList,
   DatabaseList,
   DatabaseAdd,
   SubjectsGet,
   TestAdd,
   TestGet
 } from '@/assets/api/TestList'
-
 import dayjs from 'dayjs'
 import CreatetestQuestions from '@/components/CreatetestQuestions.vue'
 import { useRouter } from 'vue-router'
 import { useCounterStore } from '@/stores/counter'
 import { accuracy } from '@/untils/accuracy'
-
 let Store = useCounterStore()
 const TestpaperList = ref()
 const WangAdd = ref()
@@ -368,8 +358,8 @@ let TestData: any = ref({
   title: '',
   info: '',
   admin: 'ldq',
-  begintime: '',
-  endtime: '',
+  begintime: null,
+  endtime: null,
   limittime: '',
   scores: 0,
   incomplete: '',
@@ -417,6 +407,8 @@ const Testgets = async () => {
     })
     if (res.errCode === 10000) {
       TestData.value = res.data
+      TestData.value.students = []
+      ElMessage.warning('注意学生需要重新选择')
     }
   }
 }
@@ -439,9 +431,9 @@ watch(
   },
   { immediate: true, deep: true }
 )
-
 //发布
 const releaseadd = async (name: string) => {
+  TestData.value.scores = result
   TestData.value.subjectnum = TestData.value.questions.length
   if (TestData.value.title === '') {
     ElMessage.error('考试名称不能为空')
@@ -449,8 +441,6 @@ const releaseadd = async (name: string) => {
     ElMessage.error('考试说明不能为空')
   } else if (TestData.value.questions.length <= 0) {
     ElMessage.error('请添加考试内容')
-  } else if (TestData.value.begintime === '' || TestData.value.endtime === '') {
-    ElMessage.error('请选择开始时间和结束时间')
   } else if (TestData.value.limits.length <= 0) {
     ElMessage.error('请选择可见老师')
   } else if (TestData.value.students.length <= 0) {
@@ -535,8 +525,6 @@ const yiyousi = () => {
 }
 //试题提交
 const myQunstions = (data: any) => {
-  console.log(1111, data)
-
   TestData.value.questions = data
 }
 
@@ -547,8 +535,6 @@ const questionbank = () => {
 
 //批量上传成功添加
 const MyStepsAdd = (data: any) => {
-  console.log(data)
-
   Stepslog.value.dialogVisible = false
   TestData.value.questions = data
 }
@@ -645,7 +631,7 @@ const result = computed(() => {
     0
   )
 
-  return accuracy(num)
+  return accuracy(num) ? accuracy(num) : 0
 })
 //题型添加
 const MywangAdd = (data: any) => {
@@ -698,8 +684,8 @@ const shijian = (data: any) => {
 }
 //获取左侧穿梭框数据
 const MySystemTransferAdd = (data: any) => {
-  let res: any = data.map((item: any) => {
-    return item === item
+  let res: any = data.filter((item: any) => {
+    return item.name === item.name
       ? {
           id: item
         }
@@ -707,15 +693,16 @@ const MySystemTransferAdd = (data: any) => {
   })
   if (names.value === '阅卷老师') {
     TestData.value.markteachers = res
+    console.log(TestData.value.markteachers)
   }
   if (names.value === '可见老师') {
     TestData.value.limits = res
   }
   if (names.value === '考生范围') {
     let res: any = data.map((item: any) => {
-      return item === item
+      return item.name === item.name
         ? {
-            studentid: item
+            studentid: item.id
           }
         : ''
     })
@@ -723,64 +710,15 @@ const MySystemTransferAdd = (data: any) => {
   }
   Transfe.value.dialogVisible = false
 }
-
-//阅卷老师
-//处理部门
-let TransferDatas = ref()
-let ClassesDatas = ref()
-
-const MyDepartment = async (data: any) => {
-  if (names.value === '阅卷老师' || names.value === '可见老师') {
-    Transfe.value.loading = true
-    let res = await TeacherList({
-      depid: data
-    })
-    if (res.errCode === 10000) {
-      TransferDatas.value = res.data.list
-      Transfe.value.Classes = []
-      Transfe.value.loading = false
-    }
-  } else {
-    let res = await ClassesList({
-      depid: data
-    })
-    if (res.errCode === 10000) {
-      ClassesDatas.value = res.data.list
-    }
-  }
-}
-//班级
-const MyClasses = async (data: any) => {
-  Transfe.value.loading = true
-  let res = await StudentList(data)
-  if (res.errCode === 10000) {
-    TransferDatas.value = res.data.list
-    Transfe.value.Classes = []
-    Transfe.value.loading = false
-  }
-}
-
-//部门数据
-let datas = ref()
 //获取部门
 const Markingteacher = async (data: any) => {
-  let res = await DepartmentList()
-  if (res.errCode === 10000) {
-    datas.value = res.data.list
-    names.value = data
-    if (data === '考生范围') {
-      ishow.value = true
-    } else {
-      ishow.value = false
-    }
-    Transfe.value.dialogVisible = true
+  names.value = data
+  if (data === '考生范围') {
+    ishow.value = true
+  } else {
+    ishow.value = false
   }
-}
-//关闭弹框回调
-const DelSystemTransfer = () => {
-  datas.value = []
-  TransferDatas.value = []
-  ClassesDatas.value = []
+  Transfe.value.dialogVisible = true
 }
 
 const shortcuts = [

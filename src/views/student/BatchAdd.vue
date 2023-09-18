@@ -1,5 +1,10 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="批量上传学生信息" width="70%">
+  <el-dialog
+    v-model="dialogVisible"
+    title="批量上传学生信息"
+    width="70%"
+    :before-close="handleClose"
+  >
     <el-table
       v-loading="loading"
       :data="tableData"
@@ -35,6 +40,7 @@
 <script setup lang="ts">
 import { classesadd } from '@/assets/api/studen/studen'
 import { Check } from '@element-plus/icons-vue'
+import { ElMessageBox } from 'element-plus'
 import { ref } from 'vue'
 import * as XLSX from 'xlsx' // 导出文件
 const loading = ref(false)
@@ -48,7 +54,15 @@ let props = defineProps({
     required: true
   }
 })
-
+const handleClose = (done: () => void) => {
+  ElMessageBox.confirm('确认要退出吗？')
+    .then(() => {
+      done()
+    })
+    .catch(() => {
+      // catch error
+    })
+}
 const dialogVisible = ref(false)
 const tableData = ref(props.call)
 

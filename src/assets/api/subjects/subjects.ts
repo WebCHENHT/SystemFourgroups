@@ -17,3 +17,8 @@ export const subjectsdelete = (data: subjectsid) => {
 export const subjectsadd = (data: any) => {
   return index.post('subjects/add', data)
 }
+
+// 根据id下载单个试卷试题列表
+export const exportExcel = (data: any, data1: any) => {
+  return index.get('subjects/exportExcel', data, data1)
+}

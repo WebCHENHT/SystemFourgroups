@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="批量添加" width="40%">
+  <el-dialog v-model="dialogVisible" title="批量添加" width="40%" :before-close="handleClose">
     <div style="height: 130px">
       <el-steps direction="vertical">
         <el-step title="下载试题模板，批量导入试题" />
@@ -35,7 +35,7 @@
 <script setup lang="ts">
 import { useCounterStore } from '@/stores/counter'
 import BatchAdd from '@/views/student/BatchAdd.vue'
-import type { UploadInstance, UploadProps } from 'element-plus'
+import { ElMessageBox, type UploadInstance, type UploadProps } from 'element-plus'
 import { reactive, ref } from 'vue'
 const dialogVisible = ref(false)
 let tatle = ref([])
@@ -70,6 +70,15 @@ const add = () => {
 }
 let fetch = () => {
   props.call()
+}
+const handleClose = (done: () => void) => {
+  ElMessageBox.confirm('确认要退出吗？')
+    .then(() => {
+      done()
+    })
+    .catch(() => {
+      // catch error
+    })
 }
 </script>
 

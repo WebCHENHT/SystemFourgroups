@@ -17,6 +17,7 @@ interface ResultList {
 
 // 请求响应参数，包含data
 interface ResultDatas<T = any> extends ResultList {
+[x: string]: any
   counts: string
   data: T
 }

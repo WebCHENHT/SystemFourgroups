@@ -60,7 +60,7 @@ export default function () {
       component: () => import('../views/subjects/SubjctsAdd.vue')
     })
 
-    router.addRoute('SystemMenu', {
+    router.addRoute({
       path: '/SystemMenu/stutest/examprepare',
       name: 'stutest',
       meta: {
@@ -69,7 +69,24 @@ export default function () {
       },
       component: () => import('../views/stutest/ExamprepareView.vue')
     })
-
+    router.addRoute({
+      path: '/SystemMenu/stutest/examresults',
+      name: 'examresults',
+      meta: {
+        title: '考试结果',
+        url: '/SystemMenu/stutest'
+      },
+      component: () => import('../views/stutest/ExamresultView.vue')
+    })
+    router.addRoute({
+      path: '/SystemMenu/stutest/Questions',
+      name: 'Questions',
+      meta: {
+        title: '答题',
+        url: '/SystemMenu/stutest'
+      },
+      component: () => import('../views/stutest/QuestionsView.vue')
+    })
     router.addRoute('SystemMenu', {
       path: '/SystemMenu/databaselist/databasequestionlist',
       name: 'databasequestionlist',

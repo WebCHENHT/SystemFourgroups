@@ -8,3 +8,5 @@ declare module 'c:/Users/28441/Desktop/Fourgroups/System/src/views/test/AnalyseV
 
 declare module 'c:/Users/28441/Desktop/Fourgroups/System/src/views/test/TestAddView.vue'
 declare module 'c:/Users/28441/Desktop/Fourgroups/System/src/views/stutest/ExamprepareView.vue'
+
+declare module 'c:/Users/28441/Desktop/Fourgroups/System/src/views/stutest/ExamresultView.vue'

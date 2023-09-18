@@ -10,6 +10,7 @@ declare module 'vue' {
     AddModifyRoles: typeof import('./src/components/AddRoles/AddModifyRoles.vue')['default']
     AddtestDrawer: typeof import('./src/components/Databaselist/AddtestDrawer.vue')['default']
     AlladdQuestion: typeof import('./src/components/Databaselist/AlladdQuestion.vue')['default']
+    AnswerSheet: typeof import('./src/components/AnswerSheet.vue')['default']
     BatchImport: typeof import('./src/components/BatchImport.vue')['default']
     CreatetestQuestions: typeof import('./src/components/CreatetestQuestions.vue')['default']
     DatabaseDetail: typeof import('./src/components/Databaselist/DatabaseDetail.vue')['default']
@@ -27,15 +28,16 @@ declare module 'vue' {
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
+<<<<<<< HEAD
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
+=======
+>>>>>>> 19b221c1bccc5f6e41918d0f7666ae1ebb9072f2
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
-    ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
-    ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioButton: typeof import('element-plus/es')['ElRadioButton']

@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useCounterStore } from '@/stores/counter'
@@ -92,9 +92,10 @@ const SystemLists = (data: any) => {
 //去出本地用户数据
 const SignOut = () => {
   router.replace('/')
-  store.menus=[]
-  store.LeftArrDatas=[]
-  store.model={}
+  location.reload()
+  store.menus = []
+  store.LeftArrDatas = []
+  store.model = {}
   store.token = ''
   store.type = ''
   store.url = ''

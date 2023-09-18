@@ -13,6 +13,12 @@
           </div>
         </div>
       </div>
+      <TestExpor
+        :id="id"
+        :name="'导出excel'"
+        :wenjis="getDogisTest.title"
+        :url="exportExcel"
+      ></TestExpor>
     </div>
 
     <div class="Testboxs">
@@ -48,10 +54,13 @@
 </template>
 
 <script setup lang="ts">
+import { exportExcel } from '@/assets/api/subjects/subjects'
+import TestExpor from '@/components/TestExpor.vue'
 import { ref } from 'vue'
-let getDogisTest:any = ref([])
+let id = ref(0)
+let getDogisTest: any = ref([])
 const dialogVisible = ref(false)
-defineExpose({ dialogVisible, getDogisTest })
+defineExpose({ dialogVisible, getDogisTest, id })
 </script>
 
 <style lang="less" scoped>
