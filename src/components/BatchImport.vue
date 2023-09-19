@@ -2,12 +2,12 @@
   <el-dialog v-model="dialogVisible" title="批量添加" width="40%">
     <div style="height: 130px">
       <el-steps direction="vertical">
-        <el-step :title="'下载' +  title + '模板，批量导入试题'" @click="download" />
+        <el-step :title="'下载' + title + '模板，批量导入试题'" @click="download" />
         <el-step title="上传填写好的试题表" />
       </el-steps>
       <p class="p">
         注:从其他Excel或Word复制试题时请使用选择性粘贴 Word:右键一选择性粘贴-文本，
-        Excel:右键一选择性粘贴一只勾选 “值” 
+        Excel:右键一选择性粘贴一只勾选 “值”
       </p>
     </div>
     <el-upload
