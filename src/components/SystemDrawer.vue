@@ -23,122 +23,7 @@
         </div>
       </div>
       <div class="Drawtop2"></div>
-      <div class="Oppositetopictop" v-for="(item, index) in DrawerDatas.questions" :key="index">
-        <div class="OppositetopicList">
-          <div class="Oppositetopictitle">
-            <div class="titlType">
-              <div class="typeFsiz">{{ index + 1 }}</div>
-              <div class="typeTitle">{{ item.type }}</div>
-            </div>
-            <span class="TitlScore">分值: {{ item.scores }}</span>
-            <div :class="DrawerDatas.studentScores > 0 ? 'Drawsusson' : 'Drawerror'">
-              得分：{{ item.studentscores }}
-            </div>
-          </div>
-          <span class="titleres" v-html="item.title"></span>
-          <!-- 判断题 -->
-          <div v-if="item.type === '判断题'">
-            <div v-if="item.studentanswer === '错误'">
-              <div class="optionsLi">
-                <div class="left">
-                  <div class="opt"></div>
-                  <span>正确</span>
-                </div>
-              </div>
-            </div>
-            <div v-else>
-              <div
-                :class="item.answer === item.studentanswer ? 'optionsLi okdak' : 'optionsLi wrong'"
-              >
-                <div class="left">
-                  <div class="opt"></div>
-                  <span :class="item.answer === item.studentanswer ? 'timright' : 'error'"
-                    >正确</span
-                  >
-                </div>
-                <div class="timright" v-if="item.answer === item.studentanswer">回答正确</div>
-                <div class="error" v-else>回答错误</div>
-              </div>
-            </div>
-
-            <div v-if="item.studentanswer === '正确'">
-              <div class="optionsLi">
-                <div class="left">
-                  <div class="opt"></div>
-                  <span>错误</span>
-                </div>
-              </div>
-            </div>
-            <div v-else>
-              <div
-                :class="item.answer === item.studentanswer ? 'optionsLi okdak' : 'optionsLi wrong'"
-              >
-                <div class="left">
-                  <div class="opt"></div>
-                  <span :class="item.answer === item.studentanswer ? 'timright' : 'error'"
-                    >错误</span
-                  >
-                </div>
-                <div class="timright" v-if="item.answer === item.studentanswer">回答正确</div>
-                <div class="error" v-else>回答错误</div>
-              </div>
-            </div>
-            <div class="timanswer" v-if="item.type === '判断题'">
-              <span style="font-size: 15px; color: #90adca">正确答案：</span>
-              <div class="parse">{{ item.answer }}</div>
-            </div>
-          </div>
-          <!-- 问答题和填空题 -->
-          <div v-if="item.type === '问答题' || item.type === '填空题'">
-            <div class="datis">
-              <div class="datitle">答:</div>
-              <div class="answer">{{ item.studentanswer }}</div>
-              <div class="correct">正确答案</div>
-              <div class="answer">答题解析 {{ item.explains }}</div>
-            </div>
-          </div>
-          <!-- 单选和多选题 -->
-          <div v-if="item.type === '单选题' || item.type === '多选题'">
-            <div class="xuzix" v-for="(item1, index1) in item.answers" :key="index1">
-              <div
-                :class="
-                  item.answer.split('|').includes(item1.answerno)
-                    ? 'timiunxs timiunxscord'
-                    : 'timiunxs wrong'
-                "
-                :style="
-                  !item.studentanswer.split('|').includes(item1.answerno)
-                    ? 'background-color:#fff'
-                    : ''
-                "
-              >
-                <div class="timleft">
-                  <div class="xunze">{{ item1.answerno }}</div>
-                  <span>{{ item1.content }}</span>
-                </div>
-                <div
-                  v-if="item.studentanswer.split('|').includes(item1.answerno)"
-                  :class="item.answer.split('|').includes(item1.answerno) ? 'timright' : 'error'"
-                >
-                  {{ item.answer.split('|').includes(item1.answerno) ? '回答正确' : '回答错误' }}
-                </div>
-              </div>
-            </div>
-
-            <div class="timanswer" v-if="item.type === '单选题'">
-              <span style="font-size: 15px; color: #90adca">正确答案：</span>
-              <div class="Subutton">{{ item.answer }}</div>
-            </div>
-            <div class="timanswer" v-if="item.type === '多选题'">
-              <span style="font-size: 15px; color: #90adca">正确答案：</span>
-
-              <div class="Subutton" v-for="(itema, index) in item.answer.split('|')" :key="index">
-                {{ itema }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TestBView :DrawerDatas="DrawerDatas"></TestBView>
     </el-drawer>
   </div>
 </template>
@@ -146,6 +31,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { TestGetForResultData } from '@/assets/TSinterface/SystemTest'
+import TestBView from './TestBView.vue'
 let DrawerDatas = ref<TestGetForResultData>([])
 const Drawertableis = ref(false)
 
@@ -294,6 +180,7 @@ defineExpose({ Drawertableis, DrawerDatas })
     color: #3377f9;
   }
 }
+
 .TitlScore {
   font-size: 12px;
   color: #aca4ab;

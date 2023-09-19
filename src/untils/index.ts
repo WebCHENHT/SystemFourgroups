@@ -114,7 +114,15 @@ export default function () {
       },
       component: () => import('../views/test/TestAddView.vue')
     })
-
+    router.addRoute({
+      path: '/SystemMenu/stutest/ViewthetestpaperVview',
+      name: 'ViewthetestpaperVview',
+      meta: {
+        title: '查看试卷',
+        url: '/SystemMenu/stutest'
+      },
+      component: () => import('../views/stutest/ViewthetestpaperVview.vue')
+    })
     router.addRoute({
       path: '/:pathMatch(.*)*',
       name: '404',

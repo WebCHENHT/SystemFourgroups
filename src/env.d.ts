@@ -10,3 +10,4 @@ declare module 'c:/Users/28441/Desktop/Fourgroups/System/src/views/test/TestAddV
 declare module 'c:/Users/28441/Desktop/Fourgroups/System/src/views/stutest/ExamprepareView.vue'
 
 declare module 'c:/Users/28441/Desktop/Fourgroups/System/src/views/stutest/ExamresultView.vue'
+declare module 'c:/Users/28441/Desktop/Fourgroups/System/src/views/stutest/ViewthetestpaperVview.vue'

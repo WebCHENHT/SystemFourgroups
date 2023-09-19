@@ -248,6 +248,8 @@ const rules = reactive<FormRules>({
   scores: [{ required: true, message: '请输入分值', trigger: 'blur' }]
 })
 const checkList = ref([]) //多选题 正确答案
+
+
 watch(()=>props.questionData,(newVal,oldVal)=>{
   console.log('编辑新数据',newVal);
   if(newVal){
@@ -256,7 +258,8 @@ watch(()=>props.questionData,(newVal,oldVal)=>{
       checkList.value=newVal.answer.split('|')
     }
   }
-},{deep:true,immediate:true})
+}, { deep: true, immediate: true })
+
 // 点击保存
 const confirm = async () => {
   ConfirmAdd()
@@ -317,8 +320,8 @@ const ConfirmAdd = async() => {
     }
     succesMsg('编辑成功！')
   }
-  console.log(addData);
   props.getList()
+
 }
 // 点击取消
 const cancel = () => {

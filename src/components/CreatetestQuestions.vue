@@ -30,7 +30,7 @@
               <div style="display: flex">
                 <div>允许部分老师使用</div>
                 <div
-                  v-if="ruleForm.limits.length >= 1"
+                  v-if="ruleForm.isshow === 3"
                   style="
                     width: 20px;
                     height: 20px;
@@ -61,19 +61,14 @@
     ref="Transfer"
     :ishow="false"
     :names="'可见老师'"
-    :datas="datas"
-    :TransferDatas="TransferDatas"
-    @MyDepartment="MyDepartment"
     @MySystemTransferAdd="MySystemTransferAdd"
-    @DelSystemTransfer="DelSystemTransfer"
   ></SystemTransfer>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { reactive } from 'vue'
 import SystemTransfer from '@/components/SystemTransfer.vue'
-import { DepartmentList, TeacherList } from '@/assets/api/TestList'
+import { reactive, ref, watch } from 'vue'
+import { ElMessage } from 'element-plus'
 let emits = defineEmits<{
   (
     name: 'MybaseAdd',
@@ -87,8 +82,6 @@ let emits = defineEmits<{
 }>()
 const formSize = ref('default')
 const Transfer = ref()
-const datas: any = ref([])
-const TransferDatas = ref()
 
 const ruleForm = reactive({
   id: 0,
@@ -96,10 +89,18 @@ const ruleForm = reactive({
   isshow: 1,
   limits: []
 })
-const DelSystemTransfer = () => {
-  datas.value = []
-  TransferDatas.value = []
-}
+watch(
+  () => ruleForm.isshow,
+  (a, b) => {
+    if (a === 3) {
+      Transfer.value.dialogVisible = true
+      if (ruleForm.id !== 0) {
+        ElMessage.warning('需要重新选择部门')
+      }
+    }
+  },
+  { deep: true }
+)
 //关闭回调
 const gubisd = () => {
   ruleForm.id = 0
@@ -112,42 +113,24 @@ const rules = reactive({
 })
 const MySystemTransferAdd = (data: any) => {
   let res = data.map((item: any) => {
-    return item === item
-      ? {
-          id: item
-        }
-      : ''
+    return {
+      id: item.id
+    }
   })
+  console.log(res)
+
   ruleForm.limits = res
   Transfer.value.dialogVisible = false
 }
 const DatabaseAdds = () => {
   emits('MybaseAdd', ruleForm)
-  // let add = await DatabaseAdd(ruleForm)
-  // if (add.errCode === 10000) {
-  //   dialogVisible.value = false
-  // }
 }
 
-const MyDepartment = async (data: any) => {
-  Transfer.value.loading = true
-  let res = await TeacherList({
-    depid: data
-  })
-  if (res.errCode === 10000) {
-    Transfer.value.loading = false
-    TransferDatas.value = res.data.list
-  }
-}
 const dialogVisible = ref(false)
 const bufenxs = async () => {
-  let res = await DepartmentList()
-  if (res.errCode === 10000) {
-    datas.value = res.data.list
-  }
   Transfer.value.dialogVisible = true
 }
-defineExpose({ dialogVisible })
+defineExpose({ dialogVisible, ruleForm })
 </script>
 
 <style lang="less" scoped>

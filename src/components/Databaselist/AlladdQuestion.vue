@@ -46,6 +46,7 @@
 <script lang="ts" setup>
 import { databasequestionAddlist } from '@/assets/api/databaselist/DatabaseList'
 import { useCounterStore } from '@/stores/counter'
+import { Download } from '@/untils/Downloadfilesdirectly'
 import { Down } from '@/untils/down'
 import { htmlEncodeByRegExp } from '@/untils/htmlCode'
 import type { UploadProps, UploadUserFile } from 'element-plus'
@@ -73,9 +74,9 @@ const handleClose = (done: () => void) => {
   emits('closeDialog', false)
 }
 // 点击下载试题模版
-// const down = () => {
-//   Down(props.addUrl)
-// }
+const down = () => {
+  Download('http://apis.90000p.com/exam2212/upload/question.xlsx','试题')
+}
 
 // 上传文件
 const fileList = ref<UploadUserFile[]>([])

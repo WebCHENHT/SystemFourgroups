@@ -100,6 +100,7 @@
                 ? 'background-color: rgb(20, 189, 131)'
                 : 'background-color: red;    border: red 1px solid;'
             "
+            @click="view"
             >查看答卷</el-button
           >
         </div>
@@ -111,10 +112,11 @@
 
 <script setup lang="ts">
 import { TestGetForResult } from '@/assets/api/TestList'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { computed, ref, watch } from 'vue'
 import dayjs from 'dayjs'
 let route = useRoute()
+let router = useRouter()
 let resultdata = ref<any>([])
 let ishow = ref(false)
 let boxs = ref(false)
@@ -128,6 +130,16 @@ watch(
     }
   }
 )
+//查看试卷
+const view = () => {
+  router.push({
+    path: '/SystemMenu/stutest/ViewthetestpaperVview',
+    query: {
+      testid: route.query.id
+    }
+  })
+}
+
 //获取试卷结果
 const TestGetForResultdata = async () => {
   let res = await TestGetForResult({
@@ -140,6 +152,7 @@ const TestGetForResultdata = async () => {
   }
 }
 TestGetForResultdata()
+
 const getstixingsi = (name: string) => {
   let arr: any = resultdata.value.questions
   if (Array.isArray(arr)) {
@@ -166,27 +179,32 @@ const correctNumber = (name: any) => {
     if (name === '单选题') {
       return arr
         .filter((item: any) => item.type === '单选题')
-        .filter((item: any) => item.studentscores !== null).length as any
+        .filter((item: any) => item.studentscores !== null && item.studentscores !== 0)
+        .length as any
     }
     if (name === '多选题') {
       return arr
         .filter((item: any) => item.type === '多选题')
-        .filter((item: any) => item.studentscores !== null).length as any
+        .filter((item: any) => item.studentscores !== null && item.studentscores !== 0)
+        .length as any
     }
     if (name === '判断题') {
       return arr
         .filter((item: any) => item.type === '判断题')
-        .filter((item: any) => item.studentscores !== null).length as any
+        .filter((item: any) => item.studentscores !== null && item.studentscores !== 0)
+        .length as any
     }
     if (name === '填空题') {
       return arr
         .filter((item: any) => item.type === '填空题')
-        .filter((item: any) => item.studentscores !== null).length as any
+        .filter((item: any) => item.studentscores !== null && item.studentscores !== 0)
+        .length as any
     }
     if (name === '问答题') {
       return arr
         .filter((item: any) => item.type === '问答题')
-        .filter((item: any) => item.studentscores !== null).length as any
+        .filter((item: any) => item.studentscores !== null && item.studentscores !== 0)
+        .length as any
     }
   }
 }
@@ -196,32 +214,40 @@ const NumberofErrors = (name: any) => {
     if (name === '单选题') {
       return arr
         .filter((item: any) => item.type === '单选题')
-        .filter((item: any) => item.studentscores === null).length as any
+        .filter((item: any) => {
+          return item.studentscores === null || item.studentscores === 0
+        }).length as any
     }
     if (name === '多选题') {
       return arr
         .filter((item: any) => item.type === '多选题')
-        .filter((item: any) => item.studentscores === null).length as any
+        .filter((item: any) => item.studentscores === null || item.studentscores === 0)
+        .length as any
     }
     if (name === '判断题') {
       return arr
         .filter((item: any) => item.type === '判断题')
-        .filter((item: any) => item.studentscores === null).length as any
+        .filter((item: any) => item.studentscores === null || item.studentscores === 0)
+        .length as any
     }
     if (name === '填空题') {
       return arr
         .filter((item: any) => item.type === '填空题')
-        .filter((item: any) => item.studentscores === null).length as any
+        .filter((item: any) => item.studentscores === null || item.studentscores === 0)
+        .length as any
     }
     if (name === '问答题') {
       return arr
         .filter((item: any) => item.type === '问答题')
-        .filter((item: any) => item.studentscores === null).length as any
+        .filter((item: any) => item.studentscores === null || item.studentscores === 0)
+        .length as any
     }
   }
 }
 const goBack = () => {
-  window.history.go(-1)
+  router.push({
+    path: '/SystemMenu/stutest'
+  })
 }
 </script>
 
@@ -359,6 +385,8 @@ table {
   justify-content: center;
   align-items: center;
   .suossnum {
+    display: flex;
+    justify-content: center;
     font-size: 68px;
     color: rgb(20, 189, 131);
     margin: 15px 0;

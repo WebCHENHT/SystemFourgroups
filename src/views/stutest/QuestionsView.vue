@@ -90,7 +90,6 @@
           </div>
         </div>
         <div v-if="item.type === '问答题'">
-          {{ item.studentanswer }}
           <div class="textinput">
             <el-input
               v-model="item.studentanswer"
@@ -104,7 +103,7 @@
       </div>
     </div>
   </div>
-  <AnswerSheetVue :Questionlists="examinationdatas"></AnswerSheetVue>
+  <AnswerSheetVue ref="Answers" :Questionlists="examinationdatas"></AnswerSheetVue>
 </template>
 
 <script setup lang="ts">
@@ -117,7 +116,7 @@ import dayjs from 'dayjs'
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 let route = useRoute()
-
+let Answers = ref()
 let zhenq = ref(['正确', '错误'])
 let examinationdatas: any = ref([])
 watch(
@@ -151,6 +150,7 @@ let name = ref('')
 let time = ref<any>('')
 let dataTime = ref<any>('')
 let ishowtime = ref(false)
+
 const getexaminationlist = async () => {
   let timer: any
   let res: any = await TestStart({
@@ -188,36 +188,38 @@ const getexaminationlist = async () => {
           //计算描述 转化为整数
           const s = parseInt((times % 60) as any)
           dataTime.value = [h, m, s].map(timePadstart).join(':')
+          console.log(times)
 
-          if (times === 0) {
+          if (times <= 0) {
             //倒计时结束关闭循环提交
             clearInterval(timer)
+            Answers.value.confirmEvent()
           }
         }, 1000)
       }
       countDown()
     }
-
     if (!JSON.parse(localStorage.getItem('data' + route.query.id) as any)) {
       examinationdatas.value = res.data.questions
+      //qorder 顺序打乱
+      if (res.data.qorder === 1) {
+        examinationdatas.value = randomSortArray(examinationdatas.value)
+      }
+      //aorder 选项打乱
+      if (res.data.aorder === 1) {
+        let arr = examinationdatas.value.filter((item: any) => {
+          return item.type === '单选题' || item.type === '多选题' || item.type === '选择题'
+            ? item
+            : ''
+        })
+        arr.forEach((item: any) => {
+          item.answers = randomSortArray(item.answers)
+        })
+      }
     } else {
       examinationdatas.value = JSON.parse(localStorage.getItem('data' + route.query.id) as any)
     }
-    //qorder 顺序打乱
-    if (res.data.qorder === 1) {
-      examinationdatas.value = randomSortArray(examinationdatas.value)
-    }
-    //aorder 选项打乱
-    if (res.data.aorder === 1) {
-      let arr = examinationdatas.value.filter((item: any) => {
-        return item.type === '单选题' || item.type === '多选题' || item.type === '选择题'
-          ? item
-          : ''
-      })
-      arr.forEach((item: any) => {
-        item.answers = randomSortArray(item.answers)
-      })
-    }
+
     nextTick(() => {
       document.querySelectorAll('.input').forEach((item: any, index: number) => {
         if (JSON.parse(localStorage.getItem('data' + route.query.id) as any)) {
@@ -257,7 +259,12 @@ const inpurs = (data: any, index: number) => {
   }
   return data
 }
-
+//防止复制文字
+const jinzhis = () => {
+  document.oncontextmenu = new Function('event.returnValue=false') as any
+  document.onselectstart = new Function('event.returnValue=false') as any
+}
+jinzhis()
 //缓存
 const huancuns = (id: any, data: any) => {
   localStorage.setItem('data' + id, data)
