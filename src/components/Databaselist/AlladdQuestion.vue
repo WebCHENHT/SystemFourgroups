@@ -9,7 +9,7 @@
       </div>
       <div class="batchRight">
         <p class="Righttitle">
-          下载 <span style="color: rgb(19, 79, 253); cursor: pointer">试题模板</span>，批量导入试题
+          下载 <span style="color: rgb(19, 79, 253); cursor: pointer" @click="down">试题模板</span>，批量导入试题
         </p>
         <p class="Rightbody">
           注:从其他Excel或Word复制试题时请使用选择性粘贴 Word:右键一选择性粘贴-文本，
@@ -46,6 +46,7 @@
 <script lang="ts" setup>
 import { databasequestionAddlist } from '@/assets/api/databaselist/DatabaseList'
 import { useCounterStore } from '@/stores/counter'
+import { Down } from '@/untils/down'
 import { htmlEncodeByRegExp } from '@/untils/htmlCode'
 import type { UploadProps, UploadUserFile } from 'element-plus'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -71,6 +72,10 @@ const emits = defineEmits(['closeDialog'])
 const handleClose = (done: () => void) => {
   emits('closeDialog', false)
 }
+// 点击下载试题模版
+// const down = () => {
+//   Down(props.addUrl)
+// }
 
 // 上传文件
 const fileList = ref<UploadUserFile[]>([])
