@@ -86,7 +86,7 @@ let res = defineProps<{
   ishow: boolean
   //弹框名称
   names: string
-  //编辑时需要id
+  //编辑时需要id 不传时需要传零
   testid?: number
 }>()
 

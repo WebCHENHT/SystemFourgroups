@@ -60,20 +60,15 @@
   <SystemTransfer
     ref="Transfer"
     :ishow="false"
+    :testid="0"
     :names="'可见老师'"
-    :datas="datas"
-    :TransferDatas="TransferDatas"
-    @MyDepartment="MyDepartment"
     @MySystemTransferAdd="MySystemTransferAdd"
-    @DelSystemTransfer="DelSystemTransfer"
   ></SystemTransfer>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { reactive } from 'vue'
 import SystemTransfer from '@/components/SystemTransfer.vue'
-import { DepartmentList, TeacherList } from '@/assets/api/TestList'
+import { reactive, ref } from 'vue'
 let emits = defineEmits<{
   (
     name: 'MybaseAdd',
@@ -87,8 +82,6 @@ let emits = defineEmits<{
 }>()
 const formSize = ref('default')
 const Transfer = ref()
-const datas: any = ref([])
-const TransferDatas = ref()
 
 const ruleForm = reactive({
   id: 0,
@@ -96,10 +89,6 @@ const ruleForm = reactive({
   isshow: 1,
   limits: []
 })
-const DelSystemTransfer = () => {
-  datas.value = []
-  TransferDatas.value = []
-}
 //关闭回调
 const gubisd = () => {
   ruleForm.id = 0
@@ -114,7 +103,7 @@ const MySystemTransferAdd = (data: any) => {
   let res = data.map((item: any) => {
     return item === item
       ? {
-          id: item
+          id: item.id
         }
       : ''
   })
@@ -123,31 +112,13 @@ const MySystemTransferAdd = (data: any) => {
 }
 const DatabaseAdds = () => {
   emits('MybaseAdd', ruleForm)
-  // let add = await DatabaseAdd(ruleForm)
-  // if (add.errCode === 10000) {
-  //   dialogVisible.value = false
-  // }
 }
 
-const MyDepartment = async (data: any) => {
-  Transfer.value.loading = true
-  let res = await TeacherList({
-    depid: data
-  })
-  if (res.errCode === 10000) {
-    Transfer.value.loading = false
-    TransferDatas.value = res.data.list
-  }
-}
 const dialogVisible = ref(false)
 const bufenxs = async () => {
-  let res = await DepartmentList()
-  if (res.errCode === 10000) {
-    datas.value = res.data.list
-  }
   Transfer.value.dialogVisible = true
 }
-defineExpose({ dialogVisible })
+defineExpose({ dialogVisible,ruleForm   })
 </script>
 
 <style lang="less" scoped>
