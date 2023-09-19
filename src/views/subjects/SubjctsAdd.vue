@@ -264,7 +264,7 @@
     <el-button
       aria-disabled="false"
       style="font-size: 13px; position: relative"
-      @click="Markingteacher"
+      @click="Markingteacher('可见老师')"
     >
       <sup class="el-badge__content el-badge__content--primary is-fixed">{{
         from.limits.length
@@ -292,7 +292,13 @@
   <!-- 单个添加 -->
   <TestAddWangEditor ref="WangAdd" :id="from.id" @MywangAdd="MywangAdd"></TestAddWangEditor>
   <!-- 穿梭框 -->
-  <QuestionBanklist v-if="shows" v-model="shows" :fla="flase" @all="all"></QuestionBanklist>
+  <SystemTransfer
+    ref="Transfe"
+    :ishow="ishow"
+    :names="names"
+    :testid="0"
+    @MySystemTransferAdd="MySystemTransferAdd"
+  ></SystemTransfer>
 </template>
 
 <script setup lang="ts">
@@ -302,12 +308,18 @@ import { subjectsadd, subjectsget } from '@/assets/api/subjects/subjects'
 import BatchImport from '@/components/BatchImport.vue'
 import CreatetestQuestions from '@/components/CreatetestQuestions.vue'
 import QuestionBankLogView from '@/components/QuestionBankLogView.vue'
+import SystemTransfer from '@/components/SystemTransfer.vue'
 import TestAddWangEditor from '@/components/TestAddWangEditor.vue'
 import { errorMsg, succesMsg } from '@/untils/msg'
-import QuestionBanklist from '@/views/subjects/QuestionBanklist.vue'
 import { Delete, EditPen } from '@element-plus/icons-vue'
 import { computed, reactive, ref, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+//获取弹框暴露属性
+let Transfe = ref()
+//控制班级显示隐藏
+const ishow = ref(false)
+//弹框名称
+const names = ref('')
 //题目input
 let TestTypeo = reactive({
   MultipleChoice: '',
@@ -349,7 +361,6 @@ let from: any = ref({
 })
 const allTableData = (val: any) => {
   from.value.questions = val
-  adds.value = true
 }
 // 详情编辑回显
 let subjlist = async () => {
@@ -357,8 +368,8 @@ let subjlist = async () => {
   Object.assign(from.value, res.data)
 }
 subjlist()
-let sex = 'http://apis.90000p.com/exam2212/api/student/upload'
-let title: any = ref('“试题上传”')
+let sex = 'http://apis.90000p.com/exam2212/api/test/upload'
+let title = ref('“试题上传”')
 let arr: any = ref([])
 let list = async () => {
   let res: any = await datalist({
@@ -509,8 +520,31 @@ const getTestadd = (data: any, key: number) => {
   WangAdd.value.questionsData = JSON.parse(JSON.stringify(data))
   WangAdd.value.questionsData.id = key
 }
-const Markingteacher = () => {
-  shows.value = true
+const Markingteacher = (data: any) => {
+  names.value = data
+  if (data === '考生范围') {
+    ishow.value = true
+  } else {
+    ishow.value = false
+  }
+  Transfe.value.dialogVisible = true
+}
+const MySystemTransferAdd = (data: any) => {
+  let res: any = data.filter((item: any) => {
+    return item.name === item.name
+      ? {
+          id: item
+        }
+      : ''
+  })
+
+  if (names.value === '可见老师') {
+    from.value.limits = res
+  }
+
+  from.value.students = res
+
+  Transfe.value.dialogVisible = false
 }
 // 可见老师
 const all = (row: any) => {
@@ -612,21 +646,15 @@ b {
 }
 
 .el-badge__content--primary {
-  background-color: var(--el-color-primary);
-  border-radius: 50%;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 12px;
   width: 15px;
   height: 15px;
-  padding: 2px 2px;
-  text-align: center;
-  white-space: nowrap;
+  border-radius: 50%;
   position: absolute;
   top: 0;
-  right: 10px;
+  right: 5px;
   transform: translateY(-50%) translate(100%);
+  background-color: var(--el-color-primary);
+  font-size: 12px;
 }
 .Testboxs {
   max-height: 74vh;
