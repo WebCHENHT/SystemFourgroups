@@ -1,7 +1,7 @@
 <template>
   <div class="department">
     <div class="header">部门管理</div>
-    <el-button type="primary" @click="add">添加一级节点</el-button>
+    <el-button type="primary" @click="add" v-authority="{ model: '部门', name: '添加' }">添加一级节点</el-button>
     <div class="content">
       <!-- 部门列表 -->
       <div class="content-left">
@@ -33,9 +33,9 @@
             <el-input v-model="form.name" />
           </el-form-item>
           <el-form-item>
-            <el-button type="info" @click="del">删除当前节点</el-button>
-            <el-button type="success" @click="modify(ruleFormRef)">修改当前节点</el-button>
-            <el-button type="primary" @click="AddChild(ruleFormRef)">添加子节点</el-button>
+            <el-button type="info" @click="del" v-authority="{ model: '部门', name: '删除' }">删除当前节点</el-button>
+            <el-button type="success" @click="modify(ruleFormRef)" v-authority="{ model: '部门', name: '修改' }">修改当前节点</el-button>
+            <el-button type="primary" @click="AddChild(ruleFormRef)" v-authority="{ model: '部门', name: '添加' }">添加子节点</el-button>
           </el-form-item>
         </el-form>
       </div>
