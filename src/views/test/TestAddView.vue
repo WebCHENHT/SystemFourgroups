@@ -314,27 +314,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, toRef, toRefs, watch } from 'vue'
-import { Delete, EditPen } from '@element-plus/icons-vue'
+import { DatabaseAdd, DatabaseList, SubjectsGet, TestAdd, TestGet } from '@/assets/api/TestList'
+import CreatetestQuestions from '@/components/CreatetestQuestions.vue'
+import QuestionBankLogView from '@/components/QuestionBankLogView.vue'
 import SystemTransfer from '@/components/SystemTransfer.vue'
 import TestAddWangEditor from '@/components/TestAddWangEditor.vue'
 import TestStepsDialog from '@/components/TestStepsDialog.vue'
-import QuestionBankLogView from '@/components/QuestionBankLogView.vue'
 import TestpaperListView from '@/components/TestpaperListView.vue'
-import { ElMessage } from 'element-plus'
-import {
-  DepartmentList,
-  DatabaseList,
-  DatabaseAdd,
-  SubjectsGet,
-  TestAdd,
-  TestGet
-} from '@/assets/api/TestList'
-import dayjs from 'dayjs'
-import CreatetestQuestions from '@/components/CreatetestQuestions.vue'
-import { useRouter } from 'vue-router'
 import { useCounterStore } from '@/stores/counter'
 import { accuracy } from '@/untils/accuracy'
+import { Delete, EditPen } from '@element-plus/icons-vue'
+import dayjs from 'dayjs'
+import { ElMessage } from 'element-plus'
+import { computed, reactive, ref, toRefs, watch } from 'vue'
+import { useRouter } from 'vue-router'
 let Store = useCounterStore()
 const TestpaperList = ref()
 const WangAdd = ref()

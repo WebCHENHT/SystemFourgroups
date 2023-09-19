@@ -81,14 +81,23 @@ import {
 } from '@/assets/api/TestList/index'
 import { ElMessage } from 'element-plus'
 
-let res = defineProps<{
+let res = defineProps({
   //控制班级显示隐藏
-  ishow: boolean
+  ishow: {
+    type: Boolean,
+    default: () => false
+  },
   //弹框名称
-  names: string
-  //编辑时需要id
-  testid?: number
-}>()
+  names: {
+    type: String,
+    default: () => ''
+  },
+  //编辑时需要id 不传时需要传零
+  testid: {
+    type: Number,
+    default: () => 0
+  }
+})
 
 let emits = defineEmits<{
   (name: 'MySystemTransferAdd', value: any): any
@@ -121,6 +130,11 @@ const getRightTransfer = (data: any) => {
 }
 //编辑时使用
 const gethuisxia = async () => {
+  Testdatast.value = []
+  Classes.value = []
+  Departmentvalue.value = ''
+  Classesvalue.value = ''
+  TransferDatas.value = []
   if (res.testid != 0) {
     if (res.names === '学生考试列表') {
       let reesa: any = await TestGetstudents({
