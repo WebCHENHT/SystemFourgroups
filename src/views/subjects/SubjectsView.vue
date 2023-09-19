@@ -13,8 +13,14 @@
         &nbsp;&nbsp;
         <el-checkbox @change="duoxuans" v-model="vuels">只看我创建的</el-checkbox>
         &nbsp;&nbsp;
-        <el-button type="primary" @click="Csnds">查询</el-button>
-        <el-button type="primary" style="position: absolute; left: 93%; top: 10px" @click="cuan"
+        <el-button type="primary" @click="Csnds" v-authority="{ model: '试卷', name: '查看' }"
+          >查询</el-button
+        >
+        <el-button
+          type="primary"
+          style="position: absolute; left: 93%; top: 10px"
+          @click="cuan"
+          v-authority="{ model: '试卷', name: '添加' }"
           >创建试卷</el-button
         >
       </div>
@@ -40,8 +46,20 @@
         </template>
         <!-- 操作 -->
         <template #defaults="scoped">
-          <el-button type="primary" link @click="edit(scoped.data)">编辑</el-button>|
-          <el-button type="primary" link @click="del(scoped.data)">删除</el-button>
+          <el-button
+            type="primary"
+            link
+            @click="edit(scoped.data)"
+            v-authority="{ model: '试卷', name: '修改' }"
+            >编辑</el-button
+          >|
+          <el-button
+            type="primary"
+            link
+            @click="del(scoped.data)"
+            v-authority="{ model: '试卷', name: '删除' }"
+            >删除</el-button
+          >
         </template>
       </TableangPage>
     </div>

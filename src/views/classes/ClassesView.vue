@@ -13,8 +13,14 @@
         <el-cascader :options="options" :props="props2" @change="handleChange" clearable />
       </el-form-item>
       &nbsp;&nbsp;&nbsp;
-      <el-button type="primary" @click="cha">查询</el-button>
-      <el-button type="primary" style="position: absolute; left: 90%" @click="reser"
+      <el-button type="primary" @click="cha" v-authority="{ model: '班级', name: '查看' }"
+        >查询</el-button
+      >
+      <el-button
+        type="primary"
+        style="position: absolute; left: 90%"
+        @click="reser"
+        v-authority="{ model: '班级', name: '添加' }"
         >添加班级</el-button
       >
     </div>
@@ -35,8 +41,20 @@
       >
         <!-- 操作 -->
         <template #actions="scope">
-          <el-button type="primary" link @click="reser(scope.data)">编辑</el-button>
-          <el-button type="primary" link @click="classedle(scope.data)">删除</el-button>
+          <el-button
+            type="primary"
+            link
+            @click="reser(scope.data)"
+            v-authority="{ model: '班级', name: '修改' }"
+            >编辑</el-button
+          >
+          <el-button
+            type="primary"
+            link
+            @click="classedle(scope.data)"
+            v-authority="{ model: '班级', name: '删除' }"
+            >删除</el-button
+          >
         </template>
       </TableangPage>
     </div>
