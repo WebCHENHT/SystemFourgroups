@@ -6,7 +6,7 @@
     </div>
     <div class="watchInput">
       <span class="">关键字</span><el-input class="text" v-model="ruform.key" placeholder="请输入关键字" />
-    <el-button class="but" type="primary" @click="sou(ruform)">搜索</el-button>
+    <el-button class="but" type="primary" @click="sou(ruform)" >搜索</el-button>
     </div>
     <TableangPage 
     :TableData="tableData" 

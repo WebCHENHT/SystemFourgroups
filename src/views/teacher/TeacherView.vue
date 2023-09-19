@@ -4,7 +4,7 @@
       <div class="ter">师资管理</div>
       <div class="terbut">
         <el-button>批量添加</el-button>
-        <el-button type="primary" @click="dialogadd = true">添加教资</el-button>
+        <el-button type="primary" @click="dialogadd = true" v-authority="{ model: '师资', name: '添加' }">添加教资</el-button>
       </div>
     </div>
     <div class="watchInput">
@@ -15,15 +15,15 @@
       <el-select v-model="ruform.pwd" clearable placeholder="请选择">
         <el-option v-for="item in optionList" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
-      <el-button class="but" type="primary" @click="sou">搜索</el-button>
+      <el-button class="but" type="primary" @click="sou" v-authority="{ model: '师资', name: '查看' }">搜索</el-button>
     </div>
     <TableangPage :TableData="tableData" :tableColums="tableColum" :total="total"
       @sonhandleCurrentChange="handleCurrentChange" @sonhandleSizeChange="handleSizeChange">
       <template #actions="slotname: any">
         <el-button type="primary" size="small" link @click="ChongVisible(slotname.data)">重置密码</el-button>
-        <el-button type="primary" size="small" link @click="teachedele(slotname.data)">修改</el-button>
+        <el-button type="primary" size="small" link @click="teachedele(slotname.data)" v-authority="{ model: '师资', name: '编辑' }">修改</el-button>
         <!-- <el-button text @click="dele(slotname.data)" link>删除</el-button> -->
-        <el-button type="primary" size="small" link @click="open(slotname.data)">删除</el-button>
+        <el-button type="primary" size="small" link @click="open(slotname.data)" v-authority="{ model: '师资', name: '删除' }">删除</el-button>
       </template>
     </TableangPage>
     <!-- 重置密码弹出框 @click="Pass" -->
@@ -109,7 +109,7 @@ const props = {
   value: 'id',
   label: 'name',
   children: 'children',
-  checkStrictly: true, //点击单选框选中改点击整行选中
+  // checkStrictly: true, //点击单选框选中改点击整行选中
   emitPath: false //只获取级联选
 }
 //部门change事件
@@ -295,9 +295,10 @@ const rules = reactive({
 const Pass = async () => {
   let red = await teacherchangeAdd(form)
   console.log(22, red);
-  dialogVisible.value = false
+ 
   if(red.errCode==10000){
     succesMsg('密码重置成功')
+    dialogVisible.value = false
   }
   form.name = '',
   form.oldpass = '',

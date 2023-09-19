@@ -46,14 +46,14 @@
     </TableangPage>
     <!-- 抽屉 -->
       <el-drawer class="drawers" v-model="drawer" :title="`${marginState.name}${'的试卷'}`" :direction="direction" :before-close="handleClose" >
-        <div class="ti_box" v-for="item in paperdata" :key="item.id">
-          <div class="ti_top">1、{{ item.type }}<span class="tex_hui">分值：{{ item.scores }}</span></div>
+        <div class="ti_box" v-for="(item,index) in paperdata" :key="index">
+          <div class="ti_top">{{index+1}}  、 {{ item.type }}<span class="tex_hui">分值：{{ item.scores }}</span></div>
           <div class="ti_mu">{{ item.title.replace(/\[\]/g, '_____')}}</div>
           <div class="huida">回答：</div>
           <div class="ti_da">
-            <el-form :inline="true" :model="item" status-icon class="demo-form-inline">
+            <el-form :inline="true" ref="ruleFormRef" :model="paperdata" status-icon class="demo-form-inline">
               <div class="tiTop">
-                <el-form-item  class="wenben" label="打分:" prop="stefen">
+                <el-form-item  class="wenben" label="打分:" :rules="Rules(item.scores)" :prop="'['+index+']'+ '.studentscores'">
                   <el-input class="textsfne" v-model="item.studentscores" />
                 </el-form-item>
               </div>
@@ -77,8 +77,7 @@
           </div>
         </template>
       </el-drawer>
-      <!-- 抽屉 -->
-      <!-- <ExamDrawer v-if="isShows" title:title :getList="DeparList" :quertionData="quertionData" @closeDrawer="closeDrawer"></ExamDrawer> -->
+      
   </div>
 </template>
 
@@ -90,7 +89,7 @@ import {studentlist,classeslist,queslist,studentanswer} from '@/assets/api/Exam/
 import { ref , reactive, toRefs} from 'vue'
 import { useRouter ,useRoute} from 'vue-router'
 import type { Examcans,classdata } from '@/assets/TSinterface/Exam';
-import{succesMsg} from '@/untils/msg'
+import{succesMsg,errorMsg} from '@/untils/msg'
 let router = useRouter()
 let route: any = useRoute()
 const goBack = () => {
@@ -103,8 +102,6 @@ const {quertionData} = toRefs(Data)
 const closeDrawer = (val:any)=>{
   isShows.value = val
 }
-
-
 // 状态
 const optionList = [
   {
@@ -125,7 +122,7 @@ const props = {
   value:'id',
   label:'name',
   children:'children',
-  checkStrictly: true, //点击单选框选中改点击整行选中
+  // checkStrictly: true, //点击单选框选中改点击整行选中
  emitPath: false //只获取级联选
 }
 // 部门列表
@@ -143,7 +140,7 @@ let ruform = reactive<Examcans>({
   testid: route.query.id,
   key: '',
   depid: 0,
-  classid: 0,
+  classid: '',
   state: '',
   pass: 0,
   pastscores: 0
@@ -238,12 +235,12 @@ const drawer = ref(false)
 const isShows = ref(false)
 const open = (val: any)=>{
   isShows.value = true
-  console.log('获取到的数据------',val);
+  // console.log('获取到的数据------',val);
   drawer.value = true
   marginState.name = val.name
   marginState.testid = route.query.id
   marginState.studentid = val.id
-  console.log(123456,marginState);
+  // console.log(123456,marginState);
   paperlist()
 
 }
@@ -263,7 +260,7 @@ const confirmClick = async ()=>{
   PassworData = paperdata.value.map((item:any)=>({...item,scores:item.studentscores}))
   drawer.value = false
   let red = await studentanswer(PassworData)
-  console.log(741,red);
+  console.log('阅卷完毕',red);
   if(red.errCode==10000){
     succesMsg('您已经判完卷了')
   }
@@ -281,15 +278,28 @@ const paperlist = async ()=>{
   let red = await queslist(marginState)
   console.log('试卷列表',red);
   paperdata.value = red.data.list
-  console.log(666,paperdata.value);
+  // console.log(666,paperdata.value);
   
 }
-// 阅卷验证
-// const rules = reactive({
-//   stefen: [
-//     { required: true, message: '请输入分数', trigger: 'blur' },
-//   ],
-// })
+// 动态表单验证
+let Atomicsl = (rule: any, value: any, callback: any) => {
+  let max = parseInt(rule.maxE)
+  let val = parseInt(value)
+  console.log(11,max);
+  console.log(22,val);
+  if (isNaN(val)) {
+    callback(new Error('请打分'))
+    return false
+  } else if (val > max || val < 0) {
+    return callback(new Error('分数不能小于0,大于' + max))
+  }else {
+    callback()
+  }
+}
+let Rules = (e: any) => {
+  console.log(111,e)
+  return [{ validator:Atomicsl, maxE: e, trigger: 'blur' }]
+}
 
 </script>
 
