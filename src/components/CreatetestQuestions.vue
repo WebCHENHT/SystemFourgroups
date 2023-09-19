@@ -30,7 +30,7 @@
               <div style="display: flex">
                 <div>允许部分老师使用</div>
                 <div
-                  v-if="ruleForm.limits.length >= 1"
+                  v-if="ruleForm.isshow === 3"
                   style="
                     width: 20px;
                     height: 20px;
@@ -60,7 +60,6 @@
   <SystemTransfer
     ref="Transfer"
     :ishow="false"
-    :testid="0"
     :names="'可见老师'"
     @MySystemTransferAdd="MySystemTransferAdd"
   ></SystemTransfer>
@@ -68,7 +67,8 @@
 
 <script setup lang="ts">
 import SystemTransfer from '@/components/SystemTransfer.vue'
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
+import { ElMessage } from 'element-plus'
 let emits = defineEmits<{
   (
     name: 'MybaseAdd',
@@ -89,6 +89,18 @@ const ruleForm = reactive({
   isshow: 1,
   limits: []
 })
+watch(
+  () => ruleForm.isshow,
+  (a, b) => {
+    if (a === 3) {
+      Transfer.value.dialogVisible = true
+      if (ruleForm.id !== 0) {
+        ElMessage.warning('需要重新选择部门')
+      }
+    }
+  },
+  { deep: true }
+)
 //关闭回调
 const gubisd = () => {
   ruleForm.id = 0
@@ -101,12 +113,12 @@ const rules = reactive({
 })
 const MySystemTransferAdd = (data: any) => {
   let res = data.map((item: any) => {
-    return item === item
-      ? {
-          id: item.id
-        }
-      : ''
+    return {
+      id: item.id
+    }
   })
+  console.log(res)
+
   ruleForm.limits = res
   Transfer.value.dialogVisible = false
 }
@@ -118,7 +130,7 @@ const dialogVisible = ref(false)
 const bufenxs = async () => {
   Transfer.value.dialogVisible = true
 }
-defineExpose({ dialogVisible,ruleForm   })
+defineExpose({ dialogVisible, ruleForm })
 </script>
 
 <style lang="less" scoped>
