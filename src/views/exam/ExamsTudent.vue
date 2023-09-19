@@ -64,7 +64,6 @@
                   show-word-limit
                   type="textarea"
                 />
-                <!-- <el-input v-model="item.comments" maxlength="300  " type="textarea" /> -->
               </el-form-item>
             </el-form>
             
@@ -77,13 +76,10 @@
           </div>
         </template>
       </el-drawer>
-      <!-- 抽屉 -->
-      <!-- <ExamDrawer v-if="isShows" title:title :getList="DeparList" :quertionData="quertionData" @closeDrawer="closeDrawer"></ExamDrawer> -->
   </div>
 </template>
 
 <script setup lang="ts">
-import ExamDrawer from '@/components/ExamsZu/ExamDrawer.vue'
 import TableangPage from '@/components/TableangPage.vue'
 import {DepartmentList} from '@/assets/api/teacher/teacher'
 import {studentlist,classeslist,queslist,studentanswer} from '@/assets/api/Exam/Exam'

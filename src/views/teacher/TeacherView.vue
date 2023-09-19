@@ -4,7 +4,7 @@
       <div class="ter">师资管理</div>
       <div class="terbut">
         <el-button>批量添加</el-button>
-        <el-button type="primary" @click="dialogadd = true">添加教资</el-button>
+        <el-button type="primary" @click="dialogadd = true" v-authority="{ model: '师资', name: '添加' }">添加教资</el-button>
       </div>
     </div>
     <div class="watchInput">
@@ -15,15 +15,15 @@
       <el-select v-model="ruform.pwd" clearable placeholder="请选择">
         <el-option v-for="item in optionList" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
-      <el-button class="but" type="primary" @click="sou">搜索</el-button>
+      <el-button class="but" type="primary" @click="sou" v-authority="{ model: '师资', name: '查看' }">搜索</el-button>
     </div>
     <TableangPage :TableData="tableData" :tableColums="tableColum" :total="total"
       @sonhandleCurrentChange="handleCurrentChange" @sonhandleSizeChange="handleSizeChange">
       <template #actions="slotname: any">
         <el-button type="primary" size="small" link @click="ChongVisible(slotname.data)">重置密码</el-button>
-        <el-button type="primary" size="small" link @click="teachedele(slotname.data)">修改</el-button>
+        <el-button type="primary" size="small" link @click="teachedele(slotname.data)" v-authority="{ model: '师资', name: '编辑' }">修改</el-button>
         <!-- <el-button text @click="dele(slotname.data)" link>删除</el-button> -->
-        <el-button type="primary" size="small" link @click="open(slotname.data)">删除</el-button>
+        <el-button type="primary" size="small" link @click="open(slotname.data)" v-authority="{ model: '师资', name: '删除' }">删除</el-button>
       </template>
     </TableangPage>
     <!-- 重置密码弹出框 @click="Pass" -->
@@ -89,6 +89,7 @@ import { ref, reactive } from 'vue'
 import { teacherlist, teacherdelete , roleList, DepartmentList, teacherchangeAdd } from '@/assets/api/teacher/teacher'
 import TableangPage from '@/components/TableangPage.vue'
 import { succesMsg } from '@/untils/msg'
+import { ElMessageBox, ElMessage } from 'element-plus';
 // 密码重置弹出框
 let dialogVisible = ref(false)
 // 添加弹出框
@@ -97,7 +98,7 @@ const dialogadd = ref(false)
 let optionList: any = ref([])
 // 角色列表
 const roleLists = async () => {
-  let red = await roleList(0)
+  let red = await roleList(0 as any)
   // console.log(777,red);
   optionList.value = red.data.list
   // console.log(789787,optionList);
@@ -119,7 +120,7 @@ const add = async (val: any) => {
 }
 // 部门列表
 const DeparList = async () => {
-  let red: any = await DepartmentList()
+  let red: any = await DepartmentList( '' as any)
   options.value = red.data.list
   // console.log(852,red)
 }
