@@ -69,6 +69,8 @@
       v-model="sersr"
       :call="fathers"
       @allTableDatas="allTableDatas"
+      :rado="sex"
+      :title="title"
     ></StudentBatch>
   </div>
 </template>
@@ -85,6 +87,8 @@ import StudenPassword from '@/views/student/StudenPassword.vue'
 import StudentBatch from '@/views/student/StudentBatch.vue'
 
 import { reactive, ref, toRaw, toRefs, watch } from 'vue'
+let sex = 'http://apis.90000p.com/exam2212/api/student/upload'
+let title: any = ref('“学生信息模板”')
 // 批量删除默认隐藏
 const show = ref(true)
 const shows = ref(false)
@@ -283,8 +287,10 @@ const resetting = (val: any) => {
   users.value = true
 }
 // 编辑
-let carr = reactive({})
+let carr = reactive({}) 
 const edit = (val: any) => {
+  console.log(val)
+
   carr = val
   user.value = true
 }

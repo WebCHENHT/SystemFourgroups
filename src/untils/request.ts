@@ -22,7 +22,7 @@ interface ResultDatas<T = any> extends ResultList {
   data: T
 }
 
-const URL: string = 'http://apis.90000p.com/exam2212/api/'
+const URL: string = 'http://apis.90000p.com/exam2212/api/' 
 enum RequestEnums {
   TIMEOUT = 30000,
   OVERDUE = 600, // 登录失效
