@@ -9,11 +9,11 @@
         <el-input v-model="data.key" placeholder="请输入题库名称" clearable />
       </el-form-item>
       <el-form-item label="创建人:">
-        <el-input v-model="data.admin" placeholder="请输入创建人" clearable />
+        <el-input v-model="data.admin" placeholder="请输入创建人" @input="inputs" clearable />
       </el-form-item>
       <el-form-item>
         <el-checkbox
-          v-model="data.ismy"
+          v-model="vuels"
           :true-label="1"
           :false-label="0"
           label="只看我创建的"
@@ -116,6 +116,16 @@ const paper = async (val: any) => {
     }
   })
 }
+
+// 搜索
+let vuels = ref(false)
+const inputs = (data: any) => {
+  if (data.admin !== '') {
+    vuels.value = false
+    // data.ismy = 0
+  }
+}
+
 // 题库列表
 const lists = async () => {
   let res: any = await datalist(data)

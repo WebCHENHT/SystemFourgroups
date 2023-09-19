@@ -155,7 +155,7 @@ const addTest = () => {
 };
 const compile = (data: any) => {
   console.log('编辑',data);
-  questionData.value= data
+  questionData.value = data
   isAddtestDrawer.value = true
 }
 // 列表
@@ -184,6 +184,7 @@ const closeDialog = (val: any) => {
 
 // 接收从子组件传过来的值  关闭抽屉
 const closeDrawer = (val: any) => {
+  questionData.value = {}
   isAddtestDrawer.value = val;
   isDatabaseDetail.value = val
 };

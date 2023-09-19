@@ -2,7 +2,7 @@
   <el-dialog v-model="dialogVisible" title="批量添加" width="40%" :before-close="handleClose">
     <div style="height: 130px">
       <el-steps direction="vertical">
-        <el-step title="下载试题模板，批量导入试题" />
+        <el-step :title="'下载' + title + '试题模板，批量导入试题'" @click="download" />
         <el-step title="上传填写好的试题表" />
       </el-steps>
       <p class="p">
@@ -13,7 +13,7 @@
     <el-upload
       ref="upload"
       class="upload-demo"
-      action="http://apis.90000p.com/exam2212/api/student/upload"
+      :action="rado"
       :headers="headerObj"
       :on-success="handleAvatarSuccess"
     >
@@ -34,6 +34,7 @@
 
 <script setup lang="ts">
 import { useCounterStore } from '@/stores/counter'
+import { Download } from '@/untils/Downloadfilesdirectly'
 import BatchAdd from '@/views/student/BatchAdd.vue'
 import { ElMessageBox, type UploadInstance, type UploadProps } from 'element-plus'
 import { reactive, ref } from 'vue'
@@ -46,6 +47,14 @@ let props = defineProps({
   call: {
     type: Function,
     required: true
+  },
+  title: {
+    type: String,
+    default: ''
+  },
+  rado: {
+    type: String as any,
+    default: ''
   }
 })
 const emit = defineEmits(['allTableDatas', 'aaa'])
@@ -80,6 +89,9 @@ const handleClose = (done: () => void) => {
       // catch error
     })
 }
+const download = () => {
+  Download('http://apis.90000p.com/exam2212/upload/student.xlsx', '试题')
+}
 </script>
 
 <style scoped>
@@ -89,5 +101,8 @@ const handleClose = (done: () => void) => {
   font-size: 13px;
   position: absolute;
   top: 120px;
+}
+.el-step {
+  cursor: pointer;
 }
 </style>

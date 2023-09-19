@@ -19,23 +19,19 @@
       <el-form-item label="电话" prop="photo">
         <el-input v-model="AddForm.photo" maxlength="11" />
       </el-form-item>
+      <div style="display: flex;">
+        <el-form-item label="部门">
+          <el-select v-model="AddForm.depname" placeholder="请选择" @change="selectChange">
+            <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="班级">
+          <el-select v-model="AddForm.classid" placeholder="请选择">
+            <el-option v-for="item in arr" :key="item.id" :label="item.name" :value="item.id" />
+          </el-select>
+        </el-form-item>
+      </div>
 
-      <el-form-item label="部门">
-        <el-select v-model="AddForm.depname" placeholder="请选择" @change="selectChange">
-          <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="班级">
-        <el-select v-model="AddForm.classid" placeholder="请选择" @change="selectChanges" clearable>
-          <el-option
-            v-for="item in arr"
-            :key="item.id"
-            :label="item.name"
-            :value="item.id"
-            id="option"
-          />
-        </el-select>
-      </el-form-item>
       <el-form-item
         label="备注"
         prop="remarks"
@@ -101,11 +97,11 @@ const datss: Idatss = reactive({
     id: props.carr.id || 0,
     name: props.carr.name,
     remarks: props.carr.remarks,
-    classid: props.carr.classname,
-    photo: props.carr.mobile,
+    classid: props.carr.classid,
+    photo: props.carr.photo,
     username: props.carr.username,
     pass: props.carr.pass,
-    depname: props.carr.depname
+    depname: props.carr.depid
   }
 })
 const { AddForm } = toRefs(datss)
@@ -187,17 +183,16 @@ const deplist = async () => {
 }
 deplist()
 let arr: any = ref([])
-let showt = ref('')
+
 const selectChange = async (val: any) => {
+  arr.value = []
+  AddForm.value.classid = ''
   params.value.depid = val
   // 班级列表
   let res: any = await ClList(params.value)
   arr.value = res.data.list
 }
-// 班级
-const selectChanges = () => {
-  showt.value = '1'
-}
+
 const handleClose = (done: () => void) => {
   ElMessageBox.confirm('确认要退出吗？')
     .then(() => {

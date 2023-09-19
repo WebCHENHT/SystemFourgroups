@@ -1,16 +1,16 @@
-import { createApp } from 'vue'
+import ElementPlus from 'element-plus'
 import { createPinia } from 'pinia'
-import store from './stores'
+import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import ElementPlus from 'element-plus'
+import store from './stores'
 //element国际化
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 // element样式
 import 'element-plus/dist/index.css'
 // iconfont
-import '@/assets/icon/iconfont.css'
 import '@/assets/icon/exam/iconfont-exam.css'
+import '@/assets/icon/iconfont.css'
 
 import './assets/reset.css'
 import { instruct } from './untils/directive'

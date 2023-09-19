@@ -107,15 +107,14 @@
 </template>
 
 <script setup lang="ts">
-import { AlarmClock } from '@element-plus/icons-vue'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { Select } from '@element-plus/icons-vue'
 import { TestStart } from '@/assets/api/TestList/index'
-import { useRoute } from 'vue-router'
-import { htmlEncode } from '@/untils/Dilist'
 import AnswerSheetVue from '@/components/AnswerSheet.vue'
+import { htmlEncode } from '@/untils/Dilist'
 import { debounce } from '@/untils/antishake'
+import { AlarmClock, Select } from '@element-plus/icons-vue'
 import dayjs from 'dayjs'
+import { computed, nextTick, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 let route = useRoute()
 let Answers = ref()
 let zhenq = ref(['正确', '错误'])
@@ -164,6 +163,8 @@ const getexaminationlist = async () => {
     })
 
     time.value = result.value
+    console.log(time.value)
+
     console.log(res.data)
 
     if (res.data.limittime !== 0) {

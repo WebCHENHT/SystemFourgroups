@@ -353,12 +353,12 @@ const allTableData = (val: any) => {
 }
 // 详情编辑回显
 let subjlist = async () => {
-  let res: any = await subjectsget({ id: useroute.query.id })
+  let res: any = await subjectsget({ id: useroute.query.id } as any)
   Object.assign(from.value, res.data)
 }
 subjlist()
-let sex = 'http://apis.90000p.com/exam2212/api/test/upload'
-let title = ref('试题上传')
+let sex = 'http://apis.90000p.com/exam2212/api/student/upload'
+let title: any = ref('“试题上传”')
 let arr: any = ref([])
 let list = async () => {
   let res: any = await datalist({

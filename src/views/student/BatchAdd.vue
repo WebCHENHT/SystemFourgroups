@@ -85,7 +85,7 @@ const add = async () => {
 // 导出excel
 let excel = () => {
   // 1.创建工作表
-  let data = XLSX.utils.json_to_sheet(tableData.value) // 2.创建工作簿
+  let data = XLSX.utils.json_to_sheet(tableData.value as any) // 2.创建工作簿
   let wb = XLSX.utils.book_new() // 3.把工作表放到工作簿中
   XLSX.utils.book_append_sheet(wb, data, 'data') // 4.生成文件并下载
   XLSX.writeFile(wb, '哈哈哈' + '.xlsx')
