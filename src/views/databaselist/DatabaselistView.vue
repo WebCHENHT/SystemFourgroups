@@ -2,7 +2,7 @@
   <div class="database">
     <div class="database-span">
       <span>题库管理</span>
-      <el-button type="primary" @click="Create">创建题库</el-button>
+      <el-button type="primary" @click="Create" v-authority="{ model: '题库', name: '创建' }">创建题库</el-button>
     </div>
     <el-form :inline="true" :model="data" class="demo-form-inline">
       <el-form-item label="题库名称:">
@@ -22,7 +22,7 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="query">查询</el-button>
+        <el-button type="primary" @click="query" v-authority="{ model: '题库', name: '查看' }">查询</el-button>
         <el-button type="danger" v-if="display" @click="delAll">批量删除</el-button>
         <el-button type="danger" v-if="conceal" @click="delAll" disabled>批量删除</el-button>
       </el-form-item>
@@ -48,9 +48,9 @@
         {{ scoped.data.addtime.substring(0, 16) }}
       </template>
       <template #actions="slotname: any">
-        <el-button type="primary" size="small" link @click="paper(slotname.data)">试题</el-button>
-        <el-button type="primary" size="small" link @click="edit(slotname.data)">编辑</el-button>
-        <el-button type="primary" size="small" link @click="del(slotname.data)">删除</el-button>
+        <el-button type="primary" size="small" link @click="paper(slotname.data)" v-authority="{ model: '题库', name: '查看' }">试题</el-button>
+        <el-button type="primary" size="small" link @click="edit(slotname.data)" v-authority="{ model: '题库', name: '修改' }">编辑</el-button>
+        <el-button type="primary" size="small" link @click="del(slotname.data)" v-authority="{ model: '题库', name: '删除' }">删除</el-button>
       </template>
     </TableangPage>
     <!-- 添加、修改 -->

@@ -2,7 +2,7 @@
   <div class="role">
     <div class="role-span">
       <span>角色管理</span>
-      <el-button type="primary" @click="add">添加角色</el-button>
+      <el-button type="primary" @click="add" v-authority="{ model: '角色', name: '添加' }">添加角色</el-button>
     </div>
     <TableangPage
       :TableData="tableData"
@@ -12,8 +12,8 @@
       @sonhandleSizeChange="sonhandleSizeChange"
     >
       <template #actions="slotname: any">
-        <el-button type="primary" size="small" link @click="add(slotname.data)">编辑</el-button>
-        <el-button type="primary" size="small" link @click="del(slotname.data)">删除</el-button>
+        <el-button type="primary" size="small" link @click="add(slotname.data)" v-authority="{ model: '角色', name: '修改' }">编辑</el-button>
+        <el-button type="primary" size="small" link @click="del(slotname.data)" v-authority="{ model: '角色', name: '删除' }">删除</el-button>
       </template>
     </TableangPage>
     <!-- 添加/修改 -->
