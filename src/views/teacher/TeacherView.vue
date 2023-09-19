@@ -239,7 +239,7 @@ const ChongVisible = (val: any) => {
   form.username = val.username
 }
 // 重置密码参数
-const form = reactive({
+let form = reactive({
   confirmPass:"",//新密码
   depid:0,//
   id:0,
@@ -252,17 +252,7 @@ const form = reactive({
   tel:"",//手机号
   username:"",//账号
 })
-// 密码重置表单验证
-// const rules = reactive({
-//   confirmPass: [
-//     { required: true, message: '密码不能为空', trigger: 'blur' },
-//     { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
-//   ],
-//   pass: [
-//     { required: true, message: '密码不能为空', trigger: 'blur' },
-//     { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
-//   ],
-// })
+
 // 表单验证
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
@@ -299,26 +289,33 @@ const Pass = async () => {
   if(red.errCode==10000){
     succesMsg('密码重置成功')
     dialogVisible.value = false
+    form.confirmPass =  '';
+    form.depid = 0;
+    form.id = 0;
+    form.name = '';
+    form.oldpass = '';
+    form.pass = '';
+    form.qq = '';
+    form.roleid = 0;
+    // form.searchDepa = never[];
+    form.tel = '';
+    form.username = '';
   }
-  form.name = '',
-  form.oldpass = '',
-  form.qq = '',
-  form.tel = '',
-  form.roleid = 0,
-  form.id = 0,
-  form.depid =0,
-  form.username = ''
+
 }
 // 重置密码取消
 const pwead = ()=>{
-  form.name = '',
-  form.oldpass = '',
-  form.qq = '',
-  form.tel = '',
-  form.roleid = 0,
-  form.id = 0,
-  form.depid =0,
-  form.username = ''
+  form.confirmPass =  '';
+    form.depid = 0;
+    form.id = 0;
+    form.name = '';
+    form.oldpass = '';
+    form.pass = '';
+    form.qq = '';
+    form.roleid = 0;
+    // form.searchDepa = never[];
+    form.tel = '';
+    form.username = '';
   dialogVisible.value = false
 }
 // 取消按钮
