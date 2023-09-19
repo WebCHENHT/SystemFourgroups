@@ -159,11 +159,6 @@ const gethuisxia = async () => {
       }
     }
   }
-  Testdatast.value = []
-  Classes.value = []
-  Departmentvalue.value = ''
-  Classesvalue.value = ''
-  TransferDatas.value = []
   let resDepartems = await DepartmentList()
   if (resDepartems.errCode === 10000) {
     Testdatast.value = resDepartems.data.list as any

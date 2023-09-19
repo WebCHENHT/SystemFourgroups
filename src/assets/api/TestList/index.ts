@@ -67,7 +67,6 @@ export const TestAnalyse = (data: { testid: number }) => {
 }
 
 //获取考试结果
-
 export const TestGetForResult = (data: { testid: number; studentid?: number }) => {
   return index.get<TestGetForResultData>('test/getForResult', data)
 }
@@ -159,3 +158,9 @@ export const TeststudentsAdd = (data: any) => {
 export const TestGetstudents = (data: any) => {
   return index.get('/test/getstudents', data)
 }
+
+//学生答题
+export const StudentanswerAdd = (data: any) => {
+  return index.post('/studentanswer/add', data)
+}
+

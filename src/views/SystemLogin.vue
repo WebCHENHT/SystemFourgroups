@@ -74,7 +74,6 @@ import { useCounterStore } from '@/stores/counter'
 import type { LoginAddObject } from '@/assets/TSinterface/SystemLoginInterface'
 import { useRouter } from 'vue-router'
 let router = useRouter()
-let resget = router.getRoutes()
 const store: LoginAddObject | any = useCounterStore()
 const formSize = ref('default')
 const ruleFormRef = ref<FormInstance>()
@@ -88,8 +87,8 @@ interface RuleForm {
 let Systemname = ref(false)
 //登录接口需要的数据
 const LoginAdd = reactive<RuleForm>({
-  username: 'asdfgz',
-  pass: 'chen123'
+  username: 'c1c1c1',
+  pass: '123456'
 })
 //登录校验
 const Loginrules = reactive<FormRules<RuleForm>>({

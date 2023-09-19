@@ -24,9 +24,8 @@
         @sonhandleSizeChange="sonhandleSizeChange"
       >
         <template #title="{ data }">
-          <!-- {{ data }} -->
-          <el-radio-group v-model="Listtoft.DatabasequestObj.databaseid">
-            <el-radio :label="data.id">{{ data.title === '' ? '' : data.title }}</el-radio>
+          <el-radio-group v-model="danvalue" @change="danuxnas">
+            <el-radio :label="data.id">{{ data.title }}</el-radio>
           </el-radio-group>
         </template>
       </TableangPage>
@@ -38,7 +37,7 @@
       </span>
     </template>
   </el-dialog>
-  <ListtoftestView ref="Listtoft" @Mytijiaos="Mytijiaos"></ListtoftestView>
+  <ListtoftestView ref="Listtoftas" @Mytijiaos="Mytijiaos"></ListtoftestView>
 </template>
 
 <script setup lang="ts">
@@ -49,10 +48,11 @@ import ListtoftestView from './ListtoftestView.vue'
 let emit = defineEmits<{
   (name: 'myQunstions', value: any): any
 }>()
+let danvalue = ref(0)
 let vuels = ref(false)
 let loading = ref(true)
 let total = ref(0)
-let Listtoft = ref()
+let Listtoftas = ref()
 let DatabaseListObj = reactive({
   key: '',
   admin: '',
@@ -84,6 +84,11 @@ let tableColums = ref([
   }
 ])
 let DatabaseVuels = ref([])
+
+const danuxnas = (data: any) => {
+  Listtoftas.value.DatabasequestObj.databaseid = data
+}
+
 const Csnds = () => {
   loading.value = true
   DatabaseListDatas()
@@ -113,10 +118,10 @@ const duoxuans = (data: any) => {
   }
 }
 const QuestionOk = () => {
-  if (Listtoft.value.DatabasequestObj.databaseid !== 0) {
-    Listtoft.value.dataquesDatas()
+  if (Listtoftas.value.DatabasequestObj.databaseid !== 0) {
+    Listtoftas.value.dataquesDatas()
     setTimeout(() => {
-      Listtoft.value.dialogVisible = true
+      Listtoftas.value.dialogVisible = true
       dialogVisible.value = false
     }, 100)
   }
