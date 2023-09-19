@@ -71,6 +71,7 @@ import { debounce } from '@/untils/antishake'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 import { nextTick, reactive, ref, toRaw, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 let router = useRouter()
 let display = ref(false) //批量删除显示按钮
 let conceal = ref(true) //批量删除隐藏按钮
@@ -134,6 +135,11 @@ const MybaseAdd = async (data: any) => {
   console.log(res)
   if (res.errCode === 10000) {
     flag.value.dialogVisible = false
+    if (flag.value.ruleForm.id !== 0) {
+      ElMessage.success('修改成功')
+    } else {
+      ElMessage.success('添加成功')
+    }
     lists()
   }
 }
@@ -162,8 +168,8 @@ const onlyMine = (val: any) => {
 
 // 编辑题库
 const edit = (val: any) => {
-  console.log(val);
-  
+  console.log(val)
+
   flag.value.dialogVisible = true
   nextTick(() => {
     //延迟函数  回显
