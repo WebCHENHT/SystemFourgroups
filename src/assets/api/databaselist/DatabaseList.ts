@@ -37,3 +37,8 @@ export const databasequestionAddlist = (data: any) => {
 export const databasequestionadd = (data: any) => {
   return index.post<RootObject>('databasequestion/add', data)
 }
+
+// 试题导出
+export const exportExcel = (id:any) => {
+  return index.get<RootObject>('databasequestion/exportExcel', {id}, { responseType: 'blob' })
+}

@@ -1,7 +1,9 @@
 <template>
   <div style="display: flex; justify-content: space-between">
     <div style="font-size: 20px">考试管理</div>
-    <el-button type="primary" @click="Addexam">创建考试</el-button>
+    <el-button type="primary" @click="Addexam" v-authority="{ model: '考试', name: '添加' }"
+      >创建考试</el-button
+    >
   </div>
   <el-row :gutter="24">
     <el-col :span="3">
@@ -46,7 +48,13 @@
           <el-option label="未发布" value="2" />
         </el-select>
       </el-form-item>
-      <el-button type="primary" style="margin-left: 20px" @click="TestcharAt">查询</el-button>
+      <el-button
+        type="primary"
+        style="margin-left: 20px"
+        @click="TestcharAt"
+        v-authority="{ model: '考试', name: '查看' }"
+        >查询</el-button
+      >
     </el-col>
   </el-row>
 
@@ -109,8 +117,19 @@
         </div>
         <div class="caozuobutton" style="margin-top: 15px">
           <el-button type="primary" link @click="Examanalysis(data)">分析</el-button>
-          <el-button type="primary" link @click="bianjis(data, data.studentcounts)">编辑</el-button>
-          <el-button type="danger" link style="border-right: none" @click="delTest(data.id)"
+          <el-button
+            type="primary"
+            link
+            @click="bianjis(data, data.studentcounts)"
+            v-authority="{ model: '考试', name: '修改' }"
+            >编辑</el-button
+          >
+          <el-button
+            type="danger"
+            link
+            style="border-right: none"
+            @click="delTest(data.id)"
+            v-authority="{ model: '考试', name: '删除' }"
             >删除</el-button
           >
         </div>

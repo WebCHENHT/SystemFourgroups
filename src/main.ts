@@ -13,18 +13,17 @@ import '@/assets/icon/iconfont.css'
 import '@/assets/icon/exam/iconfont-exam.css'
 
 import './assets/reset.css'
-
+import { instruct } from './untils/directive'
 const app = createApp(App)
 app.use(ElementPlus, {
   locale: zhCn
 })
 
-
 //试题上传
 app.provide('url', 'http://apis.90000p.com/exam2212/api/test/upload')
-
 app.use(createPinia())
-app.use(router)
 
+app.use(router)
 app.mount('#app')
 app.use(store)
+instruct(app)
