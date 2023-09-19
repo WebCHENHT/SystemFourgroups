@@ -37,16 +37,16 @@
       @sonhandleCurrentChange="sonhandleCurrentChange"
       @sonhandleSizeChange="sonhandleSizeChange"
     >
-     <!-- 题库名称 -->
-        <template #default="scoped">
-          <el-button type="primary" link @click="paper(scoped.data)">{{
-            scoped.data.title
-          }}</el-button>
-        </template>
-        <!-- 时间 -->
-        <template #addtime="scoped">
-          {{ scoped.data.addtime.substring(0, 16) }}
-        </template>
+      <!-- 题库名称 -->
+      <template #default="scoped">
+        <el-button type="primary" link @click="paper(scoped.data)">{{
+          scoped.data.title
+        }}</el-button>
+      </template>
+      <!-- 时间 -->
+      <template #addtime="scoped">
+        {{ scoped.data.addtime.substring(0, 16) }}
+      </template>
       <template #actions="slotname: any">
         <el-button type="primary" size="small" link @click="paper(slotname.data)">试题</el-button>
         <el-button type="primary" size="small" link @click="edit(slotname.data)">编辑</el-button>
@@ -54,13 +54,18 @@
       </template>
     </TableangPage>
     <!-- 添加、修改 -->
-    <DatabaseList ref="flag" :addEditData="addEditData" :getListDialog="lists"></DatabaseList>
+    <CreatetestQuestions ref="flag" @MybaseAdd="MybaseAdd"></CreatetestQuestions>
   </div>
 </template>
 
 <script setup lang="ts">
-import { DatabaseDelete, datalist, deleteall } from '@/assets/api/databaselist/DatabaseList'
-import DatabaseList from '@/components/Databaselist/Databaselists.vue'
+import {
+  DatabaseAdd,
+  DatabaseDelete,
+  datalist,
+  deleteall
+} from '@/assets/api/databaselist/DatabaseList'
+import CreatetestQuestions from '@/components/CreatetestQuestions.vue'
 import TableangPage from '@/components/TableangPage.vue'
 import { debounce } from '@/untils/antishake'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
@@ -94,7 +99,7 @@ const tableColums = reactive([
   {
     slotname: 'addtime',
     isslot: true,
-    label: '创建时间',
+    label: '创建时间'
   },
   {
     label: '创建人',
@@ -106,24 +111,35 @@ const tableColums = reactive([
     isslot: true
   }
 ])
-// 题库名称
+// 题库名称 /试题
 const paper = async (val: any) => {
-   router.push({
+  router.push({
     path: '/SystemMenu/databaselist/databasequestionlist',
     query: {
       id: val.id,
-      title:val.title
+      title: val.title
     }
   })
 }
-
 // 搜索
 let vuels = ref(false)
 const inputs = (data: any) => {
   if (data.admin !== '') {
     vuels.value = false
-    // data.ismy = 0
   }
+}
+// //添加题库
+const MybaseAdd = async (data: any) => {
+  let res = await DatabaseAdd(data)
+  console.log(res)
+  if (res.errCode === 10000) {
+    flag.value.dialogVisible = false
+    lists()
+  }
+}
+//打开题库弹框
+const Create = () => {
+  flag.value.dialogVisible = true
 }
 
 // 题库列表
@@ -136,11 +152,6 @@ const lists = async () => {
   }
 }
 lists()
-let addEditData = reactive({
-  id: 0,
-  title: '',
-  isshow: 1
-})
 // 点击只看我的
 const onlyMine = (val: any) => {
   if (val == 1) {
@@ -149,26 +160,17 @@ const onlyMine = (val: any) => {
   }
 }
 
-// 试题
-const shiti = (id:any) => {
-  router.push({
-    path: '/SystemMenu/databaselist/databasequestionlist',
-    query: {
-      id: id
-    }
-  })
-}
-// 创建题库
-const Create = () => {
-  flag.value.dialogFormVisible = true
-}
 // 编辑题库
 const edit = (val: any) => {
-  flag.value.dialogFormVisible = true
+  console.log(val);
+  
+  flag.value.dialogVisible = true
   nextTick(() => {
     //延迟函数  回显
-    flag.value.formData.title = val.title
-    flag.value.formData.id = val.id
+    flag.value.ruleForm.title = val.title
+    flag.value.ruleForm.id = val.id
+    flag.value.ruleForm.isshow = val.isshow
+    // flag.value.ruleForm.limits = val.limits
   })
 }
 // 题库删除
