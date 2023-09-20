@@ -107,6 +107,15 @@ export default function () {
       component: () => import('../views/test/AnalyseView.vue')
     })
     router.addRoute('SystemMenu', {
+      path: '/SystemMenu/set',
+      name: 'AnalyseView',
+      meta: {
+        title: '修改密码',
+        url: '/SystemMenu/set'
+      },
+      component: () => import('../views/set/SetView1.vue')
+    })
+    router.addRoute('SystemMenu', {
       path: '/SystemMenu/test/TestAdd',
       name: 'TestAdd',
       meta: {
