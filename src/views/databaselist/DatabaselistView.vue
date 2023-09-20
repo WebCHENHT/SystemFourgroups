@@ -33,6 +33,7 @@
       :tableColums="tableColums"
       :total="total"
       :isselect="true"
+      :loading="loading"
       @allTableData="allTableData"
       @sonhandleCurrentChange="sonhandleCurrentChange"
       @sonhandleSizeChange="sonhandleSizeChange"
@@ -79,6 +80,10 @@ let tableData = ref([])
 let total = ref(0)
 let ChangeData = ref([])
 let flag = ref()
+
+//表单数据条数和是否开启loading
+let loading = ref<boolean>(true)
+
 let data = reactive({
   page: 1,
   psize: 10,
@@ -153,6 +158,7 @@ const lists = async () => {
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
+    loading.value = false
   }
 }
 lists()
@@ -183,6 +189,7 @@ const del = async (id: any) => {
         succesMsg('删除成功')
       }
       lists()
+      loading.value = true
     })
     .catch(() => {
       errorMsg('已取消')
@@ -236,10 +243,12 @@ const query = debounce(() => {
 // 分页
 const sonhandleSizeChange = (val: number) => {
   data.psize = val
+  loading.value = true
   lists()
 }
 const sonhandleCurrentChange = (val: number) => {
   data.page = val
+  loading.value = true
   lists()
 }
 </script>

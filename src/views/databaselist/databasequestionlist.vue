@@ -37,6 +37,7 @@
       :TableData="tableData"
       :tableColums="tableColums"
       :total="total"
+      :loading = "loading"
       :isselect="true"
       @allTableData="allTableData"
       @sonhandleCurrentChange="sonhandleCurrentChange"
@@ -96,6 +97,8 @@ let route = useRoute()
 let ChangeData = ref([])
 let total = ref(0)
 const router = useRouter()
+//表单数据条数和是否开启loading
+let loading = ref<boolean>(true)
 let red = route.query.id
 let title = route.query.title
 const addTestUrl = ref('http://estate.eshareedu.cn/exam/upload/question.xlsx');
@@ -160,6 +163,7 @@ const lists = async() => {
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
+    loading.value = false
   }
 }
 lists()
@@ -253,10 +257,12 @@ const del = async (id: any) => {
 const sonhandleSizeChange = (val: number) => {
   data.psize = val
   lists()
+  loading.value = true
 }
 const sonhandleCurrentChange = (val: number) => {
   data.page = val
   lists()
+  loading.value = true
 }
 // 搜索
 const query = debounce(() => {
