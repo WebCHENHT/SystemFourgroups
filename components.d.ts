@@ -37,6 +37,10 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
+<<<<<<< HEAD
+=======
+    ElUpload: typeof import('element-plus/es')['ElUpload']
+>>>>>>> afbad6c68bc972eb901ff3b16b680b866521007f
     ListtoftestView: typeof import('./src/components/ListtoftestView.vue')['default']
     QuestionBankLogView: typeof import('./src/components/QuestionBankLogView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
