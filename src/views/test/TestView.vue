@@ -9,13 +9,18 @@
     <el-col :span="3">
       <div class="grid-content ep-bg-purple" />
       <el-form-item label="关键字">
-        <el-input v-model="TestData.key" placeholder="请输入关键字" />
+        <el-input v-model="TestData.key" placeholder="请输入关键字" clearable />
       </el-form-item>
     </el-col>
     <el-col :span="3">
       <div class="grid-content ep-bg-purple" />
       <el-form-item label="创建人">
-        <el-input v-model="TestData.admin" placeholder="请输入创建人" @input="AdminInput" />
+        <el-input
+          v-model="TestData.admin"
+          placeholder="请输入创建人"
+          @input="AdminInput"
+          clearable
+        />
       </el-form-item>
     </el-col>
     <el-col :span="16" style="padding-right: 5px; padding-left: 5px">
@@ -63,6 +68,7 @@
     <el-button type="primary" @click="publishAdd">发布考试</el-button>
     <el-button type="success" @click="Cancelpublication">取消发布</el-button>
   </div>
+
   <TableangPage
     :TableData="TestDatas"
     :tableColums="tableColums"
@@ -136,18 +142,21 @@
       </div>
     </template>
   </TableangPage>
+
   <SystemTransferVue
+    v-if="TrabsList"
     ref="dialog"
     :names="dialogname"
     :ishow="ishow"
     :testid="testid"
     @DelSystemTransfer="DelSystemTransfer"
+    @MyClose="MyClose"
   ></SystemTransferVue>
-  <TestDogis ref="getDogis"></TestDogis>
+  <TestDogis v-if="getDogisashiw" ref="getDogis" @MyTestDigclose="MyTestDigclose"></TestDogis>
 </template>
 
-<script setup lang="ts">
-import { reactive, ref, watch } from 'vue'
+<script setup name="/test" lang="ts">
+import { reactive, ref, onActivated, onDeactivated, nextTick } from 'vue'
 
 import type { TestDatatype } from '@/assets/TSinterface/SystemTest'
 import {
@@ -166,19 +175,19 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import SystemTransferVue from '@/components/SystemTransfer.vue'
 import { useRouter } from 'vue-router'
 import TestDogis from '@/components/TestDogis.vue'
-import { useCounterStore } from '@/stores/counter'
-let Store = useCounterStore()
+
 //路由跳转
 let router = useRouter()
 //控制穿梭框显示隐藏和名称
 let dialog = ref()
 let dialogname = ref('')
+let TrabsList = ref(false)
 //控制子组件班级选中框
 let ishow = ref(true)
 //考试列表表格数据
 let TestDatas: any = ref([])
 //考试列表查询对象
-let TestData: TestDatatype = reactive({
+let TestData: TestDatatype = ref<any>({
   page: 1,
   psize: 10,
   key: '',
@@ -216,8 +225,12 @@ const Addexam = () => {
 //编辑题库
 const bianjis = async (data: any, num: string | number) => {
   if (num === 0) {
-    Store.TestAddid = data.id as any
-    router.push('/SystemMenu/test/TestAdd')
+    router.push({
+      path: '/SystemMenu/test/TestAdd',
+      query: {
+        id: data.id
+      }
+    })
   } else {
     ElMessage.warning('本场考试已有学生参加，不可编辑')
   }
@@ -355,48 +368,62 @@ const DelSystemTransfer = () => {
 
 //获取弹出框的数据
 let getDogis = ref()
+let getDogisashiw = ref(false)
 const GetTestAt = async (data: any) => {
-  console.log(data.id)
-  let res = await TestGet({
-    id: data.id
+  getDogisashiw.value = true
+  nextTick(async () => {
+    let res = await TestGet({
+      id: data.id
+    })
+    if (res.errCode === 10000) {
+      getDogis.value.testid = data.id
+      getDogis.value.dialogVisible = true
+      getDogis.value.getDogisTest = res.data
+    }
   })
-  if (res.errCode === 10000) {
-    getDogis.value.testid = data.id
-    getDogis.value.dialogVisible = true
-    getDogis.value.getDogisTest = res.data
-  }
+}
+//关闭学生考试分数弹框
+const MyTestDigclose = () => {
+  getDogisashiw.value = false
 }
 //学生
 //请求成功传给穿梭框的选泽框
 let Testdatast: any = ref([])
 let testid = ref(0)
 const student = debounce(async (name: string, ishows: boolean, data: any) => {
-  testid.value = data.id
-  ishow.value = ishows
-  dialogname.value = name
-  dialog.value.dialogVisible = true
+  TrabsList.value = true
+  nextTick(() => {
+    testid.value = data.id
+    ishow.value = ishows
+    dialogname.value = name
+    dialog.value.dialogVisible = true
+  })
 }, 300)
-
+//关闭穿梭框页面
+const MyClose = () => {
+  TrabsList.value = true
+}
 //表单数据条数和是否开启loading
 let loading = ref<boolean>(true)
 let total = ref(0)
 //分页
 //页
 const sonhandleCurrentChange = (data: number) => {
-  TestData.page = data
+  TestData.value.page = data
   loading.value = true
   TestListdata()
 }
 //条
 const sonhandleSizeChange = (data: number) => {
-  TestData.psize = data
+  TestData.value.psize = data
+
   loading.value = true
   TestListdata()
 }
 
 //状态选中
 const TestState = (data: any) => {
-  TestData.state = data
+  TestData.value.state = data
   loading.value = true
   TestListdata()
 }
@@ -449,14 +476,14 @@ const open = (data: any) => {
 //开放时间选则
 const radiotest = (data: any) => {
   if (data === '永久开放') {
-    TestData.opentime = '0'
+    TestData.value.opentime = '0'
   } else {
-    TestData.opentime = '1'
+    TestData.value.opentime = '1'
   }
 }
 //获取考试列表管理
 const TestListdata = async () => {
-  let res = await TestLists(TestData)
+  let res = await TestLists(TestData.value)
   console.log(res.data.list)
   if (res.errCode === 10000) {
     TestDatas.value = res.data.list
@@ -467,53 +494,53 @@ const TestListdata = async () => {
 TestListdata()
 //开始时间和结束时间处理
 const tiems = (data: any) => {
-  TestData.begindate = dayjs(data[0]).format('YYYY-MM-DD')
-  TestData.enddate = dayjs(data[1]).format('YYYY-MM-DD')
+  TestData.value.begindate = dayjs(data[0]).format('YYYY-MM-DD')
+  TestData.value.enddate = dayjs(data[1]).format('YYYY-MM-DD')
 }
 //判断多选框是否选中做操作
 const isxuanze = (data: any) => {
   console.log(data)
   if (data === true) {
-    TestData.ismy = '0'
-    TestData.admin = ''
+    TestData.value.ismy = '0'
+    TestData.value.admin = ''
   } else {
-    TestData.ismy = ''
+    TestData.value.ismy = ''
   }
 }
 //判断input框是否输入值做操作
 const AdminInput = (data: any) => {
   if (data !== '') {
     created.value = ''
-    TestData.ismy = ''
+    TestData.value.ismy = ''
   }
 }
 //element选中之后时间显示
 const shortcuts = [
   {
-    text: '近一周',
+    text: '最近一周',
     value: () => {
       const end = new Date()
       const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-      return [start, end]
+      start.setTime(start.getTime() + 3600 * 1000 * 24 * 7)
+      return [end, start]
     }
   },
   {
-    text: '近一个月',
+    text: '最近一个月',
     value: () => {
       const end = new Date()
       const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-      return [start, end]
+      start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+      return [end, start]
     }
   },
   {
-    text: '近三个月',
+    text: '最近三个月',
     value: () => {
       const end = new Date()
       const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      return [start, end]
+      start.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
+      return [end, start]
     }
   }
 ]

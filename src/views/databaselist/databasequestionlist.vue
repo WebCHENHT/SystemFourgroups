@@ -37,6 +37,7 @@
       :TableData="tableData"
       :tableColums="tableColums"
       :total="total"
+      :loading = "loading"
       :isselect="true"
       @allTableData="allTableData"
       @sonhandleCurrentChange="sonhandleCurrentChange"
@@ -45,7 +46,7 @@
     <!-- 试卷名称 -->
         <template #default="scoped:any">
           <el-button type="primary" link @click="testDetail(scoped.data)" >
-          <div v-html="htmlEncode(scoped.data.title)"></div>
+          <div v-html="scoped.data.title"></div>
           </el-button>
         </template>
         <!-- 时间 -->
@@ -79,7 +80,6 @@
 
 <script setup lang="ts">
 import { ArrowLeft } from '@element-plus/icons-vue'
-import {htmlEncode} from '@/untils/Dilist'
 import { reactive, ref, toRaw, toRefs, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {DatabaseDeleteall, DatabaseList , Databasedel, exportExcel} from '@/assets/api/databaselist/DatabaseList'
@@ -96,6 +96,8 @@ let route = useRoute()
 let ChangeData = ref([])
 let total = ref(0)
 const router = useRouter()
+//表单数据条数和是否开启loading
+let loading = ref<boolean>(true)
 let red = route.query.id
 let title = route.query.title
 const addTestUrl = ref('http://estate.eshareedu.cn/exam/upload/question.xlsx');
@@ -160,6 +162,7 @@ const lists = async() => {
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
+    loading.value = false
   }
 }
 lists()
@@ -253,10 +256,12 @@ const del = async (id: any) => {
 const sonhandleSizeChange = (val: number) => {
   data.psize = val
   lists()
+  loading.value = true
 }
 const sonhandleCurrentChange = (val: number) => {
   data.page = val
   lists()
+  loading.value = true
 }
 // 搜索
 const query = debounce(() => {

@@ -1,5 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 
+import DefineOptions from 'unplugin-vue-define-options/vite'
+
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
@@ -15,7 +17,8 @@ export default defineConfig({
     }),
     Components({
       resolvers: [ElementPlusResolver()]
-    })
+    }),
+
   ],
   resolve: {
     alias: {

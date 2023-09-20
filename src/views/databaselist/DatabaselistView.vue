@@ -33,6 +33,7 @@
       :tableColums="tableColums"
       :total="total"
       :isselect="true"
+      :loading="loading"
       @allTableData="allTableData"
       @sonhandleCurrentChange="sonhandleCurrentChange"
       @sonhandleSizeChange="sonhandleSizeChange"
@@ -54,7 +55,7 @@
       </template>
     </TableangPage>
     <!-- 添加、修改 -->
-    <CreatetestQuestions ref="flag" @MybaseAdd="MybaseAdd"></CreatetestQuestions>
+    <CreatetestQuestions v-if="Createtest" ref="flag" @MybaseAdd="MybaseAdd" @myCrcolcs="myCrcolcs"></CreatetestQuestions>
   </div>
 </template>
 
@@ -79,6 +80,12 @@ let tableData = ref([])
 let total = ref(0)
 let ChangeData = ref([])
 let flag = ref()
+
+//表单数据条数和是否开启loading
+let loading = ref<boolean>(true)
+//控制组件显示隐藏
+let Createtest = ref(false)
+
 let data = reactive({
   page: 1,
   psize: 10,
@@ -131,7 +138,14 @@ const inputs = (data: any) => {
 }
 //打开题库弹框
 const Create = () => {
-  flag.value.dialogVisible = true
+  Createtest.value = true
+  nextTick(() => {
+    flag.value.dialogVisible = true
+  })
+}
+//关闭题库页面
+const myCrcolcs = () => {
+  Createtest.value = false
 }
 // 添加题库
 const MybaseAdd = async (data: any) => {
@@ -153,6 +167,7 @@ const lists = async () => {
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
+    loading.value = false
   }
 }
 lists()
@@ -165,9 +180,10 @@ const onlyMine = (val: any) => {
 }
 // 编辑题库
 const edit = (val: any) => {
-  flag.value.dialogVisible = true
+  Createtest.value = true
   nextTick(() => {
     //延迟函数  回显
+    flag.value.dialogVisible = true
     flag.value.ruleForm.title = val.title
     flag.value.ruleForm.id = val.id
     flag.value.ruleForm.isshow = val.isshow
@@ -183,6 +199,7 @@ const del = async (id: any) => {
         succesMsg('删除成功')
       }
       lists()
+      loading.value = true
     })
     .catch(() => {
       errorMsg('已取消')
@@ -236,10 +253,12 @@ const query = debounce(() => {
 // 分页
 const sonhandleSizeChange = (val: number) => {
   data.psize = val
+  loading.value = true
   lists()
 }
 const sonhandleCurrentChange = (val: number) => {
   data.page = val
+  loading.value = true
   lists()
 }
 </script>

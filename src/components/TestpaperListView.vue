@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="试卷列表" width="80%">
+  <el-dialog v-model="dialogVisible" title="试卷列表" width="80%" @close="closetpaperList">
     <div class="Parperlist">
       <el-form :model="DatabaseListObj">
         <el-form-item label="试卷名称">
@@ -46,6 +46,7 @@ import { SubjectsList } from '@/assets/api/TestList'
 
 let emit = defineEmits<{
   (name: 'MyTestpapers', value: any): any
+  (name: 'MyclosetpaperList'): any
 }>()
 let vuels = ref(false)
 let loading = ref(true)
@@ -124,6 +125,9 @@ const DatabaseListDatas = async () => {
   }
 }
 DatabaseListDatas()
+const closetpaperList=()=>{
+  emit('MyclosetpaperList')
+}
 const dialogVisible = ref(false)
 defineExpose({ dialogVisible })
 </script>
@@ -156,5 +160,8 @@ defineExpose({ dialogVisible })
   line-height: 32px;
   padding: 0 12px 0 0;
   box-sizing: border-box;
+}
+.el-radio {
+  width: 130px;
 }
 </style>

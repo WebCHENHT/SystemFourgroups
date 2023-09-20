@@ -33,7 +33,8 @@ export default function () {
         name: item.url,
         meta: {
           title: item.name,
-          url: '/SystemMenu' + item.url
+          url: '/SystemMenu' + item.url,
+          keepAlive: true
         },
         component: viteComponent[viewsurl]
       }

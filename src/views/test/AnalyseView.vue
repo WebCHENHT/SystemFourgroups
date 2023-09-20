@@ -34,7 +34,7 @@
         <el-tab-pane label="学员统计" name="first" style="transform: translateX(35px)">
           <el-form :model="StudentTestform">
             <el-form-item label="学员姓名">
-              <el-input v-model="StudentTestform.key" placeholder="请输入考试名称" />
+              <el-input v-model="StudentTestform.key" placeholder="请输入考试名称" clearable />
             </el-form-item>
             <el-form-item label="部门">
               <el-cascader
@@ -43,6 +43,7 @@
                 :props="{ label: 'name', value: 'id', children: 'children' }"
                 @change="handleChange"
                 placeholder="请选择"
+                clearable
               />
             </el-form-item>
             <el-form-item label="班级">
@@ -100,7 +101,12 @@
       </TableangPage>
     </div>
   </div>
-  <SystemDrawer ref="drawer" :Drawertabledata="Drawertabledata"></SystemDrawer>
+  <SystemDrawer
+    ref="drawer"
+    :Drawertabledata="Drawertabledata"
+    v-if="Drawertableisas"
+    @MySystemDrawerClose="MySystemDrawerClose"
+  ></SystemDrawer>
 </template>
 
 <script setup lang="ts">
@@ -112,7 +118,7 @@ import {
   TestGetForResult,
   StudentExportExcel
 } from '@/assets/api/TestList'
-import { reactive, ref } from 'vue'
+import { nextTick, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import EcharTsVue from '@/components/EcharTs.vue'
 import type { TabsPaneContext } from 'element-plus'
@@ -122,6 +128,7 @@ import TestExpor from '@/components/TestExpor.vue'
 let route: any = useRoute()
 let router = useRouter()
 let loading = ref(true)
+let Drawertableisas = ref(false)
 const goBack = () => {
   router.push('/SystemMenu/test')
 }
@@ -197,18 +204,26 @@ const chAkans = () => {
 }
 //控制抽屉
 let drawer = ref()
+
 //给抽屉传数据
 let Drawertabledata = ref()
 const AchahStudent = async (data: any) => {
-  let res = await TestGetForResult({
-    testid: route.query.id,
-    studentid: data.id
+  Drawertableisas.value = true
+  nextTick(async () => {
+    let res = await TestGetForResult({
+      testid: route.query.id,
+      studentid: data.id
+    })
+    if (res.errCode === 10000) {
+      console.log(res.data)
+      drawer.value.DrawerDatas = res.data
+      drawer.value.Drawertableis = true
+    }
   })
-  if (res.errCode === 10000) {
-    console.log(res.data)
-    drawer.value.DrawerDatas = res.data
-    drawer.value.Drawertableis = true
-  }
+}
+//关闭抽屉
+const MySystemDrawerClose = () => {
+  Drawertableisas.value = false
 }
 //获取学员列表
 let Studentdatas = ref<any[]>([])
@@ -244,14 +259,22 @@ let Classesis = ref(true)
 let Classesvalue = ref()
 let Classesoptions = ref<any[]>([])
 const handleChange = async (value: []) => {
-  let depid = value[value.length - 1]
-  StudentTestform.depid = depid
-  let res = await ClassesList({
-    depid: depid
-  })
-  if (res.errCode === 10000) {
-    Classesoptions.value = res.data.list
-    Classesis.value = false
+  if (value !== null) {
+    StudentTestform.classid = ''
+    Classesoptions.value = []
+    let depid = value[value.length - 1]
+    StudentTestform.depid = depid
+    let res = await ClassesList({
+      depid: depid
+    })
+    if (res.errCode === 10000) {
+      Classesoptions.value = res.data.list
+      Classesis.value = false
+    }
+  } else {
+    Classesis.value = true
+    StudentTestform.classid = ''
+    Classesoptions.value = []
   }
 }
 //Echars图表

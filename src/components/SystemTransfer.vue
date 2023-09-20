@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    v-if="dialogVisible"
     v-model="dialogVisible"
     :title="res.names"
     width="50%"
@@ -46,7 +45,6 @@
         </el-form-item>
       </el-col>
     </el-row>
-
     <el-transfer
       v-loading="loading"
       v-model="Classes"
@@ -101,6 +99,7 @@ let res = defineProps({
 
 let emits = defineEmits<{
   (name: 'MySystemTransferAdd', value: any): any
+  (name: 'MyClose'): any
 }>()
 const dialogVisible = ref(false)
 //部门数据
@@ -130,19 +129,12 @@ const getRightTransfer = (data: any) => {
 }
 //编辑时使用
 const gethuisxia = async () => {
-  Testdatast.value = []
-  Classes.value = []
-  Departmentvalue.value = ''
-  Classesvalue.value = ''
-  TransferDatas.value = []
   if (res.testid != 0) {
     if (res.names === '学生考试列表') {
       let reesa: any = await TestGetstudents({
         testid: res.testid
       })
       if (reesa.errCode === 10000) {
-        console.log(reesa)
-
         let resas = reesa.data.map((item: any) => item.id)
         Classes.value = resas
         TransferDatas.value = reesa.data
@@ -233,7 +225,6 @@ const getTransadd = (data: any) => {
 
 //确定提交
 const SystemTransferAdd = () => {
-  console.log(TransferDatas.value)
   let resas = TransferDatas.value.filter((item: any, index: any) => {
     return Classes.value.includes(item.id)
   })
@@ -245,18 +236,18 @@ const SystemTransferAdd = () => {
 }
 //穿梭框提交
 const MySystemTransferAdd = async (data: any) => {
-  console.log(data)
-
   if (res.ishow === true) {
     if (data.length <= 0) {
       ElMessage.warning('数据不能为空')
     } else {
-      let list = data.map((item: any) => {
+      let arr = data.map((item: any) => {
         return {
           studentid: item.id,
           testid: res.testid
         }
       })
+      let list = arr.filter((item: any) => item.studentid !== 0 && item.testid !== 0)
+
       let Teststudentsres = await TeststudentsAdd({
         testid: res.testid,
         list
@@ -311,12 +302,7 @@ const MySystemTransferAdd = async (data: any) => {
 
 //关闭回调
 const DelSystemTransfer = () => {
-  dialogVisible.value = false
-  Testdatast.value = []
-  Classes.value = []
-  Departmentvalue.value = ''
-  Classesvalue.value = ''
-  TransferDatas.value = []
+  emits('MyClose')
 }
 defineExpose({ dialogVisible, loading })
 </script>

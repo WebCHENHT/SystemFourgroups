@@ -86,7 +86,7 @@
             <div class="gods Testboxs" v-if="from.questions.length >= 1">
               <div v-for="(item, index) in from.questions" :key="item.id">
                 <!-- 单选题 -->
-                <div v-if="item.type === '单选题'">
+                <div class="top" v-if="item.type === '单选题'">
                   <span>{{ index + 1 }}.{{ item.type }}</span
                   >&nbsp;&nbsp;
                   <span
@@ -116,7 +116,7 @@
                   </div>
                 </div>
                 <!-- 多选题 -->
-                <div v-if="item.type === '多选题'">
+                <div class="top" v-if="item.type === '多选题'">
                   <span>{{ index + 1 }}.{{ item.type }}</span
                   >&nbsp;&nbsp;
                   <span
@@ -128,7 +128,7 @@
                   <span @click="dels(index)"
                     ><el-icon><Delete /></el-icon
                   ></span>
-                  <div v-html="item.title"></div>
+                  <div class="title" v-html="item.title"></div>
 
                   <div v-for="items in item.answers" :key="items.id">
                     <div
@@ -157,8 +157,8 @@
                     </div>
                   </div>
                 </div>
-                <!-- 填空题 -->
-                <div v-if="item.type === '填空题'">
+                <!-- 填空题和问答题 -->
+                <div class="top" v-if="item.type === '填空题' || item.type == '问答题'">
                   <span>{{ index + 1 }}.{{ item.type }}</span
                   >&nbsp;&nbsp;
                   <span
@@ -170,7 +170,7 @@
                   <span @click="dels(index)"
                     ><el-icon><Delete /></el-icon
                   ></span>
-                  <div v-html="item.title.replace(/\[\]/g, '_____')"></div>
+                  <div class="title" v-html="item.title.replace(/\[\]/g, '_____')"></div>
 
                   <div v-if="item.type == '填空题' || item.type == '问答题'">
                     <p v-if="item.type == '填空题'" class="Corrects">正确答案：{{ item.answer }}</p>
@@ -180,7 +180,7 @@
                   <div v-for="items in item.answers" :key="items.id"></div>
                 </div>
                 <!-- 判断题 -->
-                <div v-if="item.type === '判断题'">
+                <div class="top" v-if="item.type === '判断题'">
                   <span>{{ index + 1 }}.{{ item.type }}</span
                   >&nbsp;&nbsp;
                   <span
@@ -192,30 +192,8 @@
                   <span @click="dels(index)"
                     ><el-icon><Delete /></el-icon
                   ></span>
-                  <div v-html="item.title"></div>
+                  <div class="title" v-html="item.title"></div>
                   <p class="CorrectAnswer">正确答案：{{ item.answer }}</p>
-                </div>
-                <!-- 问答题 -->
-                <div v-if="item.type === '问答题'">
-                  <span>{{ index + 1 }}.{{ item.type }}</span
-                  >&nbsp;&nbsp;
-                  <span
-                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
-                  ></span>
-                  <span @click="getTestadd(item, index + 1)"
-                    ><el-icon><EditPen /></el-icon
-                  ></span>
-                  <span @click="dels(index)"
-                    ><el-icon><Delete /></el-icon
-                  ></span>
-                  <div v-html="item.title.replace(/\[\]/g, '_____')"></div>
-
-                  <div v-if="item.type == '填空题' || item.type == '问答题'">
-                    <p v-if="item.type == '填空题'" class="Corrects">正确答案：{{ item.answer }}</p>
-
-                    <p class="parse">答案解析：{{ item.explains }}</p>
-                  </div>
-                  <div v-for="items in item.answers" :key="items.id"></div>
                 </div>
               </div>
             </div>
@@ -288,16 +266,29 @@
   <!-- 题库添加 -->
   <QuestionBankLogView ref="Questio" @myQunstions="myQunstions"></QuestionBankLogView>
   <!-- 创建题库 -->
-  <CreatetestQuestions ref="Questions" @MybaseAdd="MybaseAdd"></CreatetestQuestions>
+  <CreatetestQuestions
+    v-if="Createtest"
+    ref="Questions"
+    @MybaseAdd="MybaseAdd"
+    @myCrcolcs="myCrcolcs"
+  ></CreatetestQuestions>
   <!-- 单个添加 -->
-  <TestAddWangEditor ref="WangAdd" :id="from.id" @MywangAdd="MywangAdd"></TestAddWangEditor>
+  <TestAddWangEditor
+    v-if="wangis"
+    ref="WangAdd"
+    :id="from.id"
+    @MywangAdd="MywangAdd"
+    @MywangColos="MywangColos"
+  ></TestAddWangEditor>
   <!-- 穿梭框 -->
   <SystemTransfer
+    v-if="Bulletbox"
     ref="Transfe"
     :ishow="ishow"
     :names="names"
     :testid="0"
     @MySystemTransferAdd="MySystemTransferAdd"
+    @my-close="myclose"
   ></SystemTransfer>
 </template>
 
@@ -312,12 +303,15 @@ import SystemTransfer from '@/components/SystemTransfer.vue'
 import TestAddWangEditor from '@/components/TestAddWangEditor.vue'
 import { errorMsg, succesMsg } from '@/untils/msg'
 import { Delete, EditPen } from '@element-plus/icons-vue'
-import { computed, reactive, ref, toRefs } from 'vue'
+import { computed, nextTick, reactive, ref, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 //获取弹框暴露属性
 let Transfe = ref()
 //控制班级显示隐藏
 const ishow = ref(false)
+let Bulletbox = ref(false)
+let wangis = ref(false)
+let Createtest = ref(false)
 //弹框名称
 const names = ref('')
 //题目input
@@ -336,7 +330,6 @@ let user = ref(false)
 const Questio = ref()
 const Questions = ref()
 let adds = ref(false)
-let shows = ref(false)
 let from: any = ref({
   id: 0,
   title: '',
@@ -459,7 +452,14 @@ const dels = (i: any) => {
 }
 //打开题库列表
 const questionbank = () => {
-  Questio.value.dialogVisible = true
+  Createtest.value = true
+  nextTick(() => {
+    Questions.value.dialogVisible = true
+  })
+}
+//关闭题库页面
+const myCrcolcs = () => {
+  Createtest.value = false
 }
 //试题提交
 const myQunstions = (data: any) => {
@@ -495,13 +495,25 @@ const arraytest: any = computed(() => {
   return listarray.value
 })
 const WangAdd = ref()
+//关闭题型添加弹框
+const MywangColos = () => {
+  wangis.value = false
+}
+
 //打开编辑器
 const Wangtitle = () => {
-  WangAdd.value.drawer = true
+  wangis.value = true
+  nextTick(() => {
+    WangAdd.value.drawer = true
+  })
 }
+
 //打开题库弹框
 const chujians = () => {
   Questions.value.dialogVisible = true
+} //关闭穿梭框操作
+const myclose = () => {
+  Bulletbox.value = false
 }
 //题型添加
 const MywangAdd = (data: any) => {
@@ -521,13 +533,16 @@ const getTestadd = (data: any, key: number) => {
   WangAdd.value.questionsData.id = key
 }
 const Markingteacher = (data: any) => {
-  names.value = data
-  if (data === '考生范围') {
-    ishow.value = true
-  } else {
-    ishow.value = false
-  }
-  Transfe.value.dialogVisible = true
+  Bulletbox.value = true
+  nextTick(() => {
+    names.value = data
+    if (data === '考生范围') {
+      ishow.value = true
+    } else {
+      ishow.value = false
+    }
+    Transfe.value.dialogVisible = true
+  })
 }
 const MySystemTransferAdd = (data: any) => {
   let res: any = data.filter((item: any) => {
@@ -546,10 +561,6 @@ const MySystemTransferAdd = (data: any) => {
 
   Transfe.value.dialogVisible = false
 }
-// 可见老师
-const all = (row: any) => {
-  from.value.limits = row
-}
 // 取消
 const cancellation = () => {
   userouter.push('/SystemMenu/subjects')
@@ -558,125 +569,11 @@ const father = () => {
   user.value = false
   list()
 }
-const flase = () => {
-  shows.value = false
-  list()
-}
-
 const Batch = () => {
   user.value = true
 }
 </script>
 
 <style scoped lang="less">
-.CorrectAnswer {
-  background-color: #f0faf6;
-  color: #84d5b1;
-  padding: 12px;
-}
-.Corrects {
-  background-color: #f0faf6;
-  color: #84d5b1;
-  padding: 12px;
-  margin-bottom: 15px;
-}
-.parse {
-  background-color: #f6faff;
-  color: #a0adbd;
-  padding: 12px;
-}
-.color {
-  background-color: #eefaf6;
-  padding-left: 10px;
-}
-.Score {
-  width: 122px;
-  height: 90px;
-  border: 1px solid #dcdfe6;
-  position: relative;
-  top: 10px;
-  left: -10px;
-  font-size: 13px;
-  color: #848484;
-  text-align: center;
-  line-height: 40px;
-}
-h3 {
-  font-size: 20px;
-  padding: 20px;
-}
-.one {
-  display: flex;
-  align-items: center;
-  background-color: #f9faff;
-  padding: 5px 30px;
-}
-.ones {
-  font-size: 35px;
-  color: #c7e5ff;
-}
-.el-input {
-  width: 300px;
-}
-
-.god {
-  display: flex;
-  width: 1005px;
-  height: 30px;
-  line-height: 30px;
-  border: 1px solid #dcdfe6;
-  padding: 10px 30px;
-}
-.gods {
-  width: 1005px;
-  line-height: 30px;
-  border: 1px solid #dcdfe6;
-  padding: 10px 30px;
-}
-b {
-  font-weight: bold;
-  font-size: 1rem;
-}
-.right {
-  color: #90909e;
-  margin-left: 65%;
-}
-.right span {
-  margin-left: 36px;
-}
-
-.el-badge__content--primary {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  position: absolute;
-  top: 0;
-  right: 5px;
-  transform: translateY(-50%) translate(100%);
-  background-color: var(--el-color-primary);
-  font-size: 12px;
-}
-.Testboxs {
-  max-height: 74vh;
-  overflow-y: scroll;
-}
-.el-icon {
-  color: #409eff;
-  font-size: 25px;
-  position: relative;
-  left: 800px;
-}
-.box {
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  border: 1px solid #e0e0e0;
-  margin-top: 5px;
-}
-.bo {
-  display: flex;
-  color: #606266;
-  margin: 10px;
-  padding-left: 10px;
-}
+@import url('../../assets/css/SubjctsAdd/SubjctsAdd.less');
 </style>

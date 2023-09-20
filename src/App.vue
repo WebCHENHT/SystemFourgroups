@@ -1,7 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-  <RouterView />
+  <!-- vue3.0配置 -->
+  <router-view />
 </template>
 
 <style>
