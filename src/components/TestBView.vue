@@ -12,7 +12,7 @@
           <div class="typeTitle">{{ item.type }}</div>
         </div>
         <span class="TitlScore">分值: {{ item.scores }}</span>
-        <div :class="props.DrawerDatas.studentScores > 0 ? 'Drawsusson' : 'Drawerror'">
+        <div :class="item.studentscores > 0 ? 'Drawsusson' : 'Drawerror'">
           得分：{{ item.studentscores }}
         </div>
       </div>

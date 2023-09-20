@@ -8,11 +8,10 @@ export const instruct = (app: any) => {
       const res = menus.filter((item: any) => {
         return new RegExp(binding.value.model).test(item.name) && item.pid !== 0
       })
-      console.log(res)
+
       const arr = res.filter((item: any) => {
         return new RegExp(binding.value.name).test(item.name)
       })
-      console.log(arr)
 
       if (arr.length === 0) {
         el.parentNode.removeChild(el)

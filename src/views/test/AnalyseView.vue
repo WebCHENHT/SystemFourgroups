@@ -34,7 +34,7 @@
         <el-tab-pane label="学员统计" name="first" style="transform: translateX(35px)">
           <el-form :model="StudentTestform">
             <el-form-item label="学员姓名">
-              <el-input v-model="StudentTestform.key" placeholder="请输入考试名称" />
+              <el-input v-model="StudentTestform.key" placeholder="请输入考试名称" clearable />
             </el-form-item>
             <el-form-item label="部门">
               <el-cascader
@@ -43,6 +43,7 @@
                 :props="{ label: 'name', value: 'id', children: 'children' }"
                 @change="handleChange"
                 placeholder="请选择"
+                clearable
               />
             </el-form-item>
             <el-form-item label="班级">
@@ -100,7 +101,11 @@
       </TableangPage>
     </div>
   </div>
-  <SystemDrawer ref="drawer" :Drawertabledata="Drawertabledata"></SystemDrawer>
+  <SystemDrawer
+    ref="drawer"
+    :Drawertabledata="Drawertabledata"
+    v-if="drawer.Drawertableis"
+  ></SystemDrawer>
 </template>
 
 <script setup lang="ts">
@@ -197,6 +202,7 @@ const chAkans = () => {
 }
 //控制抽屉
 let drawer = ref()
+
 //给抽屉传数据
 let Drawertabledata = ref()
 const AchahStudent = async (data: any) => {
@@ -244,14 +250,22 @@ let Classesis = ref(true)
 let Classesvalue = ref()
 let Classesoptions = ref<any[]>([])
 const handleChange = async (value: []) => {
-  let depid = value[value.length - 1]
-  StudentTestform.depid = depid
-  let res = await ClassesList({
-    depid: depid
-  })
-  if (res.errCode === 10000) {
-    Classesoptions.value = res.data.list
-    Classesis.value = false
+  if (value !== null) {
+    StudentTestform.classid = ''
+    Classesoptions.value = []
+    let depid = value[value.length - 1]
+    StudentTestform.depid = depid
+    let res = await ClassesList({
+      depid: depid
+    })
+    if (res.errCode === 10000) {
+      Classesoptions.value = res.data.list
+      Classesis.value = false
+    }
+  } else {
+    Classesis.value = true
+    StudentTestform.classid = ''
+    Classesoptions.value = []
   }
 }
 //Echars图表

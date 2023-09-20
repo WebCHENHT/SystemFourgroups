@@ -284,6 +284,7 @@ const dels = () => {
 // 查询
 const cha = debounce(() => {
   studenlist()
+  loading.value = true
 }, 500)
 
 // 点击添加

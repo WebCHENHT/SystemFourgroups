@@ -29,6 +29,7 @@
       <el-button class="but" type="primary" @click="search">查询</el-button>
     </div>
     <TableangPage
+    :loading="loading"
     :TableData="tableData" 
     :tableColums="tableColum"
     :total="total"
@@ -82,7 +83,6 @@
 </template>
 
 <script setup lang="ts">
-import ExamDrawer from '@/components/ExamsZu/ExamDrawer.vue'
 import TableangPage from '@/components/TableangPage.vue'
 import {DepartmentList} from '@/assets/api/teacher/teacher'
 import {studentlist,classeslist,queslist,studentanswer} from '@/assets/api/Exam/Exam'
@@ -91,6 +91,7 @@ import { useRouter ,useRoute} from 'vue-router'
 import type { Examcans,classdata } from '@/assets/TSinterface/Exam';
 import{succesMsg,errorMsg} from '@/untils/msg'
 let router = useRouter()
+let loading = ref<boolean>(true)
 let route: any = useRoute()
 const goBack = () => {
   router.push('/SystemMenu/exam')
@@ -193,6 +194,7 @@ const classesdata = async ()=>{
   let red = await classeslist(form)
   console.log(666,red);
   clasList.value = red.data.list 
+  
 }
 
 //部门change事件
@@ -213,6 +215,7 @@ let total = ref(0)
 // 搜索
 const search = ()=>{
   console.log(ruform);
+  loading.value = true
   studentlists()
 }
 // 考生列表
@@ -221,14 +224,17 @@ const studentlists = async ()=>{
   console.log(red);
   tableData.value = red.data.list
   total.value = red.data.counts  
+  loading.value = false
 }
 studentlists()
 // 分页
 const handleSizeChange = (val: number) => {
+  loading.value = true
   ruform.psize = val
   studentlists()
 }
 const handleCurrentChange = (val: number) => {
+  loading.value = true
   ruform.page = val
   studentlists()
 }
@@ -250,10 +256,14 @@ const open = (val: any)=>{
 const direction = ref('rtl')
 const handleClose = (done: () => void) => {
   drawer.value = false
+  // loading.value = true
+
 }
 // 取消
 function cancelClick() {
   drawer.value = false
+  // loading.value = true
+
 }
 // 阅卷完毕
 const confirmClick = async ()=>{
@@ -263,8 +273,12 @@ const confirmClick = async ()=>{
   drawer.value = false
   let red = await studentanswer(PassworData)
   console.log('阅卷完毕',red);
+  // loading.value = true
+
   if(red.errCode==10000){
     succesMsg('您已经判完卷了')
+      loading.value = true
+
   }
   studentlists()
 }
@@ -294,7 +308,7 @@ let Atomicsl = (rule: any, value: any, callback: any) => {
     return false
   } else if (val > max || val < 0) {
     return callback(new Error('分数不能小于0,大于' + max))
-  } else {
+  }else {
     callback()
   }
 }

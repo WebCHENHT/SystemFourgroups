@@ -1,4 +1,5 @@
 export interface TestDatatype {
+[x: string]: any
   page: number
   psize: number
   key: string
