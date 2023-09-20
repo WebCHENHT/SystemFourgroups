@@ -271,11 +271,13 @@
   <TestAddWangEditor ref="WangAdd" :id="from.id" @MywangAdd="MywangAdd"></TestAddWangEditor>
   <!-- 穿梭框 -->
   <SystemTransfer
+    v-if="Bulletbox"
     ref="Transfe"
     :ishow="ishow"
     :names="names"
     :testid="0"
     @MySystemTransferAdd="MySystemTransferAdd"
+    @my-close="myclose"
   ></SystemTransfer>
 </template>
 
@@ -290,12 +292,13 @@ import SystemTransfer from '@/components/SystemTransfer.vue'
 import TestAddWangEditor from '@/components/TestAddWangEditor.vue'
 import { errorMsg, succesMsg } from '@/untils/msg'
 import { Delete, EditPen } from '@element-plus/icons-vue'
-import { computed, reactive, ref, toRefs } from 'vue'
+import { computed, nextTick, reactive, ref, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 //获取弹框暴露属性
 let Transfe = ref()
 //控制班级显示隐藏
 const ishow = ref(false)
+let Bulletbox = ref(false)
 //弹框名称
 const names = ref('')
 //题目input
@@ -480,6 +483,9 @@ const Wangtitle = () => {
 //打开题库弹框
 const chujians = () => {
   Questions.value.dialogVisible = true
+} //关闭穿梭框操作
+const myclose = () => {
+  Bulletbox.value = false
 }
 //题型添加
 const MywangAdd = (data: any) => {
@@ -499,13 +505,16 @@ const getTestadd = (data: any, key: number) => {
   WangAdd.value.questionsData.id = key
 }
 const Markingteacher = (data: any) => {
-  names.value = data
-  if (data === '考生范围') {
-    ishow.value = true
-  } else {
-    ishow.value = false
-  }
-  Transfe.value.dialogVisible = true
+  Bulletbox.value = true
+  nextTick(() => {
+    names.value = data
+    if (data === '考生范围') {
+      ishow.value = true
+    } else {
+      ishow.value = false
+    }
+    Transfe.value.dialogVisible = true
+  })
 }
 const MySystemTransferAdd = (data: any) => {
   let res: any = data.filter((item: any) => {

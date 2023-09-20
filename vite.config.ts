@@ -17,8 +17,8 @@ export default defineConfig({
     }),
     Components({
       resolvers: [ElementPlusResolver()]
-    }),
-    DefineOptions()
+    })
+  
   ],
   resolve: {
     alias: {
