@@ -1,6 +1,12 @@
 <template>
   <div>
-    <el-drawer v-model="Drawertableis" :title="DrawerDatas.title" direction="rtl" size="50%">
+    <el-drawer
+      v-model="Drawertableis"
+      :title="DrawerDatas.title"
+      direction="rtl"
+      size="50%"
+      @close="SystemDrawerClose"
+    >
       <div class="Drawtop">
         <div class="DrawtopText">
           <div class="Drawtitels">
@@ -32,9 +38,14 @@
 import { ref } from 'vue'
 import type { TestGetForResultData } from '@/assets/TSinterface/SystemTest'
 import TestBView from './TestBView.vue'
+let emits = defineEmits<{
+  (name: 'MySystemDrawerClose'): void
+}>()
 let DrawerDatas = ref<TestGetForResultData>([])
 const Drawertableis = ref(false)
-
+const SystemDrawerClose = () => {
+  emits('MySystemDrawerClose')
+}
 defineExpose({ Drawertableis, DrawerDatas })
 </script>
 

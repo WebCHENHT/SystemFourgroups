@@ -8,6 +8,7 @@
       :TableData="tableData"
       :tableColums="tableColums"
       :total="total"
+      :loading="loading"
       @sonhandleCurrentChange="sonhandleCurrentChange"
       @sonhandleSizeChange="sonhandleSizeChange"
     >
@@ -32,6 +33,8 @@ import AddModifyRoles from '@/components/AddRoles/AddModifyRoles.vue'
 import TableangPage from '@/components/TableangPage.vue'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 import { reactive, ref } from 'vue'
+//表单数据条数和是否开启loading
+let loading = ref<boolean>(true)
 let tableData = ref([])
 let total = ref(0)
 const showDialog = ref(false)
@@ -61,6 +64,7 @@ const list = async () => {
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
+    loading.value = false
   }
 }
 list()
@@ -97,10 +101,12 @@ const fatherDate = () => {
 const sonhandleSizeChange = (val: number) => {
   data.psize = val
   list()
+  loading.value = true
 }
 const sonhandleCurrentChange = (val: number) => {
   data.page = val
   list()
+  loading.value = true
 }
 </script>
 
