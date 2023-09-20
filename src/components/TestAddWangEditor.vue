@@ -128,7 +128,6 @@
 import { ref, reactive, watch } from 'vue'
 import WangEditor from './WangEditor.vue'
 import { CircleClose, CirclePlus } from '@element-plus/icons-vue'
-
 import { ElMessage } from 'element-plus'
 let emits = defineEmits<{
   (name: 'MywangAdd', value: any): any
@@ -212,7 +211,7 @@ const baocuns = () => {
   } else {
     if (questionsData.value.type === '多选题' || questionsData.value.type === '单选题') {
       if (!questionsData.value.answers.every((item: any) => item.content !== '')) {
-        ElMessage.error('选择不能为空')
+        ElMessage.error('选项输入框不能为空')
       } else {
         if (questionsData.value.type === '多选题') {
           if (questionsData.value.answer.split('|').length < 2) {
@@ -261,7 +260,7 @@ const baocuns = () => {
 }
 const inputs = (data: any) => {
   if ((questionsData.value.scores as any) == '') {
-    ElMessage.error('分值不能为空')
+    ElMessage.warning('分值不能为空')
   }
 }
 

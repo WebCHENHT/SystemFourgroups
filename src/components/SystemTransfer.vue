@@ -141,8 +141,6 @@ const gethuisxia = async () => {
         testid: res.testid
       })
       if (reesa.errCode === 10000) {
-        console.log(reesa)
-
         let resas = reesa.data.map((item: any) => item.id)
         Classes.value = resas
         TransferDatas.value = reesa.data
@@ -245,18 +243,18 @@ const SystemTransferAdd = () => {
 }
 //穿梭框提交
 const MySystemTransferAdd = async (data: any) => {
-  console.log(data)
-
   if (res.ishow === true) {
     if (data.length <= 0) {
       ElMessage.warning('数据不能为空')
     } else {
-      let list = data.map((item: any) => {
+      let arr = data.map((item: any) => {
         return {
           studentid: item.id,
           testid: res.testid
         }
       })
+      let list = arr.filter((item: any) => item.studentid !== 0 && item.testid !== 0)
+
       let Teststudentsres = await TeststudentsAdd({
         testid: res.testid,
         list

@@ -21,7 +21,16 @@
           </div>
         </div>
       </el-aside>
-      <el-main><RouterView /></el-main>
+      <el-main>
+        <router-view v-slot="{ Component }">
+          <translate>
+            <keep-alive>
+              <component :is="Component" :key="route.name" v-if="$route.meta.keepAlive" />
+            </keep-alive>
+          </translate>
+          <component :is="Component" :key="route.name" v-if="!$route.meta.keepAlive" />
+        </router-view>
+      </el-main>
     </el-container>
   </div>
 
@@ -35,8 +44,8 @@
         />
       </div>
     </div>
-    <div class="name">超级管理员</div>
-    <div class="name">部门</div>
+    <div class="name">{{ data.userInfo.name }}</div>
+    <div class="name">{{ data.userInfo.depname }}</div>
     <!-- <div class="name">班级</div> -->
     <div class="butBox">
       <el-button class="but" @click="SignOut">退出登录</el-button>
@@ -67,11 +76,13 @@ import { ref, reactive, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useCounterStore } from '@/stores/counter'
-let store = useCounterStore()
 
 let route = useRoute()
+
+let store = useCounterStore()
+
 let router = useRouter()
-let resget = router.getRoutes()
+
 const data = reactive({
   LeftArrDatas: [] as any,
   userInfo: {} as any,
@@ -79,7 +90,7 @@ const data = reactive({
 })
 //把pinan里面的侧边栏数据取出来
 data.LeftArrDatas = store.LeftArrDatas
-
+data.userInfo = store.model
 let SytemUrl = ref(route.meta.url)
 
 //跳转页面

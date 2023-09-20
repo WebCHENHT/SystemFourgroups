@@ -327,7 +327,7 @@ import { Delete, EditPen } from '@element-plus/icons-vue'
 import dayjs from 'dayjs'
 import { ElMessage } from 'element-plus'
 import { computed, reactive, ref, toRefs, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 let Store = useCounterStore()
 const TestpaperList = ref()
 const WangAdd = ref()
@@ -335,6 +335,7 @@ const Questions = ref()
 const Stepslog = ref()
 const Questio = ref()
 const router = useRouter()
+const route = useRoute()
 //题目input
 let TestTypeo = reactive({
   MultipleChoice: '',
@@ -343,7 +344,7 @@ let TestTypeo = reactive({
   fillintheblanks: '',
   essayquestion: ''
 })
-let tesGetid = ref(Store.TestAddid)
+let tesGetid: any = ref(route.query.id)
 let { MultipleChoice, Multiplechoicequestions, trueorfalse, fillintheblanks, essayquestion } =
   toRefs(TestTypeo)
 let TestData: any = ref({
@@ -360,7 +361,7 @@ let TestData: any = ref({
   qorder: '',
   aorder: '',
   answershow: 0,
-  isshow: 0,
+  isshow: 1,
   databaseid: 0,
   teacherid: '',
   state: 1,
@@ -411,8 +412,6 @@ watch(
   () => TestData.value,
   (a: any, b) => {
     if (a != '') {
-      console.log(a)
-
       value2.value = [a.begintime, a.endtime] as any
       if (TestData.value.qorder == 1) {
         check1.value = true
@@ -720,8 +719,8 @@ const shortcuts = [
     value: () => {
       const end = new Date()
       const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-      return [start, end]
+      start.setTime(start.getTime() + 3600 * 1000 * 24 * 7)
+      return [end, start]
     }
   },
   {
@@ -729,8 +728,8 @@ const shortcuts = [
     value: () => {
       const end = new Date()
       const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-      return [start, end]
+      start.setTime(start.getTime() + 3600 * 1000 * 24 * 30)
+      return [end, start]
     }
   },
   {
@@ -738,8 +737,8 @@ const shortcuts = [
     value: () => {
       const end = new Date()
       const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      return [start, end]
+      start.setTime(start.getTime() + 3600 * 1000 * 24 * 90)
+      return [end, start]
     }
   }
 ]

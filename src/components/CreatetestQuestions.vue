@@ -1,3 +1,4 @@
+,
 <template>
   <el-dialog v-model="dialogVisible" title="题库添加" width="45%" @close="gubisd">
     <div class="addBase">
@@ -22,7 +23,7 @@
             "
           />
         </el-form-item>
-        <el-form-item label="被他人使用">
+        <el-form-item label="被他人使用" style="width: 50%">
           <el-radio-group v-model="ruleForm.isshow">
             <el-radio :label="1">允许所有老师使用</el-radio>
             <el-radio :label="2">不允许任何老师使用</el-radio>

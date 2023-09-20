@@ -169,4 +169,7 @@ defineExpose({ dialogVisible })
   padding: 0 12px 0 0;
   box-sizing: border-box;
 }
+.el-radio {
+  width: 130px;
+}
 </style>

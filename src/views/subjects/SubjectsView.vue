@@ -54,7 +54,7 @@ import { subjectsdelete, subjectsget, subjectslist } from '@/assets/api/subjects
 import TableangPage from '@/components/TableangPage.vue'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 import PaperView from '@/views/subjects/PaperView.vue'
-import { reactive, ref, toRefs } from 'vue'
+import { reactive, ref, toRefs, onActivated } from 'vue'
 import { useRouter } from 'vue-router'
 let router = useRouter()
 // 试卷表格数据
@@ -109,6 +109,7 @@ let tableColums = reactive([
     label: '操作'
   }
 ])
+
 // 条数
 let total = ref()
 let loading = ref(true)
