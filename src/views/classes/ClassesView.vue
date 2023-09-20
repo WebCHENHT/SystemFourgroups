@@ -38,6 +38,7 @@
         @sonhandleCurrentChange="handleCurrentChange"
         @sonhandleSizeChange="handleSizeChange"
         @allTableData="allTableData"
+        :loading="loading"
       >
         <!-- 操作 -->
         <template #actions="scope">
@@ -74,7 +75,7 @@ import { reactive, ref, toRaw, toRefs, watch } from 'vue'
 // 批量删除默认隐藏
 const show = ref(false)
 let ChangeData = ref([])
-
+let loading = ref(true)
 let tableColums = reactive([
   {
     label: '班级名称',
@@ -120,16 +121,19 @@ let list = async () => {
   if (res.errCode === 10000) {
     TableData.value = res.data.list
     total.value = res.data.counts
+    loading.value = false
   }
 }
 list()
 // 分页逻辑
 const handleSizeChange = (val: number) => {
   params.value.psize = val
+  loading.value = true
   list()
 }
 const handleCurrentChange = (val: number) => {
   params.value.page = val
+  loading.value = true
   list()
 }
 let id: any = reactive([]) //定义多选数据
@@ -213,7 +217,7 @@ const props2 = {
   value: 'id',
   label: 'name',
   children: 'children',
-  checkStrictly: true, //点击单选框选中改点击整行选中
+  // checkStrictly: true, //点击单选框选中改点击整行选中
   emitPath: false //只获取级联选择器中最后一项
 }
 // 获取部门id
@@ -230,14 +234,10 @@ deplist()
 //查询
 const cha = debounce(() => {
   list()
+  loading.value = true
 }, 500)
 </script>
 
 <style scoped lang="less">
-.el-input {
-  width: 200px;
-}
-h3 {
-  font-size: 20px;
-}
+@import url('../../assets//css//classes/classes.css');
 </style>

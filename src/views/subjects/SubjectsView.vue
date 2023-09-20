@@ -33,6 +33,7 @@
         :total="total"
         @sonhandleCurrentChange="handleCurrentChange"
         @sonhandleSizeChange="nhandleSizeChange"
+        :loading="loading"
       >
         <!-- 试卷名称 -->
         <template #default="scoped">
@@ -150,6 +151,7 @@ let list = async () => {
   if (res.errCode === 10000) {
     TableData.value = res.data.list
     total.value = res.data.counts
+    loading.value = false
   }
 }
 list()
@@ -196,10 +198,12 @@ const edit = (row: any) => {
 //  分页
 const handleCurrentChange = (val: number) => {
   params.value.page = val
+  loading.value = true
   list()
 }
 const nhandleSizeChange = (val: number) => {
   params.value.psize = val
+  loading.value = true
   list()
 }
 // 搜索

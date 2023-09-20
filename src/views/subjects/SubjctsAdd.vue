@@ -86,7 +86,7 @@
             <div class="gods Testboxs" v-if="from.questions.length >= 1">
               <div v-for="(item, index) in from.questions" :key="item.id">
                 <!-- 单选题 -->
-                <div v-if="item.type === '单选题'">
+                <div class="top" v-if="item.type === '单选题'">
                   <span>{{ index + 1 }}.{{ item.type }}</span
                   >&nbsp;&nbsp;
                   <span
@@ -116,7 +116,7 @@
                   </div>
                 </div>
                 <!-- 多选题 -->
-                <div v-if="item.type === '多选题'">
+                <div class="top" v-if="item.type === '多选题'">
                   <span>{{ index + 1 }}.{{ item.type }}</span
                   >&nbsp;&nbsp;
                   <span
@@ -128,7 +128,7 @@
                   <span @click="dels(index)"
                     ><el-icon><Delete /></el-icon
                   ></span>
-                  <div v-html="item.title"></div>
+                  <div class="title" v-html="item.title"></div>
 
                   <div v-for="items in item.answers" :key="items.id">
                     <div
@@ -157,8 +157,8 @@
                     </div>
                   </div>
                 </div>
-                <!-- 填空题 -->
-                <div v-if="item.type === '填空题'">
+                <!-- 填空题和问答题 -->
+                <div class="top" v-if="item.type === '填空题' || item.type == '问答题'">
                   <span>{{ index + 1 }}.{{ item.type }}</span
                   >&nbsp;&nbsp;
                   <span
@@ -170,7 +170,7 @@
                   <span @click="dels(index)"
                     ><el-icon><Delete /></el-icon
                   ></span>
-                  <div v-html="item.title.replace(/\[\]/g, '_____')"></div>
+                  <div class="title" v-html="item.title.replace(/\[\]/g, '_____')"></div>
 
                   <div v-if="item.type == '填空题' || item.type == '问答题'">
                     <p v-if="item.type == '填空题'" class="Corrects">正确答案：{{ item.answer }}</p>
@@ -180,7 +180,7 @@
                   <div v-for="items in item.answers" :key="items.id"></div>
                 </div>
                 <!-- 判断题 -->
-                <div v-if="item.type === '判断题'">
+                <div class="top" v-if="item.type === '判断题'">
                   <span>{{ index + 1 }}.{{ item.type }}</span
                   >&nbsp;&nbsp;
                   <span
@@ -192,30 +192,8 @@
                   <span @click="dels(index)"
                     ><el-icon><Delete /></el-icon
                   ></span>
-                  <div v-html="item.title"></div>
+                  <div class="title" v-html="item.title"></div>
                   <p class="CorrectAnswer">正确答案：{{ item.answer }}</p>
-                </div>
-                <!-- 问答题 -->
-                <div v-if="item.type === '问答题'">
-                  <span>{{ index + 1 }}.{{ item.type }}</span
-                  >&nbsp;&nbsp;
-                  <span
-                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
-                  ></span>
-                  <span @click="getTestadd(item, index + 1)"
-                    ><el-icon><EditPen /></el-icon
-                  ></span>
-                  <span @click="dels(index)"
-                    ><el-icon><Delete /></el-icon
-                  ></span>
-                  <div v-html="item.title.replace(/\[\]/g, '_____')"></div>
-
-                  <div v-if="item.type == '填空题' || item.type == '问答题'">
-                    <p v-if="item.type == '填空题'" class="Corrects">正确答案：{{ item.answer }}</p>
-
-                    <p class="parse">答案解析：{{ item.explains }}</p>
-                  </div>
-                  <div v-for="items in item.answers" :key="items.id"></div>
                 </div>
               </div>
             </div>
@@ -632,6 +610,7 @@ h3 {
   line-height: 30px;
   border: 1px solid #dcdfe6;
   padding: 10px 30px;
+  margin-top: 10px;
 }
 b {
   font-weight: bold;
@@ -678,5 +657,17 @@ b {
   color: #606266;
   margin: 10px;
   padding-left: 10px;
+}
+.el-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
+.title {
+  font-size: 16px;
+  margin: 15px 0;
+}
+.top {
+  margin-top: 15px;
 }
 </style>

@@ -81,8 +81,6 @@ const getMenus = async () => {
   }
   const res: any = await MenuList(data)
   console.log(res);
-  console.log(111,data);
-  
   if (res.errCode !== 10000) return
   menuList.value = res.data.list
   menuList.value.forEach((t: any) => {
