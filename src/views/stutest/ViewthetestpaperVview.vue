@@ -55,7 +55,7 @@ const result = async () => {
     testid: route.query.testid as unknown as number
   })
   if (res.errCode === 10000) {
-    console.log(res.data.questions)
+    console.log(res.data)
     DrawerDatas.value = res.data
   }
 }

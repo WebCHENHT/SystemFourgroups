@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="批量导入试题" width="40%">
+  <el-dialog v-model="dialogVisible" title="批量导入试题" width="40%" @close="Dialogclose">
     <div class="impmrt">
       <div class="batchLeft">
         <el-steps direction="vertical">
@@ -57,6 +57,7 @@ import { Download } from '@/untils/Downloadfilesdirectly'
 
 let emits = defineEmits<{
   (name: 'MyStepsAdd', value: any): void
+  (name: 'Myialogclose'): any
 }>()
 let Store = useCounterStore()
 const uploadRef = ref<UploadInstance>()
@@ -104,6 +105,9 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     return false
   }
   return true
+}
+const Dialogclose = () => {
+  emits('Myialogclose')
 }
 defineExpose({ dialogVisible })
 </script>

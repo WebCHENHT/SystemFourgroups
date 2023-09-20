@@ -120,13 +120,10 @@ let DatabasequestObj = reactive({
 })
 //提交
 let tixindataLists = ref([])
-
 const Oktijiaos = () => {
   if (tixindataLists.value.length >= 1) {
     dialogVisible.value = false
-
     emits('Mytijiaos', tixindataLists.value)
-    tixindataLists.value = []
   }
 }
 //多选

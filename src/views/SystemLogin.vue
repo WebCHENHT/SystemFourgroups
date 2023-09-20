@@ -40,8 +40,10 @@
               placeholder="请输入密码"
               show-password
               type="password"
+              @keyup.enter="LogniAddForm(ruleFormRef)"
             />
           </el-form-item>
+          <div></div>
           <el-form-item>
             <el-button type="primary" @click="LogniAddForm(ruleFormRef)">
               {{ Systemname === false ? '登录' : '正在登录中....' }}
@@ -72,8 +74,9 @@ import { succesMsg, errorMsg } from '@/untils/msg'
 import { debounce } from '@/untils/antishake'
 import { useCounterStore } from '@/stores/counter'
 import type { LoginAddObject } from '@/assets/TSinterface/SystemLoginInterface'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 let router = useRouter()
+
 const store: LoginAddObject | any = useCounterStore()
 const formSize = ref('default')
 const ruleFormRef = ref<FormInstance>()

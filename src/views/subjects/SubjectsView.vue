@@ -47,20 +47,23 @@
         </template>
         <!-- 操作 -->
         <template #defaults="scoped">
-          <el-button
-            type="primary"
-            link
-            @click="edit(scoped.data)"
-            v-authority="{ model: '试卷', name: '修改' }"
-            >编辑</el-button
-          >|
-          <el-button
-            type="primary"
-            link
-            @click="del(scoped.data)"
-            v-authority="{ model: '试卷', name: '删除' }"
-            >删除</el-button
-          >
+          <div style="display: flex; justify-content: space: around;; align-items: center">
+            <el-button
+              type="primary"
+              link
+              @click="edit(scoped.data)"
+              v-authority="{ model: '试卷', name: '修改' }"
+              >编辑</el-button
+            >
+            <div class="henzs"></div>
+            <el-button
+              type="primary"
+              link
+              @click="del(scoped.data)"
+              v-authority="{ model: '试卷', name: '删除' }"
+              >删除</el-button
+            >
+          </div>
         </template>
       </TableangPage>
     </div>
@@ -73,7 +76,7 @@ import { subjectsdelete, subjectsget, subjectslist } from '@/assets/api/subjects
 import TableangPage from '@/components/TableangPage.vue'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 import PaperView from '@/views/subjects/PaperView.vue'
-import { reactive, ref, toRefs } from 'vue'
+import { reactive, ref, toRefs, onActivated } from 'vue'
 import { useRouter } from 'vue-router'
 let router = useRouter()
 // 试卷表格数据
@@ -128,6 +131,7 @@ let tableColums = reactive([
     label: '操作'
   }
 ])
+
 // 条数
 let total = ref()
 let loading = ref(true)
@@ -230,5 +234,11 @@ const Csnds = () => {
 }
 h3 {
   font-size: 20px;
+}
+.henzs {
+  width: 1px;
+  height: 13px;
+  background-color: #656464;
+  transform: scaleX(0.5);
 }
 </style>
