@@ -144,17 +144,19 @@
   </TableangPage>
 
   <SystemTransferVue
+    v-if="TrabsList"
     ref="dialog"
     :names="dialogname"
     :ishow="ishow"
     :testid="testid"
     @DelSystemTransfer="DelSystemTransfer"
+    @MyClose="MyClose"
   ></SystemTransferVue>
-  <TestDogis ref="getDogis"></TestDogis>
+  <TestDogis v-if="getDogisashiw" ref="getDogis" @MyTestDigclose="MyTestDigclose"></TestDogis>
 </template>
 
 <script setup name="/test" lang="ts">
-import { reactive, ref, onActivated, onDeactivated } from 'vue'
+import { reactive, ref, onActivated, onDeactivated, nextTick } from 'vue'
 
 import type { TestDatatype } from '@/assets/TSinterface/SystemTest'
 import {
@@ -179,6 +181,7 @@ let router = useRouter()
 //控制穿梭框显示隐藏和名称
 let dialog = ref()
 let dialogname = ref('')
+let TrabsList = ref(false)
 //控制子组件班级选中框
 let ishow = ref(true)
 //考试列表表格数据
@@ -195,7 +198,6 @@ let TestData: TestDatatype = ref<any>({
   enddate: '',
   state: ''
 })
-
 let created = ref<string>('')
 let Partialtime = ref<string>('')
 let Openinghours = ref<string>('永久开放')
@@ -214,12 +216,6 @@ const delTest = async (id: any) => {
     TestListdata()
   }
 }
-onActivated(() => {
-  console.log('生效')
-})
-onDeactivated(() => {
-  console.log('失效')
-})
 //创建考试
 const Addexam = () => {
   router.push({
@@ -372,28 +368,41 @@ const DelSystemTransfer = () => {
 
 //获取弹出框的数据
 let getDogis = ref()
+let getDogisashiw = ref(false)
 const GetTestAt = async (data: any) => {
-  console.log(data.id)
-  let res = await TestGet({
-    id: data.id
+  getDogisashiw.value = true
+  nextTick(async () => {
+    let res = await TestGet({
+      id: data.id
+    })
+    if (res.errCode === 10000) {
+      getDogis.value.testid = data.id
+      getDogis.value.dialogVisible = true
+      getDogis.value.getDogisTest = res.data
+    }
   })
-  if (res.errCode === 10000) {
-    getDogis.value.testid = data.id
-    getDogis.value.dialogVisible = true
-    getDogis.value.getDogisTest = res.data
-  }
+}
+//关闭学生考试分数弹框
+const MyTestDigclose = () => {
+  getDogisashiw.value = false
 }
 //学生
 //请求成功传给穿梭框的选泽框
 let Testdatast: any = ref([])
 let testid = ref(0)
 const student = debounce(async (name: string, ishows: boolean, data: any) => {
-  testid.value = data.id
-  ishow.value = ishows
-  dialogname.value = name
-  dialog.value.dialogVisible = true
+  TrabsList.value = true
+  nextTick(() => {
+    testid.value = data.id
+    ishow.value = ishows
+    dialogname.value = name
+    dialog.value.dialogVisible = true
+  })
 }, 300)
-
+//关闭穿梭框页面
+const MyClose = () => {
+  TrabsList.value = true
+}
 //表单数据条数和是否开启loading
 let loading = ref<boolean>(true)
 let total = ref(0)

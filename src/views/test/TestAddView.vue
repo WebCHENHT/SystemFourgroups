@@ -106,7 +106,11 @@
             </div>
             <div class="concsTitle">
               <div class="TestContent" v-if="TestData.questions.length >= 1">
-                <div v-for="(item, index) in TestData.questions" :key="index">
+                <div
+                  v-for="(item, index) in TestData.questions"
+                  :key="index"
+                  style="margin-bottom: 15px"
+                >
                   <div class="TestContentTop">
                     <div class="TestContentLeft">
                       <div>{{ index + 1 }}.{{ item.type }}</div>
@@ -300,17 +304,41 @@
     </div>
   </div>
   <SystemTransfer
+    v-if="Bulletbox"
     ref="Transfe"
     :ishow="ishow"
     :names="names"
     :testid="0"
     @MySystemTransferAdd="MySystemTransferAdd"
+    @my-close="myclose"
   ></SystemTransfer>
-  <CreatetestQuestions ref="Questions" @MybaseAdd="MybaseAdd"></CreatetestQuestions>
-  <TestAddWangEditor ref="WangAdd" :id="TestData.id" @MywangAdd="MywangAdd"></TestAddWangEditor>
-  <TestStepsDialog ref="Stepslog" @MyStepsAdd="MyStepsAdd"></TestStepsDialog>
+  <CreatetestQuestions
+    v-if="Createtest"
+    ref="Questions"
+    @MybaseAdd="MybaseAdd"
+    @myCrcolcs="myCrcolcs"
+  ></CreatetestQuestions>
+  <TestAddWangEditor
+    v-if="wangis"
+    ref="WangAdd"
+    :id="TestData.id"
+    @MywangAdd="MywangAdd"
+    @MywangColos="MywangColos"
+  ></TestAddWangEditor>
+  <TestStepsDialog
+    v-if="batch"
+    ref="Stepslog"
+    @MyStepsAdd="MyStepsAdd"
+    @Myialogclose="Myialogclose"
+  ></TestStepsDialog>
   <QuestionBankLogView ref="Questio" @myQunstions="myQunstions"></QuestionBankLogView>
-  <TestpaperListView ref="TestpaperList" @MyTestpapers="MyTestpapers"> </TestpaperListView>
+  <TestpaperListView
+    v-if="Testpape"
+    ref="TestpaperList"
+    @MyTestpapers="MyTestpapers"
+    @closetpaperList="closetpaperList"
+  >
+  </TestpaperListView>
 </template>
 
 <script setup lang="ts">
@@ -326,9 +354,15 @@ import { accuracy } from '@/untils/accuracy'
 import { Delete, EditPen } from '@element-plus/icons-vue'
 import dayjs from 'dayjs'
 import { ElMessage } from 'element-plus'
-import { computed, reactive, ref, toRefs, watch } from 'vue'
+import { computed, nextTick, reactive, ref, toRefs, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 let Store = useCounterStore()
+//控制组件显示隐藏
+let Createtest = ref(false)
+let wangis = ref(false)
+let batch = ref(false)
+  
+let Testpape = ref(false)
 const TestpaperList = ref()
 const WangAdd = ref()
 const Questions = ref()
@@ -376,7 +410,6 @@ let TestData: any = ref({
 //时间
 const value2 = ref('')
 let check1 = ref(false)
-
 let check2 = ref(false)
 //多选1
 const checkbox1 = (data: any) => {
@@ -440,32 +473,23 @@ const releaseadd = async (name: string) => {
   } else if (TestData.value.markteachers.length <= 0) {
     ElMessage.error('请选择阅卷老师')
   } else {
-    if (name === '发布') {
-      let res = await TestAdd(TestData.value)
-      console.log(res.data)
-      if (res.errCode === 10000) {
-        if (Store.TestAddid !== 0) {
-          Store.TestAddid = 0
-        }
-        ElMessage.success('发布成功')
+    let res = await TestAdd(TestData.value)
+    console.log(res.data)
+    if (res.errCode === 10000) {
+      if (Store.TestAddid !== 0) {
+        Store.TestAddid = 0
+      }
+      ElMessage.success('发布成功')
+      if (name === '发布') {
         router.push('/SystemMenu/test')
-        delqinkos()
-      }
-    }
-    if (name === '保存不发布') {
-      let res = await TestAdd(TestData.value)
-      console.log(res.data)
-      if (res.errCode === 10000) {
-        if (Store.TestAddid !== 0) {
-          Store.TestAddid = 0
-        }
-        ElMessage.success('发布成功')
+      } else {
         location.reload()
-        delqinkos()
       }
+      delqinkos()
     }
   }
 }
+
 //清空创建考试
 const delqinkos = () => {
   TestData.value = {
@@ -513,12 +537,21 @@ const MyTestpapers = async (id: any) => {
 }
 //点击已有试卷
 const yiyousi = () => {
-  TestpaperList.value.dialogVisible = true
+  Testpape.value = true
+  nextTick(() => {
+    TestpaperList.value.dialogVisible = true
+  })
+}
+//关闭已有试卷弹框
+const closetpaperList = () => {
+  Testpape.value = false
 }
 //试题提交
 const myQunstions = (data: any) => {
   TestData.value.questions = data
 }
+
+//关闭试题弹框
 
 //打开题库列表
 const questionbank = () => {
@@ -531,9 +564,16 @@ const MyStepsAdd = (data: any) => {
   TestData.value.questions = data
 }
 
+//关闭批量上传弹框
+const Myialogclose = () => {
+  batch.value = false
+}
 //点击批量导入试题
 const plilsAdds = () => {
-  Stepslog.value.dialogVisible = true
+  batch.value = true
+  nextTick(() => {
+    Stepslog.value.dialogVisible = true
+  })
 }
 //删除
 const getTestDel = (data: any, key: number) => {
@@ -637,12 +677,21 @@ const MywangAdd = (data: any) => {
     WangAdd.value.drawer = false
   }
 }
+//关闭题型添加弹框
+const MywangColos = () => {
+  wangis.value = false
+}
+
 //打开编辑器
 const Wangtitle = () => {
-  WangAdd.value.drawer = true
+  wangis.value = true
+  nextTick(() => {
+    WangAdd.value.drawer = true
+  })
 }
 //获取弹框暴露属性
 let Transfe = ref()
+let Bulletbox = ref(false)
 //控制班级显示隐藏
 const ishow = ref(true)
 //弹框名称
@@ -650,7 +699,10 @@ const names = ref('')
 
 //打开题库弹框
 const chujians = () => {
-  Questions.value.dialogVisible = true
+  Createtest.value = true
+  nextTick(() => {
+    Questions.value.dialogVisible = true
+  })
 }
 //题库
 let baseDatas = ref()
@@ -670,9 +722,18 @@ const MybaseAdd = async (data: any) => {
     DatabaseData()
   }
 }
+
+//关闭题库页面
+const myCrcolcs = () => {
+  Createtest.value = false
+}
 const shijian = (data: any) => {
   TestData.value.begintime = dayjs(data[0]).format('YYYY-MM-DD HH:mm:ss') + '.0'
   TestData.value.endtime = dayjs(data[1]).format('YYYY-MM-DD HH:mm:ss') + '.0'
+}
+//关闭穿梭框操作
+const myclose = () => {
+  Bulletbox.value = false
 }
 //获取左侧穿梭框数据
 const MySystemTransferAdd = (data: any) => {
@@ -704,13 +765,16 @@ const MySystemTransferAdd = (data: any) => {
 }
 //获取部门
 const Markingteacher = async (data: any) => {
-  names.value = data
-  if (data === '考生范围') {
-    ishow.value = true
-  } else {
-    ishow.value = false
-  }
-  Transfe.value.dialogVisible = true
+  Bulletbox.value = true
+  nextTick(() => {
+    names.value = data
+    if (data === '考生范围') {
+      ishow.value = true
+    } else {
+      ishow.value = false
+    }
+    Transfe.value.dialogVisible = true
+  })
 }
 
 const shortcuts = [

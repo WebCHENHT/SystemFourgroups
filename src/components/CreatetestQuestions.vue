@@ -80,6 +80,7 @@ let emits = defineEmits<{
       limits: never[]
     }
   ): any
+  (name: 'myCrcolcs'): any
 }>()
 const formSize = ref('default')
 const Transfer = ref()
@@ -104,10 +105,7 @@ watch(
 )
 //关闭回调
 const gubisd = () => {
-  ruleForm.id = 0
-  ruleForm.title = ''
-  ruleForm.isshow = 1
-  ruleForm.limits = []
+  emits('myCrcolcs')
 }
 const rules = reactive({
   title: [{ required: true, message: '请输入题库名称', trigger: 'blur' }]

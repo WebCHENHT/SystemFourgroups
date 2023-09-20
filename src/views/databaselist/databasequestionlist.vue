@@ -45,7 +45,7 @@
     <!-- 试卷名称 -->
         <template #default="scoped:any">
           <el-button type="primary" link @click="testDetail(scoped.data)" >
-          <div v-html="scoped.data.title"></div>
+          <div v-html="htmlEncode(scoped.data.title)"></div>
           </el-button>
         </template>
         <!-- 时间 -->
@@ -79,7 +79,7 @@
 
 <script setup lang="ts">
 import { ArrowLeft } from '@element-plus/icons-vue'
-import * as XLSX from "xlsx"; // 导出文件
+import {htmlEncode} from '@/untils/Dilist'
 import { reactive, ref, toRaw, toRefs, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {DatabaseDeleteall, DatabaseList , Databasedel, exportExcel} from '@/assets/api/databaselist/DatabaseList'
@@ -103,7 +103,6 @@ const addTestUrl = ref('http://estate.eshareedu.cn/exam/upload/question.xlsx');
 const back = () => {
   router.push('/SystemMenu/databaselist')
 }
-
 const data: any = reactive({
   databaseid: route.query.id, //题库id
   page: 1,
@@ -115,7 +114,6 @@ const data: any = reactive({
 })
 const { key, type, admin } = toRefs(data)
 const types: any = ref(['单选题', '多选题', '判断题', '填空题', '问答题'])
-
 const tableColums = reactive([
   {
     slotname: 'default',
@@ -142,13 +140,10 @@ const tableColums = reactive([
     isslot: true
   }
 ])
-
 const Data=reactive({
   questionData:{}
-
 })
 const { questionData } = toRefs(Data)
-
 // 添加试题
 const addTest = () => {
   isAddtestDrawer.value = true;
@@ -168,20 +163,17 @@ const lists = async() => {
   }
 }
 lists()
-
 const state: any = reactive({
   getEestDetail:{}
 });
 const { getEestDetail } = toRefs(state);
 const isDatabaseDetail = ref(false);
 const isAddtestDrawer = ref(false)
-
 const isShowAdd = ref(false); //批量添加
 // 接受子组件传过来的值  关闭弹窗
 const closeDialog = (val: any) => {
   isShowAdd.value = val;
 };
-
 // 接收从子组件传过来的值  关闭抽屉
 const closeDrawer = (val: any) => {
   questionData.value = {}

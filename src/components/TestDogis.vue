@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" :title="getDogisTest.title" width="85%">
+  <el-dialog v-model="dialogVisible" :title="getDogisTest.title" width="85%" @close="TestDigclose">
     <div class="toptitle">
       <div class="topleft">
         <div class="zongfen">
@@ -94,9 +94,16 @@ import { ref } from 'vue'
 import type { TestGetData } from '@/assets/TSinterface/SystemTest'
 import TestExpor from './TestExpor.vue'
 import { TestExportExcel } from '@/assets/api/TestList/index'
+let emits = defineEmits<{
+  (name: 'MyTestDigclose'): any
+}>()
 let testid = ref(0)
 let getDogisTest = ref<TestGetData | any>([])
 const dialogVisible = ref(false)
+
+const TestDigclose = () => {
+  emits('MyTestDigclose')
+}
 defineExpose({ dialogVisible, getDogisTest, testid })
 </script>
 

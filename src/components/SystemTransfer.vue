@@ -101,6 +101,7 @@ let res = defineProps({
 
 let emits = defineEmits<{
   (name: 'MySystemTransferAdd', value: any): any
+  (name: 'MyClose'): any
 }>()
 const dialogVisible = ref(false)
 //部门数据
@@ -130,11 +131,6 @@ const getRightTransfer = (data: any) => {
 }
 //编辑时使用
 const gethuisxia = async () => {
-  Testdatast.value = []
-  Classes.value = []
-  Departmentvalue.value = ''
-  Classesvalue.value = ''
-  TransferDatas.value = []
   if (res.testid != 0) {
     if (res.names === '学生考试列表') {
       let reesa: any = await TestGetstudents({
@@ -309,12 +305,7 @@ const MySystemTransferAdd = async (data: any) => {
 
 //关闭回调
 const DelSystemTransfer = () => {
-  dialogVisible.value = false
-  Testdatast.value = []
-  Classes.value = []
-  Departmentvalue.value = ''
-  Classesvalue.value = ''
-  TransferDatas.value = []
+  emits('MyClose')
 }
 defineExpose({ dialogVisible, loading })
 </script>

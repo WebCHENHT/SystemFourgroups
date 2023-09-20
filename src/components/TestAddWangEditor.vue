@@ -131,6 +131,7 @@ import { CircleClose, CirclePlus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 let emits = defineEmits<{
   (name: 'MywangAdd', value: any): any
+  (name: 'MywangColos'): any
 }>()
 let props = defineProps<{
   id: number
@@ -171,38 +172,7 @@ let questionsData = ref({
 })
 //关闭回调
 const guabviwangs = () => {
-  questionsData.value = {
-    id: 0,
-    testid: 0,
-    title: '<p><br></p>',
-    type: '单选题',
-    scores: 1,
-    answer: 'A',
-    tags: '',
-    explains: '',
-    answers: [
-      {
-        answerno: 'A',
-
-        content: ''
-      },
-      {
-        answerno: 'B',
-
-        content: ''
-      },
-      {
-        answerno: 'C',
-
-        content: ''
-      },
-      {
-        answerno: 'D',
-
-        content: ''
-      }
-    ]
-  }
+  emits('MywangColos')
 }
 //提交
 const baocuns = () => {

@@ -18,7 +18,9 @@
         </el-select>
       </el-form-item>
       &nbsp;&nbsp;&nbsp;
-      <el-button type="primary" @click="cha">查询</el-button>
+      <el-button type="primary" @click="cha" v-authority="{ model: '学员', name: '查看' }"
+        >查询</el-button
+      >
       &nbsp;&nbsp;
       <div v-if="show">
         <el-button type="danger" disabled>批量删除</el-button>
@@ -29,7 +31,11 @@
       <el-button style="position: absolute; left: 88%; top: 10px" @click="batch"
         >批量添加</el-button
       >
-      <el-button type="primary" style="position: absolute; left: 93%; top: 10px" @click="add"
+      <el-button
+        type="primary"
+        style="position: absolute; left: 93%; top: 10px"
+        @click="add"
+        v-authority="{ model: '学员', name: '添加' }"
         >添加学生</el-button
       >
     </div>
@@ -48,8 +54,20 @@
         <!-- 操作 -->
         <template #default="scoped">
           <el-button type="primary" link @click="resetting(scoped.data)">重置密码</el-button>
-          <el-button type="primary" link @click="edit(scoped.data)">编辑</el-button>
-          <el-button type="primary" link @click="del(scoped.data)">删除</el-button>
+          <el-button
+            type="primary"
+            link
+            @click="edit(scoped.data)"
+            v-authority="{ model: '学员', name: '修改' }"
+            >编辑</el-button
+          >
+          <el-button
+            type="primary"
+            link
+            @click="del(scoped.data)"
+            v-authority="{ model: '学员', name: '删除' }"
+            >删除</el-button
+          >
         </template>
       </TableangPage>
     </div>
@@ -287,7 +305,7 @@ const resetting = (val: any) => {
   users.value = true
 }
 // 编辑
-let carr = reactive({}) 
+let carr = reactive({})
 const edit = (val: any) => {
   console.log(val)
 

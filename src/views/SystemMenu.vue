@@ -239,7 +239,7 @@ const setPass = () => {
     }
   }
 }
-/deep/.el-main {
-  padding: 10px;
-}
+// /deep/.el-main {
+//   padding: 10px;
+// }
 </style>
