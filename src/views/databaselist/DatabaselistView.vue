@@ -55,7 +55,7 @@
       </template>
     </TableangPage>
     <!-- 添加、修改 -->
-    <CreatetestQuestions ref="flag" @MybaseAdd="MybaseAdd"></CreatetestQuestions>
+    <CreatetestQuestions v-if="Createtest" ref="flag" @MybaseAdd="MybaseAdd" @myCrcolcs="myCrcolcs"></CreatetestQuestions>
   </div>
 </template>
 
@@ -83,6 +83,8 @@ let flag = ref()
 
 //表单数据条数和是否开启loading
 let loading = ref<boolean>(true)
+//控制组件显示隐藏
+let Createtest = ref(false)
 
 let data = reactive({
   page: 1,
@@ -136,7 +138,14 @@ const inputs = (data: any) => {
 }
 //打开题库弹框
 const Create = () => {
-  flag.value.dialogVisible = true
+  Createtest.value = true
+  nextTick(() => {
+    flag.value.dialogVisible = true
+  })
+}
+//关闭题库页面
+const myCrcolcs = () => {
+  Createtest.value = false
 }
 // 添加题库
 const MybaseAdd = async (data: any) => {
@@ -171,9 +180,10 @@ const onlyMine = (val: any) => {
 }
 // 编辑题库
 const edit = (val: any) => {
-  flag.value.dialogVisible = true
+  Createtest.value = true
   nextTick(() => {
     //延迟函数  回显
+    flag.value.dialogVisible = true
     flag.value.ruleForm.title = val.title
     flag.value.ruleForm.id = val.id
     flag.value.ruleForm.isshow = val.isshow

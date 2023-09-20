@@ -89,7 +89,8 @@ import {studentlist,classeslist,queslist,studentanswer} from '@/assets/api/Exam/
 import { ref , reactive, toRefs} from 'vue'
 import { useRouter ,useRoute} from 'vue-router'
 import type { Examcans,classdata } from '@/assets/TSinterface/Exam';
-import{succesMsg,errorMsg} from '@/untils/msg'
+import{succesMsg,errorMsg,} from '@/untils/msg'
+import { ElMessageBox } from 'element-plus';
 let router = useRouter()
 let loading = ref<boolean>(true)
 let route: any = useRoute()
@@ -253,11 +254,21 @@ const open = (val: any)=>{
 
 }
 // 头部×号
-const direction = ref('rtl')
-const handleClose = (done: () => void) => {
-  drawer.value = false
-  // loading.value = true
+// const direction = ref('rtl')
+// const handleClose = (done: () => void) => {
+//   drawer.value = false
+//   // loading.value = true
 
+// }
+const handleClose = (done: () => void) => {
+  ElMessageBox.confirm('确认要退出吗？')
+    .then(() => {
+      done()
+      faAdd()
+    })
+    .catch(() => {
+      // catch error
+    })
 }
 // 取消
 function cancelClick() {

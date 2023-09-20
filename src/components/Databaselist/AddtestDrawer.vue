@@ -2,7 +2,7 @@
   <div>
     <el-drawer
       v-model="table"
-      :title="questionData.id ? '试题修改' :'试题添加'"
+      :title="questionData.id ? '试题修改' : '试题添加'"
       direction="rtl"
       size="50%"
       :close-on-click-modal="false"
@@ -92,15 +92,27 @@
             </el-radio-group>
           </el-form-item>
           <!-- 填空题、问答题 -->
-          <el-form-item label="解析" v-if="addData.type == '填空题' || addData.type == '问答题'">
-            <el-input
-              v-model="addData.explains"
-              :rows="4"
-              :cols="30"
-              type="textarea"
-              style="margin: 10px 10px"
-            />
-          </el-form-item>
+          <div v-if="addData.type == '填空题' || addData.type == '问答题'">
+            <el-form-item label="正确答案" v-if="input.length <= 0 ? false : true">
+                <el-input
+                  v-for="(item, index) in input"
+                  :key="index"
+                  v-model="input[index]"
+                  @blur="getsoumInput"
+                  style="margin-bottom: 15px"
+                />
+              </el-form-item>
+            <el-form-item label="解析">
+              <el-input
+                v-model="addData.explains"
+                :rows="4"
+                :cols="30"
+                type="textarea"
+                style="margin: 10px 10px"
+              />
+            </el-form-item>
+          </div>
+
           <!-- 分值 -->
           <el-form-item label="分值" prop="scores">
             <el-input-number v-model="addData.scores" controls-position="right" :min="1" />
@@ -117,11 +129,11 @@
 </template>
 
 <script setup lang="ts">
+import { databasequestionadd } from '@/assets/api/databaselist/DatabaseList'
 import { errorMsg, succesMsg } from '@/untils/msg'
-import {databasequestionadd} from '@/assets/api/databaselist/DatabaseList'
 import { CircleClose, CirclePlus } from '@element-plus/icons-vue'
-import type { FormInstance, FormRules } from 'element-plus'
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
+import { ElMessage, type FormInstance, type FormRules } from 'element-plus'
 import { reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 const formSize = ref('default')
@@ -136,12 +148,14 @@ const props = defineProps({
   },
   questionData: {
     type: Object,
-    required:true
+    required: true
   }
 })
 const update = (value: any) => {
   addData.title = value
 }
+let input = ref([])
+
 interface IaddData {
   id: number
   databaseid: any
@@ -222,9 +236,14 @@ const data: Idata = reactive({
     { type: '问答题', id: 5 }
   ]
 })
+
+//获取输入框
+const getsoumInput = (data: any) => {
+  addData.answer = input.value.join('|')
+}
 // 点击删除一行选项
 const delTab = () => {
-  if(addData.answers.length <= 4){
+  if (addData.answers.length <= 4) {
     errorMsg('最少要有4个选项')
     return
   }
@@ -249,21 +268,24 @@ const rules = reactive<FormRules>({
 })
 const checkList = ref([]) //多选题 正确答案
 
-
-watch(()=>props.questionData,(newVal,oldVal)=>{
-  console.log('编辑新数据',newVal);
-  if(newVal){
-    Object.assign(addData,newVal)
-    if(newVal.answer){
-      checkList.value=newVal.answer.split('|')
+watch(
+  () => props.questionData,
+  (newVal, oldVal) => {
+    console.log('编辑新数据', newVal)
+    if (newVal) {
+      Object.assign(addData, newVal)
+      if (newVal.answer) {
+        checkList.value = newVal.answer.split('|')
+      }
     }
-  }
-}, { deep: true, immediate: true })
+  },
+  { deep: true, immediate: true }
+)
 
 // 点击保存
 const confirm = async () => {
   ConfirmAdd()
-  emit('closeDrawer',false)
+  emit('closeDrawer', false)
 }
 // 点击保存并继续
 const andcontinue = () => {
@@ -272,61 +294,94 @@ const andcontinue = () => {
   addData.type = '单选题'
   addData.explains = ''
   addData.answers.map((item: any) => {
-    return item.content = ''
+    return (item.content = '')
   })
 }
+
+watch(
+  () => addData,
+  (a: any, b) => {
+    if (a.answer !== '') {
+      if (String(a.answer).indexOf('|') !== -1) {
+        input.value = a.answer.split('|')
+      }
+    }
+    let res = a.title.match(/\[\]/g)
+    if (Array.isArray(res)) {
+      let arr = res.map((item: any) => {
+        return item !== ''
+      })
+      if (arr) {
+        input.value.length = res.length
+      }
+    } else {
+      input.value = []
+    }
+  },
+  { immediate: true, deep: true }
+)
+
 // 添加/修改
-const ConfirmAdd = async() => {
+const ConfirmAdd = async () => {
   if (addData.type == '多选题') {
     addData.answer = checkList.value.join('|')
   }
   if (!addData.title) {
     errorMsg('题干必填！')
-    return false;
+    return false
   }
   if (addData.type == '单选题' || addData.type == '多选题') {
     addData.answers.filter((item: any) => {
       if (!item.content) {
         errorMsg('请填写所有选项！')
-        return false;
+        return false
       }
-      return false;
+      return false
     })
   }
-   if(addData.type == '单选题' || addData.type == '多选题'||addData.type == '判断题'){
+  if (addData.type == '单选题' || addData.type == '多选题' || addData.type == '判断题') {
     if (!addData.answer) {
-      errorMsg('正确答案必填！');
-      return false;
+      errorMsg('正确答案必填！')
+      return false
     }
     if (addData.type == '多选题' && addData.answer.length < 3) {
-      errorMsg('正确答案至少两项！');
-      return false;
+      errorMsg('正确答案至少两项！')
+      return false
     }
   }
+  if (addData.type === '填空题') {
+      if (input.value.length <= 0) {
+        ElMessage.error('请在题库输入大括号')
+      } else {
+        if (input.value[input.value.length - 1] === undefined) {
+          ElMessage.error('正确答案,输入框不能为空')
+          return false
+        }
+      }
+    }
   if (addData.id === 0) {
-    let res: any = await databasequestionadd(addData);
-    console.log('添加题库试题', res);
+    let res: any = await databasequestionadd(addData)
+    console.log('添加题库试题', res)
     if (res.errCode !== 10000) {
-    errorMsg('添加失败！');
-    return false;
-  }
+      errorMsg('添加失败！')
+      return false
+    }
     succesMsg('添加成功！')
   } else {
     let res = await databasequestionadd(addData)
-    console.log('编辑题库试题',res);
+    console.log('编辑题库试题', res)
     if (res.errCode !== 10000) {
       errorMsg('编辑失败！')
-      return false;
+      return false
     }
     succesMsg('编辑成功！')
   }
   props.getList()
-
 }
 // 点击取消
 const cancel = () => {
-  emit('closeDrawer', false);
-};
+  emit('closeDrawer', false)
+}
 // 点空白地方触发事件
 const handleClose = () => {
   emit('closeDrawer', false)

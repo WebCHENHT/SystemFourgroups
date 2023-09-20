@@ -46,7 +46,7 @@
     <!-- 试卷名称 -->
         <template #default="scoped:any">
           <el-button type="primary" link @click="testDetail(scoped.data)" >
-          <div v-html="htmlEncode(scoped.data.title)"></div>
+          <div v-html="scoped.data.title"></div>
           </el-button>
         </template>
         <!-- 时间 -->
@@ -80,7 +80,6 @@
 
 <script setup lang="ts">
 import { ArrowLeft } from '@element-plus/icons-vue'
-import {htmlEncode} from '@/untils/Dilist'
 import { reactive, ref, toRaw, toRefs, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {DatabaseDeleteall, DatabaseList , Databasedel, exportExcel} from '@/assets/api/databaselist/DatabaseList'
