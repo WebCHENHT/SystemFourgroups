@@ -18,7 +18,9 @@ declare module 'vue' {
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     Editor: typeof import('./src/components/Databaselist/Editor.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
+    ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -28,6 +30,7 @@ declare module 'vue' {
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
+    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
@@ -42,6 +45,7 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
+    ElTree: typeof import('element-plus/es')['ElTree']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     ListtoftestView: typeof import('./src/components/ListtoftestView.vue')['default']
     QuestionBankLogView: typeof import('./src/components/QuestionBankLogView.vue')['default']
@@ -57,7 +61,6 @@ declare module 'vue' {
     TestpaperListView: typeof import('./src/components/TestpaperListView.vue')['default']
     TestquestiondetailsView: typeof import('./src/components/TestquestiondetailsView.vue')['default']
     TestStepsDialog: typeof import('./src/components/TestStepsDialog.vue')['default']
-    TransFer: typeof import('./src/components/Databaselist/TransFer.vue')['default']
     WangEditor: typeof import('./src/components/WangEditor.vue')['default']
   }
   export interface ComponentCustomProperties {
