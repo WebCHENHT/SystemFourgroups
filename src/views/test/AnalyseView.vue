@@ -30,7 +30,7 @@
       ></EcharTsVue>
     </div>
     <div>
-      <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
+      <el-tabs v-model="activeName" class="demo-tabs">
         <el-tab-pane label="学员统计" name="first" style="transform: translateX(35px)">
           <el-form :model="StudentTestform">
             <el-form-item label="学员姓名">
@@ -108,7 +108,6 @@
     @MySystemDrawerClose="MySystemDrawerClose"
   ></SystemDrawer>
 </template>
-
 <script setup lang="ts">
 import {
   TestAnalyse,
@@ -121,7 +120,6 @@ import {
 import { nextTick, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import EcharTsVue from '@/components/EcharTs.vue'
-import type { TabsPaneContext } from 'element-plus'
 import TableangPage from '@/components/TableangPage.vue'
 import SystemDrawer from '@/components/SystemDrawer.vue'
 import TestExpor from '@/components/TestExpor.vue'
@@ -158,7 +156,6 @@ let Stateoptions = ref([
   }
 ])
 //获取学生列表
-
 let tableColums = ref([
   {
     label: '学员姓名',
@@ -239,10 +236,6 @@ const Studentdata = async () => {
 Studentdata()
 //标签页
 const activeName = ref('first')
-
-const handleClick = (tab: TabsPaneContext, event: Event) => {
-  console.log(tab, event)
-}
 //部门级联选择框
 const Departmentvalue = ref([])
 const Departmentoptions = ref<any[]>([])
@@ -256,7 +249,6 @@ Departmentcascader()
 //控制班级禁用
 let Classesis = ref(true)
 //获取班级数据
-let Classesvalue = ref()
 let Classesoptions = ref<any[]>([])
 const handleChange = async (value: []) => {
   if (value !== null) {
