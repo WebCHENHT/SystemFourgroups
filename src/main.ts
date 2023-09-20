@@ -19,6 +19,12 @@ app.use(ElementPlus, {
   locale: zhCn
 })
 
+// Vite结合Vue删除指定环境的console.log
+if (import.meta.env.VITE_ENV !== 'development') {
+  console.log = function () {}
+  // 还可以添加 .info .warn .error
+}
+
 //试题上传
 app.provide('url', 'http://apis.90000p.com/exam2212/api/test/upload')
 app.use(createPinia())

@@ -20,7 +20,7 @@
           type="primary"
           style="position: absolute; left: 93%; top: 10px"
           @click="cuan"
-          v-authority="{ model: '试卷', name: '添加' }"
+          v-authority="{ model: '试卷', name: '创建' }"
           >创建试卷</el-button
         >
       </div>
@@ -30,7 +30,7 @@
       <TableangPage
         :tableColums="tableColums"
         :TableData="TableData"
-        :total="total"
+         :total="total"
         @sonhandleCurrentChange="handleCurrentChange"
         @sonhandleSizeChange="nhandleSizeChange"
       >

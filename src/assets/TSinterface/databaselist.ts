@@ -27,7 +27,7 @@ export interface databaselist{
   psize: number
   key: string
   admin: string
-  ismy:string
+  ismy:number
 }
 export interface databaseid{
   id:number
