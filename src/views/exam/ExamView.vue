@@ -9,6 +9,7 @@
     <el-button class="but" type="primary" @click="sou(ruform)">搜索</el-button>
     </div>
     <TableangPage 
+    :loading="loading"
     :TableData="tableData" 
     :tableColums="tableColum"
     :total="total"
@@ -39,6 +40,7 @@
   import { succesMsg } from '@/untils/msg'
   import{ useRouter } from 'vue-router'
   let router = useRouter()
+  let loading = ref<boolean>(true)
   // 阅卷数据
   const tableColum = reactive([
     {
@@ -104,6 +106,7 @@ let ruform = reactive<T>({
 })
 // 搜索
 const sou =async () => {
+  loading.value = true
   tealist()
 }
 let total = ref(0)
@@ -115,7 +118,7 @@ let total = ref(0)
    
     tableData.value = res.data.list
     total.value = res.data.counts
-    
+    loading.value = false
     // console.log(22,tableData);
     
   }
@@ -123,10 +126,12 @@ let total = ref(0)
   // 分页
   const handleSizeChange = (val: number) => {
     ruform.psize = val
+    loading.value = true
     tealist()
   }
   const handleCurrentChange = (val: number) => {
     ruform.page = val
+    loading.value = true
     tealist()
   }
   // 跳转

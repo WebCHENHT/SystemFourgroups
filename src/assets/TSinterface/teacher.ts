@@ -94,5 +94,5 @@ export interface teacherRootAdd {
 	name: string;
 	tel: string;
 	depid: number;
-	roleid: number;
+	roleid: number|string;
 }

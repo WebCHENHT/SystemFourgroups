@@ -17,7 +17,7 @@
       </el-select>
       <el-button class="but" type="primary" @click="sou" v-authority="{ model: '师资', name: '查看' }">搜索</el-button>
     </div>
-    <TableangPage :TableData="tableData" :tableColums="tableColum" :total="total"
+    <TableangPage :loading="loading" :TableData="tableData" :tableColums="tableColum" :total="total"
       @sonhandleCurrentChange="handleCurrentChange" @sonhandleSizeChange="handleSizeChange">
       <template #actions="slotname: any">
         <el-button type="primary" size="small" link @click="ChongVisible(slotname.data)">重置密码</el-button>
@@ -88,7 +88,7 @@
 import { ref, reactive } from 'vue'
 import { teacherlist, teacherdelete , roleList, DepartmentList, teacherchangeAdd } from '@/assets/api/teacher/teacher'
 import TableangPage from '@/components/TableangPage.vue'
-import { succesMsg } from '@/untils/msg'
+import { succesMsg,errorMsg } from '@/untils/msg'
 import { ElMessageBox, ElMessage } from 'element-plus';
 // 密码重置弹出框
 let dialogVisible = ref(false)
@@ -96,6 +96,8 @@ let dialogVisible = ref(false)
 const dialogadd = ref(false)
 // 接连框
 let optionList: any = ref([])
+
+let loading = ref<boolean>(true)
 // 角色列表
 const roleLists = async () => {
   let red = await roleList(0 as any)
@@ -168,6 +170,7 @@ let ruform: any = reactive({
 let total = ref(0)
 // 搜索
 const sou = async () => {
+  loading.value = true
   tealist()
 }
 // 教资列表
@@ -178,6 +181,7 @@ const tealist = async () => {
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
+    loading.value = false
   }
   // console.log(22,tableData);
 
@@ -186,10 +190,12 @@ tealist()
 // 分页
 const handleSizeChange = (val: number) => {
   ruform.psize = val
+  loading.value = true
   tealist()
 }
 const handleCurrentChange = (val: number) => {
   ruform.page = val
+  loading.value = true
   tealist()
 }
 // 删除
@@ -217,12 +223,14 @@ const open = (id: any) => {
         type: 'success',
         message: '删除成功',
       })
+      loading.value = false
     })
     .catch(() => {
       ElMessage({
         type: 'info',
         message: '取消删除',
       })
+      loading.value = false
     })
 }
 // 重置密码赋值
@@ -288,6 +296,7 @@ const Pass = async () => {
   dialogVisible.value = false
   if(red.errCode==10000){
     succesMsg('密码重置成功')
+    loading.value = true
   }
     form.confirmPass= '';
     form.depid= 0;
@@ -333,7 +342,7 @@ let formAdd = reactive({
   tel: '',
   pass: '',
   depid: 0,
-  roleid: 0,
+  roleid: '',
   pwd: 0,
 })
 const teacheAdd = async () => {
@@ -344,7 +353,10 @@ const teacheAdd = async () => {
     dialogadd.value = false
     succesMsg(formAdd.id > 1 ? '修改成功' : '添加成功')
     tealist()
+  }else if(red.errCode==10600){
+    errorMsg(red.errMsg)
   }
+  loading.value = true
   
 }
 // 添加表单验证
