@@ -1,6 +1,5 @@
 <template>
   <el-dialog
-    v-if="dialogVisible"
     v-model="dialogVisible"
     :title="res.names"
     width="50%"
@@ -46,7 +45,6 @@
         </el-form-item>
       </el-col>
     </el-row>
-
     <el-transfer
       v-loading="loading"
       v-model="Classes"
@@ -227,7 +225,6 @@ const getTransadd = (data: any) => {
 
 //确定提交
 const SystemTransferAdd = () => {
-  console.log(TransferDatas.value)
   let resas = TransferDatas.value.filter((item: any, index: any) => {
     return Classes.value.includes(item.id)
   })

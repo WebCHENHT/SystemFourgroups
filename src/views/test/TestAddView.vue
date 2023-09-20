@@ -310,7 +310,7 @@
     :names="names"
     :testid="0"
     @MySystemTransferAdd="MySystemTransferAdd"
-    @my-close="myclose"
+    @MyClose="MyClose"
   ></SystemTransfer>
   <CreatetestQuestions
     v-if="Createtest"
@@ -361,7 +361,7 @@ let Store = useCounterStore()
 let Createtest = ref(false)
 let wangis = ref(false)
 let batch = ref(false)
-  
+
 let Testpape = ref(false)
 const TestpaperList = ref()
 const WangAdd = ref()
@@ -732,7 +732,7 @@ const shijian = (data: any) => {
   TestData.value.endtime = dayjs(data[1]).format('YYYY-MM-DD HH:mm:ss') + '.0'
 }
 //关闭穿梭框操作
-const myclose = () => {
+const MyClose = () => {
   Bulletbox.value = false
 }
 //获取左侧穿梭框数据
@@ -764,7 +764,7 @@ const MySystemTransferAdd = (data: any) => {
   Transfe.value.dialogVisible = false
 }
 //获取部门
-const Markingteacher = async (data: any) => {
+const Markingteacher = (data: any) => {
   Bulletbox.value = true
   nextTick(() => {
     names.value = data
