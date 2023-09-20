@@ -17,7 +17,12 @@ export default defineConfig({
     }),
     Components({
       resolvers: [ElementPlusResolver()]
+<<<<<<< HEAD
+    })
+  
+=======
     }),
+>>>>>>> dde8e5f6660e98caf522a1cccdbd7791dfddd7f2
   ],
   resolve: {
     alias: {
