@@ -129,7 +129,11 @@ const inputs = (data: any) => {
     vuels.value = false
   }
 }
-// //添加题库
+//打开题库弹框
+const Create = () => {
+  flag.value.dialogVisible = true
+}
+// 添加题库
 const MybaseAdd = async (data: any) => {
   let res = await DatabaseAdd(data)
   console.log(res)
@@ -143,40 +147,30 @@ const MybaseAdd = async (data: any) => {
     lists()
   }
 }
-//打开题库弹框
-const Create = () => {
-  flag.value.dialogVisible = true
-}
-
 // 题库列表
 const lists = async () => {
   let res: any = await datalist(data)
-  // console.log(res)
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
   }
 }
 lists()
-// 点击只看我的
+// 点击只看我创建的
 const onlyMine = (val: any) => {
   if (val == 1) {
     data.admin = ''
     data.ismy = 1
   }
 }
-
 // 编辑题库
 const edit = (val: any) => {
-  console.log(val)
-
   flag.value.dialogVisible = true
   nextTick(() => {
     //延迟函数  回显
     flag.value.ruleForm.title = val.title
     flag.value.ruleForm.id = val.id
     flag.value.ruleForm.isshow = val.isshow
-    // flag.value.ruleForm.limits = val.limits
   })
 }
 // 题库删除
@@ -195,7 +189,7 @@ const del = async (id: any) => {
     })
 }
 let id: any = reactive([]) //定义多选数据
-//多选获取id
+// 多选获取id
 const allTableData = (val: any) => {
   ChangeData.value = val
   const arr = val.map((item: { id: any }) => {

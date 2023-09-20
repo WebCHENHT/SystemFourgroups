@@ -4,7 +4,7 @@
       <div class="ter">师资管理</div>
       <div class="terbut">
         <el-button>批量添加</el-button>
-        <el-button type="primary" @click="dialogadd = true">添加教资</el-button>
+        <el-button type="primary" @click="dialogadd = true" v-authority="{ model: '师资', name: '添加' }">添加教资</el-button>
       </div>
     </div>
     <div class="watchInput">
@@ -15,15 +15,15 @@
       <el-select v-model="ruform.pwd" clearable placeholder="请选择">
         <el-option v-for="item in optionList" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
-      <el-button class="but" type="primary" @click="sou">搜索</el-button>
+      <el-button class="but" type="primary" @click="sou" v-authority="{ model: '师资', name: '查看' }">搜索</el-button>
     </div>
     <TableangPage :TableData="tableData" :tableColums="tableColum" :total="total"
       @sonhandleCurrentChange="handleCurrentChange" @sonhandleSizeChange="handleSizeChange">
       <template #actions="slotname: any">
         <el-button type="primary" size="small" link @click="ChongVisible(slotname.data)">重置密码</el-button>
-        <el-button type="primary" size="small" link @click="teachedele(slotname.data)">修改</el-button>
+        <el-button type="primary" size="small" link @click="teachedele(slotname.data)" v-authority="{ model: '师资', name: '编辑' }">修改</el-button>
         <!-- <el-button text @click="dele(slotname.data)" link>删除</el-button> -->
-        <el-button type="primary" size="small" link @click="open(slotname.data)">删除</el-button>
+        <el-button type="primary" size="small" link @click="open(slotname.data)" v-authority="{ model: '师资', name: '删除' }">删除</el-button>
       </template>
     </TableangPage>
     <!-- 重置密码弹出框 @click="Pass" -->
@@ -89,6 +89,7 @@ import { ref, reactive } from 'vue'
 import { teacherlist, teacherdelete , roleList, DepartmentList, teacherchangeAdd } from '@/assets/api/teacher/teacher'
 import TableangPage from '@/components/TableangPage.vue'
 import { succesMsg } from '@/untils/msg'
+import { ElMessageBox, ElMessage } from 'element-plus';
 // 密码重置弹出框
 let dialogVisible = ref(false)
 // 添加弹出框
@@ -97,7 +98,7 @@ const dialogadd = ref(false)
 let optionList: any = ref([])
 // 角色列表
 const roleLists = async () => {
-  let red = await roleList(0)
+  let red = await roleList(0 as any)
   // console.log(777,red);
   optionList.value = red.data.list
   // console.log(789787,optionList);
@@ -109,7 +110,6 @@ const props = {
   value: 'id',
   label: 'name',
   children: 'children',
-  checkStrictly: true, //点击单选框选中改点击整行选中
   emitPath: false //只获取级联选
 }
 //部门change事件
@@ -119,7 +119,7 @@ const add = async (val: any) => {
 }
 // 部门列表
 const DeparList = async () => {
-  let red: any = await DepartmentList()
+  let red: any = await DepartmentList( '' as any)
   options.value = red.data.list
   // console.log(852,red)
 }
@@ -239,7 +239,7 @@ const ChongVisible = (val: any) => {
   form.username = val.username
 }
 // 重置密码参数
-const form = reactive({
+let form = reactive({
   confirmPass:"",//新密码
   depid:0,//
   id:0,
@@ -252,17 +252,7 @@ const form = reactive({
   tel:"",//手机号
   username:"",//账号
 })
-// 密码重置表单验证
-// const rules = reactive({
-//   confirmPass: [
-//     { required: true, message: '密码不能为空', trigger: 'blur' },
-//     { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
-//   ],
-//   pass: [
-//     { required: true, message: '密码不能为空', trigger: 'blur' },
-//     { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
-//   ],
-// })
+
 // 表单验证
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value === '') {
@@ -299,25 +289,29 @@ const Pass = async () => {
   if(red.errCode==10000){
     succesMsg('密码重置成功')
   }
-  form.name = '',
-  form.oldpass = '',
-  form.qq = '',
-  form.tel = '',
-  form.roleid = 0,
-  form.id = 0,
-  form.depid =0,
-  form.username = ''
+    form.confirmPass= '';
+    form.depid= 0;
+    form.id= 0;
+    form.name='' ;
+    form.oldpass='';
+    form.pass='';
+    form.qq='';
+    form.roleid= 0;
+    form.tel='';
+    form.username='';
 }
 // 重置密码取消
 const pwead = ()=>{
-  form.name = '',
-  form.oldpass = '',
-  form.qq = '',
-  form.tel = '',
-  form.roleid = 0,
-  form.id = 0,
-  form.depid =0,
-  form.username = ''
+  form.confirmPass= '';
+    form.depid= 0;
+    form.id= 0;
+    form.name='' ;
+    form.oldpass='';
+    form.pass='';
+    form.qq='';
+    form.roleid= 0;
+    form.tel='';
+    form.username='';
   dialogVisible.value = false
 }
 // 取消按钮

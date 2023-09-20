@@ -43,10 +43,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { DepartAdd, RoleList , DepartmentDelete } from '@/assets/api/DepartMent/department'
-import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
-import type { FormInstance, FormRules } from 'element-plus'
-import { reactive, ref } from 'vue'
+import { DepartAdd, DepartmentDelete, RoleList } from '@/assets/api/DepartMent/department';
+import { confirmBox, errorMsg, succesMsg } from '@/untils/msg';
+import type { FormInstance, FormRules } from 'element-plus';
+import { reactive, ref } from 'vue';
 let datalist = ref([])
 let dele = ref()
 let names = ref('')
@@ -57,10 +57,6 @@ const form: any = reactive({
   name: '',
   id: 0
 })
-interface Tree {
-  label: string
-  children?: Tree[]
-}
 const defaultProps = {
   children: 'children',
   label: 'name'
@@ -161,7 +157,6 @@ const adds = async (formEl: FormInstance | undefined) => {
   })
 }
 const handleNodeClick = (data: any) => {
-  // console.log(data)
   dele.value = data.id
   names.value = data.name
   pids.value = data.pid
