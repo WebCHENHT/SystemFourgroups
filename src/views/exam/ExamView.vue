@@ -6,7 +6,7 @@
     </div>
     <div class="watchInput">
       <span class="">关键字</span><el-input class="text" v-model="ruform.key" placeholder="请输入关键字" />
-    <el-button class="but" type="primary" @click="sou(ruform)">搜索</el-button>
+    <el-button class="but" type="primary" @click="sou()">搜索</el-button>
     </div>
     <TableangPage 
     :loading="loading"
@@ -79,20 +79,9 @@
       isslot: true,
     },
   ])
-// 约束类型
-interface T {
-  page: number
-  psize: number
-  ismy: number
-  state: number
-  key: string
-  begindate: string
-  admin: string
-  enddate: string
-  isread:number
-}
+
 // 所传的参数
-let ruform = reactive<T>({
+let ruform:any = reactive({
   page: 1,
   psize: 10,
   key: '',
@@ -114,12 +103,12 @@ let total = ref(0)
   let tableData: any = ref([])
   const tealist = async()=>{
     let res:any = await TestLists(ruform)
-    console.log(111,res);
+  
    
     tableData.value = res.data.list
     total.value = res.data.counts
     loading.value = false
-    // console.log(22,tableData);
+   
     
   }
   tealist()
@@ -136,7 +125,7 @@ let total = ref(0)
   }
   // 跳转
   const tiao = (val:any)=>{
-    console.log(val);
+  
     
     router.push({
       path:'SystemMenu/exam/ExamsTudent',

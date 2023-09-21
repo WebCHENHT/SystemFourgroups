@@ -121,7 +121,6 @@ class RequestHttp {
         }
       },
       (error: AxiosError) => {
-        console.log('报错了', error)
         // 请求报错
         Promise.reject(error)
       }

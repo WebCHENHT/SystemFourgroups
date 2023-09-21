@@ -146,7 +146,6 @@ const TestGetForResultdata = async () => {
     testid: route.query.id as unknown as number
   })
   if (res.errCode === 10000) {
-    console.log(res.data)
     resultdata.value = res.data as any
     boxs.value = true
   }

@@ -74,7 +74,7 @@ const cancellation = () => {
 let arr = ref({})
 const add = () => {
   arr.value = tatle.value
-  console.log(arr)
+
   isshow.value = true
 }
 let fetch = () => {

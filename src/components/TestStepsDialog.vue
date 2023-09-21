@@ -95,7 +95,6 @@ const uploadsuccess = (response: any, uploadFile: any, uploadFiles: any): void =
 }
 //上传文件之前的钩子
 const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  console.log(rawFile)
 
   if (rawFile.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
     ElMessage.error('请导入excel格式文件')

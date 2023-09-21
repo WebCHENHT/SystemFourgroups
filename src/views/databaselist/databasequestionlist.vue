@@ -8,7 +8,7 @@
       <template #extra>
         <div class="flex items-center">
           <el-button @click="addTest">添加试题</el-button>
-          <el-button type="primary" class="ml-2" @click="isShowAdd=true">批量添加试题</el-button>
+          <el-button type="primary" class="ml-2" @click="isShowAdd = true">批量添加试题</el-button>
         </div>
       </template>
     </el-page-header>
@@ -37,58 +37,67 @@
       :TableData="tableData"
       :tableColums="tableColums"
       :total="total"
-      :loading = "loading"
+      :loading="loading"
       :isselect="true"
       @allTableData="allTableData"
       @sonhandleCurrentChange="sonhandleCurrentChange"
       @sonhandleSizeChange="sonhandleSizeChange"
     >
-    <!-- 试卷名称 -->
-        <template #default="scoped:any">
-          <el-button type="primary" link @click="testDetail(scoped.data)" >
+      <!-- 试卷名称 -->
+      <template #default="scoped: any">
+        <el-button type="primary" link @click="testDetail(scoped.data)">
           <div v-html="scoped.data.title"></div>
-          </el-button>
-        </template>
-        <!-- 时间 -->
-        <template #addtime="scopeds">
-          {{ scopeds.data.addtime.substring(0, 16) }}
-        </template>
-        <template #actions="slotname:any">
+        </el-button>
+      </template>
+      <!-- 时间 -->
+      <template #addtime="scopeds">
+        {{ scopeds.data.addtime.substring(0, 16) }}
+      </template>
+      <template #actions="slotname: any">
         <el-button type="primary" size="small" link @click="compile(slotname.data)">编辑</el-button>
         <el-button type="primary" size="small" link @click="del(slotname.data.id)">删除</el-button>
       </template>
     </TableangPage>
 
     <!-- 单条试题详情的抽屉 -->
-    <DatabaseDetail v-if="isDatabaseDetail" :getEestDetail="getEestDetail" @closeDrawer="closeDrawer"></DatabaseDetail>
+    <DatabaseDetail
+      v-if="isDatabaseDetail"
+      :getEestDetail="getEestDetail"
+      @closeDrawer="closeDrawer"
+    ></DatabaseDetail>
     <!-- 添加试题的抽屉 -->
-  <AddtestDrawer
-    v-if="isAddtestDrawer"
-    :getList="lists"
-    :questionData="questionData"
-    @closeDrawer="closeDrawer"
-  />
-   <!-- 批量上传试题 -->
-  <AlladdQuestion
-    @closeDialog="closeDialog"
-    :addUrl="addTestUrl"
-    :getList="lists"
-    v-if="isShowAdd"
-  />
+    <AddtestDrawer
+      v-if="isAddtestDrawer"
+      :getList="lists"
+      :questionData="questionData"
+      @closeDrawer="closeDrawer"
+    />
+    <!-- 批量上传试题 -->
+    <AlladdQuestion
+      @closeDialog="closeDialog"
+      :addUrl="addTestUrl"
+      :getList="lists"
+      v-if="isShowAdd"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import {
+  DatabaseDeleteall,
+  DatabaseList,
+  Databasedel,
+  exportExcel
+} from '@/assets/api/databaselist/DatabaseList'
+import AddtestDrawer from '@/components/Databaselist/AddtestDrawer.vue'
+import AlladdQuestion from '@/components/Databaselist/AlladdQuestion.vue'
+import DatabaseDetail from '@/components/Databaselist/DatabaseDetail.vue'
+import { debounce } from '@/untils/antishake'
+import { Downblob } from '@/untils/down'
+import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 import { ArrowLeft } from '@element-plus/icons-vue'
 import { reactive, ref, toRaw, toRefs, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import {DatabaseDeleteall, DatabaseList , Databasedel, exportExcel} from '@/assets/api/databaselist/DatabaseList'
-import DatabaseDetail from '@/components/Databaselist/DatabaseDetail.vue'
-import AddtestDrawer from '@/components/Databaselist/AddtestDrawer.vue'
-import { debounce } from '@/untils/antishake'
-import AlladdQuestion from '@/components/Databaselist/AlladdQuestion.vue'
-import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
-import { Downblob } from '@/untils/down';
 let display = ref(false) //批量删除显示按钮
 let conceal = ref(true) //批量删除隐藏按钮
 let tableData = ref([])
@@ -100,7 +109,7 @@ const router = useRouter()
 let loading = ref<boolean>(true)
 let red = route.query.id
 let title = route.query.title
-const addTestUrl = ref('http://estate.eshareedu.cn/exam/upload/question.xlsx');
+const addTestUrl = ref('http://estate.eshareedu.cn/exam/upload/question.xlsx')
 // 返回上一级
 const back = () => {
   router.push('/SystemMenu/databaselist')
@@ -130,7 +139,7 @@ const tableColums = reactive([
   {
     slotname: 'addtime',
     isslot: true,
-    label: '创建时间',
+    label: '创建时间'
   },
   {
     label: '创建人',
@@ -142,23 +151,21 @@ const tableColums = reactive([
     isslot: true
   }
 ])
-const Data=reactive({
-  questionData:{}
+const Data = reactive({
+  questionData: {}
 })
 const { questionData } = toRefs(Data)
 // 添加试题
 const addTest = () => {
-  isAddtestDrawer.value = true;
-};
+  isAddtestDrawer.value = true
+}
 const compile = (data: any) => {
-  console.log('编辑',data);
   questionData.value = data
   isAddtestDrawer.value = true
 }
 // 列表
-const lists = async() => {
-  let res:any = await DatabaseList(data)
-  console.log(res);
+const lists = async () => {
+  let res: any = await DatabaseList(data)
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
@@ -167,32 +174,31 @@ const lists = async() => {
 }
 lists()
 const state: any = reactive({
-  getEestDetail:{}
-});
-const { getEestDetail } = toRefs(state);
-const isDatabaseDetail = ref(false);
+  getEestDetail: {}
+})
+const { getEestDetail } = toRefs(state)
+const isDatabaseDetail = ref(false)
 const isAddtestDrawer = ref(false)
-const isShowAdd = ref(false); //批量添加
+const isShowAdd = ref(false) //批量添加
 // 接受子组件传过来的值  关闭弹窗
 const closeDialog = (val: any) => {
-  isShowAdd.value = val;
-};
+  isShowAdd.value = val
+}
 // 接收从子组件传过来的值  关闭抽屉
 const closeDrawer = (val: any) => {
   questionData.value = {}
-  isAddtestDrawer.value = val;
+  isAddtestDrawer.value = val
   isDatabaseDetail.value = val
-};
+}
 // 试题单条数据详情
-const testDetail = (val:any) => {
-  console.log(val);
+const testDetail = (val: any) => {
   isDatabaseDetail.value = true
-  state.getEestDetail=val
+  state.getEestDetail = val
 }
 // 导出excel
-let excel = async() => {
-  let res = await exportExcel(red).catch(() => {});
-  Downblob(res, title + '.xlsx');
+let excel = async () => {
+  let res = await exportExcel(red).catch(() => {})
+  Downblob(res, title + '.xlsx')
 }
 let id: any = reactive([]) //定义多选数据
 //多选获取id

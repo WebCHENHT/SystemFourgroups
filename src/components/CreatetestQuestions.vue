@@ -116,7 +116,6 @@ const MySystemTransferAdd = (data: any) => {
       id: item.id
     }
   })
-  console.log(res)
 
   ruleForm.limits = res
   Transfer.value.dialogVisible = false

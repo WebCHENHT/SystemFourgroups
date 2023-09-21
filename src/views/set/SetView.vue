@@ -13,34 +13,31 @@
         </el-form-item>
         <el-button class="but" type="primary" @click="passxiu">修改密码</el-button>
         <el-button @click="chongzhi">重置</el-button>
-
       </el-form>
-
     </div>
-  </div>  
+  </div>
 </template>
 
 <script setup lang="ts">
 import { StudentPass } from '@/assets/api/Set/Set'
-import { ref, reactive } from 'vue'
-import { succesMsg ,errorMsg} from '@/untils/msg'
-const form = reactive({
+import { errorMsg, succesMsg } from '@/untils/msg'
+import { reactive } from 'vue'
+const form: any = reactive({
   oldpass: '',
   pass: '',
-  password: '',
+  password: ''
 })
 // 修改密码
 const passxiu = async () => {
   let red = await StudentPass(form)
-  console.log(1111, red);
   if (red.errCode == 10000) {
     succesMsg('密码修改成功')
-  }else{
+  } else {
     errorMsg('旧密码错误请重新输入')
   }
   form.oldpass = ''
-    form.pass = ''
-    form.password = ''
+  form.pass = ''
+  form.password = ''
 }
 // 重置
 const chongzhi = () => {
@@ -64,17 +61,21 @@ const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('请再次输入6到12位密码'))
   } else if (value !== form.pass) {
-    callback(new Error("确认密码与确认新密码不同!"))
+    callback(new Error('确认密码与确认新密码不同!'))
   } else {
     callback()
   }
 }
 const rules = reactive({
-  pass: [{ validator: validatePass, trigger: 'blur' },
-  { required: true, message: '请输入新密码 ', trigger: 'blur' }],
-  password: [{ validator: validatePass2, trigger: 'blur' },
-  { required: true, message: '请输入新密码 ', trigger: 'blur' }],
-  oldpass:{ required: true, message: '请输入旧密码 ', trigger: 'blur' },
+  pass: [
+    { validator: validatePass, trigger: 'blur' },
+    { required: true, message: '请输入新密码 ', trigger: 'blur' }
+  ],
+  password: [
+    { validator: validatePass2, trigger: 'blur' },
+    { required: true, message: '请输入新密码 ', trigger: 'blur' }
+  ],
+  oldpass: { required: true, message: '请输入旧密码 ', trigger: 'blur' }
 })
 </script>
 

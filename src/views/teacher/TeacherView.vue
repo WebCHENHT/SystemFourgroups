@@ -101,9 +101,9 @@ let loading = ref<boolean>(true)
 // 角色列表
 const roleLists = async () => {
   let red = await roleList(0 as any)
-  // console.log(777,red);
+
   optionList.value = red.data.list
-  // console.log(789787,optionList);
+
 }
 roleLists()
 // 部门
@@ -117,13 +117,13 @@ const props = {
 //部门change事件
 const add = async (val: any) => {
   ruform.depid = val
-  //  console.log( 9696,ruform.depid)
+
 }
 // 部门列表
 const DeparList = async () => {
-  let red: any = await DepartmentList( '' as any)
+  let red: any = await DepartmentList()
   options.value = red.data.list
-  // console.log(852,red)
+
 }
 DeparList()
 // 列表数据
@@ -177,13 +177,12 @@ const sou = async () => {
 let tableData: any = ref([])
 const tealist = async () => {
   let res: any = await teacherlist(ruform)
-  // console.log(111,res);
+
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
     loading.value = false
   }
-  // console.log(22,tableData);
 
 }
 tealist()
@@ -213,11 +212,9 @@ const open = (id: any) => {
       let ids = {
         id: 0
       }
-      // console.log(11,id);
       ids.id = id.id
       let res = await teacherdelete(ids)
-      // console.log(222,res);
-      // succesMsg('删除成功')
+      
       tealist()
       ElMessage({
         type: 'success',
@@ -236,7 +233,7 @@ const open = (id: any) => {
 // 重置密码赋值
 const ChongVisible = (val: any) => {
   dialogVisible.value = true
-  console.log(66, val);
+
   form.name = val.name
   form.oldpass = val.pass
   form.qq = val.pass
@@ -247,7 +244,7 @@ const ChongVisible = (val: any) => {
   form.username = val.username
 }
 // 重置密码参数
-let form = reactive({
+let form:any = reactive({
   confirmPass:"",//新密码
   depid:0,//
   id:0,
@@ -267,8 +264,8 @@ const validatePass = (rule: any, value: any, callback: any) => {
     callback(new Error('请输入6-12位新密码'))
   } else {
     if (form.pass !== '') {
-      if (!form.value) return
-      form.value.validateField('checkPass', () => null)
+      if (!form) return
+      form.validateField('checkPass', () => null)
     }
     callback()
   }
@@ -292,7 +289,6 @@ const rules = reactive({
 // 密码重置
 const Pass = async () => {
   let red = await teacherchangeAdd(form)
-  console.log(22, red);
   dialogVisible.value = false
   if(red.errCode==10000){
     succesMsg('密码重置成功')
@@ -352,7 +348,7 @@ const faAdd = () => {
   formAdd.tel = ''
   formAdd.pass = ''
   formAdd.depid = 0
-  formAdd.roleid = 0
+  formAdd.roleid = ''
   dialogadd.value = false
 }
 // 添加
@@ -368,8 +364,7 @@ let formAdd = reactive({
 })
 const teacheAdd = async () => {
   let red: any = await teacherchangeAdd(formAdd)
-  console.log(red);
-  // console.log(123);
+
   if(red.errCode==10000){
     dialogadd.value = false
     succesMsg(formAdd.id > 1 ? '修改成功' : '添加成功')
@@ -409,7 +404,7 @@ const teachedele = async (val: any) => {
   formAdd.pass = val.pass
   formAdd.depid = val.depid
   formAdd.roleid = val.roleid
-  console.log(22, formAdd);
+
 }
 </script>
 <style scoped lang="less">

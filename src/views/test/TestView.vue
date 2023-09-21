@@ -247,7 +247,6 @@ const Cancelpublication = async (name: string) => {
         let res = await TestDeleteall({
           ids: Deletealls.value.ids
         })
-        console.log(res)
         if (res.errCode === 10000) {
           ElMessage.success('删除成功')
         }
@@ -269,7 +268,6 @@ const Cancelpublication = async (name: string) => {
       TestListdata()
     })
     .catch((error) => {
-      console.log('')
     })
 }
 
@@ -463,7 +461,6 @@ const tiems = (data: any) => {
 }
 //判断多选框是否选中做操作
 const isxuanze = (data: any) => {
-  console.log(data)
   if (data === true) {
     TestData.value.ismy = '0'
     TestData.value.admin = ''

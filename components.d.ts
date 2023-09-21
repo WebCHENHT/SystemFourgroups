@@ -22,24 +22,37 @@ declare module 'vue' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
-    ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
     ElDialog: typeof import('element-plus/es')['ElDialog']
+<<<<<<< HEAD
     ElDrawer: typeof import('element-plus/es')['ElDrawer']
+=======
+    ElF: typeof import('element-plus/es')['ElF']
+    ElFor: typeof import('element-plus/es')['ElFor']
+>>>>>>> 240b01d704a2a9be105c1c1d8c4a640d0e8d0316
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
+<<<<<<< HEAD
     ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
+=======
+>>>>>>> 240b01d704a2a9be105c1c1d8c4a640d0e8d0316
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadio: typeof import('element-plus/es')['ElRadio']
-    ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
+<<<<<<< HEAD
+    ElSelect: typeof import('element-plus/es')['ElSelect']
+    ElTable: typeof import('element-plus/es')['ElTable']
+    ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
+    ElTransfer: typeof import('element-plus/es')['ElTransfer']
+=======
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElStep: typeof import('element-plus/es')['ElStep']
@@ -52,6 +65,7 @@ declare module 'vue' {
     ElTree: typeof import('element-plus/es')['ElTree']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     ExamListView: typeof import('./src/components/ExamListView.vue')['default']
+>>>>>>> 240b01d704a2a9be105c1c1d8c4a640d0e8d0316
     ListtoftestView: typeof import('./src/components/ListtoftestView.vue')['default']
     QuestionBankLogView: typeof import('./src/components/QuestionBankLogView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
