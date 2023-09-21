@@ -62,13 +62,11 @@
       >
     </el-col>
   </el-row>
-
   <div style="margin-left: 20px; margin-bottom: 20px" v-if="Deletealls.ids != ''">
-    <el-button type="danger" @click="pldelTest">批量删除</el-button>
-    <el-button type="primary" @click="publishAdd">发布考试</el-button>
-    <el-button type="success" @click="Cancelpublication">取消发布</el-button>
+    <el-button type="danger" @click="Cancelpublication('批量删除')">批量删除</el-button>
+    <el-button type="primary" @click="Cancelpublication('发布考试')">发布考试</el-button>
+    <el-button type="success" @click="Cancelpublication('取消发布')">取消发布</el-button>
   </div>
-
   <TableangPage
     :TableData="TestDatas"
     :tableColums="tableColums"
@@ -142,7 +140,6 @@
       </div>
     </template>
   </TableangPage>
-
   <SystemTransferVue
     v-if="TrabsList"
     ref="dialog"
@@ -156,8 +153,7 @@
 </template>
 
 <script setup name="/test" lang="ts">
-import { reactive, ref, onActivated, onDeactivated, nextTick } from 'vue'
-
+import { ref, nextTick } from 'vue'
 import type { TestDatatype } from '@/assets/TSinterface/SystemTest'
 import {
   TestLists,
@@ -175,7 +171,6 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import SystemTransferVue from '@/components/SystemTransfer.vue'
 import { useRouter } from 'vue-router'
 import TestDogis from '@/components/TestDogis.vue'
-
 //路由跳转
 let router = useRouter()
 //控制穿梭框显示隐藏和名称
@@ -236,76 +231,43 @@ const bianjis = async (data: any, num: string | number) => {
   }
 }
 //取消发布
-const Cancelpublication = async () => {
+const Cancelpublication = async (name: string) => {
   ElMessageBox.confirm('此操作将修改选中的考试状态, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   })
     .then(async () => {
-      let res = await TestUpdateStates({
-        ids: Deletealls.value.ids,
-        state: 2
-      })
-      console.log(res)
-      if (res.errCode === 10000) {
-        Deletealls.value.ids = []
-        loading.value = true
-        TestListdata()
-        ElMessage.success('取消成功')
+      if (name === '批量删除') {
+        let res = await TestDeleteall({
+          ids: Deletealls.value.ids
+        })
+        console.log(res)
+        if (res.errCode === 10000) {
+          ElMessage.success('删除成功')
+        }
+      } else {
+        let res = await TestUpdateStates({
+          ids: Deletealls.value.ids,
+          state: name === '发布考试' ? 1 : 2
+        })
+        if (res.errCode === 10000) {
+          if (name !== '发布考试') {
+            ElMessage.success('取消成功')
+          } else {
+            ElMessage.success('发布成功')
+          }
+        }
       }
+      Deletealls.value.ids = []
+      loading.value = true
+      TestListdata()
     })
     .catch((error) => {
       console.log('')
     })
 }
-//发布
-const publishAdd = async () => {
-  ElMessageBox.confirm('此操作将修改选中的考试状态, 是否继续?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(async () => {
-      let res = await TestUpdateStates({
-        ids: Deletealls.value.ids,
-        state: 1
-      })
-      console.log(res)
-      if (res.errCode === 10000) {
-        Deletealls.value.ids = []
-        loading.value = true
-        TestListdata()
-        ElMessage.success('发布成功')
-      }
-    })
-    .catch((error) => {
-      console.log('')
-    })
-}
-//批量删除
-const pldelTest = () => {
-  ElMessageBox.confirm('此操作将修改选中的考试状态, 是否继续?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(async () => {
-      let res = await TestDeleteall({
-        ids: Deletealls.value.ids
-      })
-      console.log(res)
-      if (res.errCode === 10000) {
-        Deletealls.value.ids = []
-        loading.value = true
-        TestListdata()
-        ElMessage.success('删除成功')
-      }
-    })
-    .catch((error) => {
-      console.log('')
-    })
-}
+
 //多选
 let Deletealls: any = ref({
   ids: []
@@ -365,7 +327,6 @@ const DelSystemTransfer = () => {
   Testdatast.value = []
 }
 //点击考试名称
-
 //获取弹出框的数据
 let getDogis = ref()
 let getDogisashiw = ref(false)
@@ -416,11 +377,9 @@ const sonhandleCurrentChange = (data: number) => {
 //条
 const sonhandleSizeChange = (data: number) => {
   TestData.value.psize = data
-
   loading.value = true
   TestListdata()
 }
-
 //状态选中
 const TestState = (data: any) => {
   TestData.value.state = data
@@ -456,8 +415,6 @@ const open = (data: any) => {
       ids: []
     }
     arr.ids = [data.id] as any
-    console.log(arr)
-
     let res = await TestUpdateState({
       state: arr.state,
       ids: arr.ids
@@ -545,7 +502,6 @@ const shortcuts = [
   }
 ]
 </script>
-
 <style lang="less" scoped>
 .el-row {
   display: flex;

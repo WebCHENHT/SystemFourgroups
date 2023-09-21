@@ -18,6 +18,7 @@ export default function () {
     const res = menu.filter((item) => {
       return item.url !== null
     })
+
     res.forEach((item: any) => {
       const viewsurl =
         '../views' +
@@ -38,6 +39,7 @@ export default function () {
         },
         component: viteComponent[viewsurl]
       }
+      console.log(obj)
       router.addRoute('SystemMenu', obj)
     })
 

@@ -113,8 +113,9 @@ const TestGetData = async () => {
   }
 }
 TestGetData()
+
 const goBack = () => {
-  window.history.go(-1)
+  router.push('/SystemMenu/stutest')
 }
 </script>
 
