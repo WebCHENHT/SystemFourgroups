@@ -60,7 +60,6 @@ const addEditData = ref({
 // 角色列表
 const list = async () => {
   let res: any = await RoleList(data)
-  console.log(res)
   if (res.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts

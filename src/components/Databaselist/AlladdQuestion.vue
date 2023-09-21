@@ -9,7 +9,9 @@
       </div>
       <div class="batchRight">
         <p class="Righttitle">
-          下载 <span style="color: rgb(19, 79, 253); cursor: pointer" @click="down">试题模板</span>，批量导入试题
+          下载
+          <span style="color: rgb(19, 79, 253); cursor: pointer" @click="down">试题模板</span
+          >，批量导入试题
         </p>
         <p class="Rightbody">
           注:从其他Excel或Word复制试题时请使用选择性粘贴 Word:右键一选择性粘贴-文本，
@@ -47,7 +49,6 @@
 import { databasequestionAddlist } from '@/assets/api/databaselist/DatabaseList'
 import { useCounterStore } from '@/stores/counter'
 import { Download } from '@/untils/Downloadfilesdirectly'
-import { Down } from '@/untils/down'
 import { htmlEncodeByRegExp } from '@/untils/htmlCode'
 import type { UploadProps, UploadUserFile } from 'element-plus'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -75,7 +76,7 @@ const handleClose = (done: () => void) => {
 }
 // 点击下载试题模版
 const down = () => {
-  Download('http://apis.90000p.com/exam2212/upload/question.xlsx','试题')
+  Download('http://apis.90000p.com/exam2212/upload/question.xlsx', '试题')
 }
 
 // 上传文件
@@ -91,7 +92,6 @@ const addData = reactive({
 })
 
 const onSuccess = (res: any) => {
-  console.log(res.errCode)
   if (res.errCode !== 10000) {
     ElMessage.error(res.errMsg)
     return false
@@ -101,17 +101,11 @@ const onSuccess = (res: any) => {
     title: htmlEncodeByRegExp(item.title)
   }))
 }
-const onError = (val: any) => {
-  console.log(val)
-}
+const onError = (val: any) => {}
 
-const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {
-  console.log(file, uploadFiles)
-}
+const handleRemove: UploadProps['onRemove'] = (file, uploadFiles) => {}
 
-const handlePreview: UploadProps['onPreview'] = (uploadFile) => {
-  console.log(uploadFile)
-}
+const handlePreview: UploadProps['onPreview'] = (uploadFile) => {}
 
 const handleExceed: UploadProps['onExceed'] = (files, uploadFiles) => {
   ElMessage.warning(
@@ -132,14 +126,11 @@ const cancel = () => {
 }
 // 确定
 const confirm = async () => {
-  console.log(addData.list.length)
-
   if (addData.list.length == 0) {
     ElMessage.error('请先选择要上传的文件！')
     return false
   }
   let result: any = await databasequestionAddlist(addData)
-  console.log('题库试题批量添加', result)
   if (result.errCode !== 10000) {
     ElMessage.error(result.errMsg)
     return false

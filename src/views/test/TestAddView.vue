@@ -177,7 +177,7 @@
             </div>
           </div>
         </el-form-item>
-        
+
         <el-form-item label="试题存入题库：">
           <div style="display: flex">
             <el-select v-model="TestData.teacherid" class="m-2" placeholder="请选择">
@@ -475,7 +475,6 @@ const releaseadd = async (name: string) => {
     ElMessage.error('请选择阅卷老师')
   } else {
     let res = await TestAdd(TestData.value)
-    console.log(res.data)
     if (res.errCode === 10000) {
       if (Store.TestAddid !== 0) {
         Store.TestAddid = 0
@@ -594,7 +593,6 @@ const arraytest: any = computed(() => {
 //添加标题处理
 const filter = (title: any, answer: any) => {
   const answerList = answer.split('|')
-  console.log(answerList)
   let i = 0
   while (title.includes('[]')) {
     title = title.replace(
@@ -634,8 +632,6 @@ const MywangAdd = (data: any) => {
     TestData.value.questions.push(data)
     WangAdd.value.drawer = false
   } else {
-    console.log(data.id)
-
     TestData.value.questions[data.id - 1] = data
     WangAdd.value.drawer = false
   }

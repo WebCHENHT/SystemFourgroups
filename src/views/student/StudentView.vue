@@ -233,9 +233,7 @@ let studenlist = async () => {
   }
 }
 studenlist()
-const allTableDatas = (val: any) => {
-  console.log(val)
-}
+const allTableDatas = (val: any) => {}
 // 分页
 const handleCurrentChange = (val: number) => {
   loading.value = true
@@ -308,8 +306,6 @@ const resetting = (val: any) => {
 // 编辑
 let carr = reactive({})
 const edit = (val: any) => {
-  console.log(val)
-
   carr = val
   user.value = true
 }

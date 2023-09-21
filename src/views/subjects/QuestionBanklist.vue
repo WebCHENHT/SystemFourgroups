@@ -67,8 +67,6 @@ const emit = defineEmits(['all'])
 const Classes: any = ref([])
 //穿梭框左侧选中
 const getLeftTransfer = (data: any) => {
-  console.log(data)
-
   Classes.value = [...Classes.value, ...data]
 }
 //穿梭框右侧选中
