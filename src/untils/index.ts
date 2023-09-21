@@ -39,7 +39,7 @@ export default function () {
         },
         component: viteComponent[viewsurl]
       }
-      console.log(obj)
+
       router.addRoute('SystemMenu', obj)
     })
 
