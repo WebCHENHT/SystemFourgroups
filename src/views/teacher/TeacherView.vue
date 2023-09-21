@@ -27,7 +27,7 @@
       </template>
     </TableangPage>
     <!-- 重置密码弹出框 @click="Pass" -->
-    <el-dialog v-model=" dialogVisible " title="重置密码" width="30%">
+    <el-dialog  :before-close="close" v-model=" dialogVisible " title="重置密码" width="30%">
       <el-form :model=" form " :rules="rules" label-width="120px">
         <el-form-item label="姓名:">
           {{ form.name }}
@@ -50,7 +50,7 @@
       </template>
     </el-dialog>
     <!-- 添加弹出框 -->
-    <el-dialog v-model=" dialogadd " :title=" formAdd.id > 1 ? '编辑老师' : '添加老师' " width="30%">
+    <el-dialog :before-close="handleClose" v-model=" dialogadd " :title=" formAdd.id > 1 ? '编辑老师' : '添加老师' " width="30%">
       <el-form :model=" formAdd " :rules="rulesadd" label-width="120px">
         <el-form-item label="姓名" prop="name">
           <el-input v-model=" formAdd.name "  />
@@ -322,6 +322,27 @@ const pwead = ()=>{
     form.tel='';
     form.username='';
   dialogVisible.value = false
+}
+// 
+const handleClose = (done: () => void) => {
+  ElMessageBox.confirm('确认要退出吗？')
+    .then(() => {
+      done()
+      faAdd()
+    })
+    .catch(() => {
+      // catch error
+    })
+}
+const close = (done: () => void) => {
+  ElMessageBox.confirm('确认要退出吗？')
+    .then(() => {
+      done()
+      pwead()
+    })
+    .catch(() => {
+      // catch error
+    })
 }
 // 取消按钮
 const faAdd = () => {

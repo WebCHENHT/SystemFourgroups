@@ -117,7 +117,7 @@ const SignOut = () => {
 }
 //跳转到设置密码页面
 const setPass = () => {
-  router.push('setupPass')
+  router.push('/SystemMenu/set')
   data.show = false
 }
 </script>
