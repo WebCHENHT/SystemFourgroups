@@ -23,9 +23,12 @@
         />
       </el-form-item>
     </el-col>
-    <el-col :span="16" style="padding-right: 5px; padding-left: 5px">
+    <el-col :span="18" style="padding-right: 5px; padding-left: 5px">
       <div class="grid-content ep-bg-purple" />
-      <el-checkbox v-model="created" label="我创建的" @change="isxuanze" />
+      <el-form-item>
+        <el-checkbox v-model="created" label="我创建的" @change="isxuanze" />
+      </el-form-item>
+
       <el-form-item label="开放时间" style="margin-left: 15px">
         <el-radio-group v-model="Openinghours" @change="radiotest">
           <el-radio label="永久开放" style="margin-right: 10px" />
@@ -53,13 +56,15 @@
           <el-option label="未发布" value="2" />
         </el-select>
       </el-form-item>
-      <el-button
-        type="primary"
-        style="margin-left: 20px"
-        @click="TestcharAt"
-        v-authority="{ model: '考试', name: '查看' }"
-        >查询</el-button
-      >
+      <el-form-item>
+        <el-button
+          type="primary"
+          style="margin-left: 20px"
+          @click="TestcharAt"
+          v-authority="{ model: '考试', name: '查看' }"
+          >查询</el-button
+        >
+      </el-form-item>
     </el-col>
   </el-row>
   <div style="margin-left: 20px; margin-bottom: 20px" v-if="Deletealls.ids != ''">
@@ -242,7 +247,6 @@ const Cancelpublication = async (name: string) => {
         let res = await TestDeleteall({
           ids: Deletealls.value.ids
         })
-        console.log(res)
         if (res.errCode === 10000) {
           ElMessage.success('删除成功')
         }
@@ -264,7 +268,6 @@ const Cancelpublication = async (name: string) => {
       TestListdata()
     })
     .catch((error) => {
-      console.log('')
     })
 }
 
@@ -319,7 +322,9 @@ const tableColums = ref([
   {
     label: '操作',
     isslot: true,
-    slotname: 'caozuo'
+    slotname: 'caozuo',
+
+    width: '148px'
   }
 ])
 //关闭操作
@@ -394,7 +399,7 @@ const Examanalysis = (data: any) => {
   }
   if (data.incomplete === 0) {
     router.push({
-      path: '/SystemMenu/test/Analyse',
+      path: '/SystemMenu/test/AnalyseView',
       query: {
         id: data.id
       }
@@ -441,7 +446,7 @@ const radiotest = (data: any) => {
 //获取考试列表管理
 const TestListdata = async () => {
   let res = await TestLists(TestData.value)
-  console.log(res.data.list)
+
   if (res.errCode === 10000) {
     TestDatas.value = res.data.list
     total.value = res.data.counts
@@ -456,7 +461,6 @@ const tiems = (data: any) => {
 }
 //判断多选框是否选中做操作
 const isxuanze = (data: any) => {
-  console.log(data)
   if (data === true) {
     TestData.value.ismy = '0'
     TestData.value.admin = ''
@@ -505,6 +509,7 @@ const shortcuts = [
 <style lang="less" scoped>
 .el-row {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   position: relative;
   box-sizing: border-box;
@@ -516,6 +521,8 @@ const shortcuts = [
   margin-top: 15px;
   border-radius: 4px;
   display: flex;
+  align-items: center;
+
   .el-select {
     width: 100px;
   }
@@ -533,11 +540,11 @@ const shortcuts = [
   .caozuobutton {
     display: flex;
     .el-button {
-      border-radius: 0px;
-      padding-right: 5px;
+      padding-right: 4px;
       height: 15px;
       border-right: 1px solid #000;
       margin-left: 0;
+      border-radius: 0px;
     }
   }
 }

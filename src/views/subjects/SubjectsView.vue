@@ -181,7 +181,6 @@ let del = async (val: any) => {
       let res = await subjectsdelete({ id: val.id })
       list()
       succesMsg('删除成功！')
-      console.log(res)
     })
     .catch(() => {
       errorMsg('已取消')
@@ -195,7 +194,6 @@ const cuan = () => {
 }
 // 编辑试卷
 const edit = (row: any) => {
-  console.log(row)
 
   router.push({
     path: 'SystemMenu/subjects/SubjectsAdd',

@@ -111,7 +111,7 @@ const add = async (formEl: FormInstance | undefined) => {
         }
       }
     } else {
-      console.log('error submit!', fields)
+      return ''
     }
   })
 }

@@ -117,7 +117,6 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
             return item
           }
         })
-        console.log(resa)
         location.reload()
         store.url = resa[0].url
         store.LeftArrDatas = resa
@@ -137,7 +136,7 @@ const LogniAddForm = debounce(async (formEl: FormInstance | undefined) => {
         errorMsg(res.errMsg)
       }
     } else {
-      console.log('error submit!', fields)
+      return ''
     }
   })
 }, 1000)

@@ -52,7 +52,6 @@ let StutestModel = reactive({
 })
 let StutesDatas: any = ref([])
 onActivated(() => {
-  console.log('aaaa')
 })
 
 const StutestDatas = async () => {

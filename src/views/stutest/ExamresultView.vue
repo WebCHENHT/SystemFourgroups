@@ -113,7 +113,7 @@
 <script setup lang="ts">
 import { TestGetForResult } from '@/assets/api/TestList'
 import { useRoute, useRouter } from 'vue-router'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import dayjs from 'dayjs'
 let route = useRoute()
 let router = useRouter()
@@ -146,7 +146,6 @@ const TestGetForResultdata = async () => {
     testid: route.query.id as unknown as number
   })
   if (res.errCode === 10000) {
-    console.log(res.data)
     resultdata.value = res.data as any
     boxs.value = true
   }
@@ -249,6 +248,18 @@ const goBack = () => {
     path: '/SystemMenu/stutest'
   })
 }
+
+let fuuhsah = () => {
+  // 监听浏览器的历史记录变化
+  window.addEventListener('popstate', function (event) {
+    // 判断是否是要返回到指定页面
+    if (String(event.state.current).includes('/SystemMenu/stutest/Questions')) {
+      // 取消返回操作
+      window.history.forward()
+    }
+  })
+}
+fuuhsah()
 </script>
 
 <style lang="less" scoped>

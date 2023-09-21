@@ -107,7 +107,6 @@ const Csnds = () => {
   dataquesDatas()
 }
 const ListftesOk = (data: any) => {
-  console.log(data)
   Testquest.value.Optionstyles = data
   Testquest.value.drawer = true
 }
@@ -129,7 +128,6 @@ const Oktijiaos = () => {
 //多选
 const allTableData = (data: any) => {
   tixindataLists.value = data
-  console.log(data)
 }
 
 let Listtoftestlists = ref([])
@@ -143,7 +141,6 @@ const dataquesDatas = async () => {
       let Arrs = res.data.list.filter((item: any) => {
         return !String(item.answer).split('').includes(',')
       })
-      console.log(Arrs)
 
       Listtoftestlists.value = Arrs
       loading.value = false

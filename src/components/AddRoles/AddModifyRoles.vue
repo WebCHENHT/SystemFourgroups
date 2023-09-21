@@ -47,7 +47,7 @@ const props = defineProps({
     default: () => {}
   }
 })
-const emit = defineEmits(['update:modelValue','fatherDate'])
+const emit = defineEmits(['update:modelValue', 'fatherDate'])
 const propsTrue = {
   label: 'name',
   children: 'children'
@@ -60,18 +60,22 @@ const checkedKeys: any = ref([]) // 选择后的id
 const menuList: any = ref([])
 
 // 弹框打开如果有不是修改将值付给formData
-watch(() => props.modelValue, () => {
-  if (props.modelValue === true) {
-    if (props.addEditData.id) {
-      formData.id = props.addEditData.id;
-      formData.name = props.addEditData.name;
-    } else {
-      formData.id = props.addEditData.id;
-      formData.name = '';
+watch(
+  () => props.modelValue,
+  () => {
+    if (props.modelValue === true) {
+      if (props.addEditData.id) {
+        formData.id = props.addEditData.id
+        formData.name = props.addEditData.name
+      } else {
+        formData.id = props.addEditData.id
+        formData.name = ''
+      }
+      getMenus()
     }
-    getMenus();
-  }
-}, { immediate: true });
+  },
+  { immediate: true }
+)
 
 // 获取权限列表
 const getMenus = async () => {
@@ -80,7 +84,6 @@ const getMenus = async () => {
     roleid: props.addEditData.id
   }
   const res: any = await MenuList(data)
-  console.log(res);
   if (res.errCode !== 10000) return
   menuList.value = res.data.list
   menuList.value.forEach((t: any) => {
@@ -88,14 +91,12 @@ const getMenus = async () => {
     t.children.forEach((h: any) => {
       if (h.checked === 1) {
         checkedKeys.value.push(h.id)
-          console.log(checkedKeys);
-          
       }
     })
   })
 }
 // 选择的全部key值
-const handleCheck = (data: any, checkedNodes: any) => checkedKeys.value = checkedNodes.checkedKeys
+const handleCheck = (data: any, checkedNodes: any) => (checkedKeys.value = checkedNodes.checkedKeys)
 // 提交
 const submit = async () => {
   let checkedId = checkedKeys.value.map((t: number, i: number) => {

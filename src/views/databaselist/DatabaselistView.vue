@@ -150,7 +150,6 @@ const myCrcolcs = () => {
 // 添加题库
 const MybaseAdd = async (data: any) => {
   let res = await DatabaseAdd(data)
-  console.log(res)
   if (res.errCode === 10000) {
     flag.value.dialogVisible = false
     if (flag.value.ruleForm.id !== 0) {

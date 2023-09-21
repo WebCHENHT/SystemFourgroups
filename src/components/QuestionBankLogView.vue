@@ -130,7 +130,6 @@ const QuestionOk = () => {
 const DatabaseListDatas = async () => {
   let res: any = await DatabaseList(DatabaseListObj)
   if (res.errCode === 10000) {
-    console.log(res.data)
     total.value = res.data.counts
     loading.value = false
     DatabaseVuels.value = res.data.list
