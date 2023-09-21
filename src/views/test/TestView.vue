@@ -399,7 +399,7 @@ const Examanalysis = (data: any) => {
   }
   if (data.incomplete === 0) {
     router.push({
-      path: '/SystemMenu/test/Analyse',
+      path: '/SystemMenu/test/AnalyseView',
       query: {
         id: data.id
       }

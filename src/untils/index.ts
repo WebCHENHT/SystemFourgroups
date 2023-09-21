@@ -100,7 +100,7 @@ export default function () {
       component: () => import('../views/databaselist/databasequestionlist.vue')
     })
     router.addRoute('SystemMenu', {
-      path: '/SystemMenu/test/Analyse',
+      path: '/SystemMenu/test/AnalyseView',
       name: 'AnalyseView',
       meta: {
         title: '考试分析',
@@ -110,7 +110,7 @@ export default function () {
     })
     router.addRoute('SystemMenu', {
       path: '/SystemMenu/set',
-      name: 'AnalyseView',
+      name: 'set',
       meta: {
         title: '修改密码',
         url: '/SystemMenu/set'
