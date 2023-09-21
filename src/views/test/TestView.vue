@@ -23,9 +23,12 @@
         />
       </el-form-item>
     </el-col>
-    <el-col :span="16" style="padding-right: 5px; padding-left: 5px">
+    <el-col :span="18" style="padding-right: 5px; padding-left: 5px">
       <div class="grid-content ep-bg-purple" />
-      <el-checkbox v-model="created" label="我创建的" @change="isxuanze" />
+      <el-form-item>
+        <el-checkbox v-model="created" label="我创建的" @change="isxuanze" />
+      </el-form-item>
+
       <el-form-item label="开放时间" style="margin-left: 15px">
         <el-radio-group v-model="Openinghours" @change="radiotest">
           <el-radio label="永久开放" style="margin-right: 10px" />
@@ -53,22 +56,22 @@
           <el-option label="未发布" value="2" />
         </el-select>
       </el-form-item>
-      <el-button
-        type="primary"
-        style="margin-left: 20px"
-        @click="TestcharAt"
-        v-authority="{ model: '考试', name: '查看' }"
-        >查询</el-button
-      >
+      <el-form-item>
+        <el-button
+          type="primary"
+          style="margin-left: 20px"
+          @click="TestcharAt"
+          v-authority="{ model: '考试', name: '查看' }"
+          >查询</el-button
+        >
+      </el-form-item>
     </el-col>
   </el-row>
-
   <div style="margin-left: 20px; margin-bottom: 20px" v-if="Deletealls.ids != ''">
-    <el-button type="danger" @click="pldelTest">批量删除</el-button>
-    <el-button type="primary" @click="publishAdd">发布考试</el-button>
-    <el-button type="success" @click="Cancelpublication">取消发布</el-button>
+    <el-button type="danger" @click="Cancelpublication('批量删除')">批量删除</el-button>
+    <el-button type="primary" @click="Cancelpublication('发布考试')">发布考试</el-button>
+    <el-button type="success" @click="Cancelpublication('取消发布')">取消发布</el-button>
   </div>
-
   <TableangPage
     :TableData="TestDatas"
     :tableColums="tableColums"
@@ -142,7 +145,6 @@
       </div>
     </template>
   </TableangPage>
-
   <SystemTransferVue
     v-if="TrabsList"
     ref="dialog"
@@ -156,8 +158,7 @@
 </template>
 
 <script setup name="/test" lang="ts">
-import { reactive, ref, onActivated, onDeactivated, nextTick } from 'vue'
-
+import { ref, nextTick } from 'vue'
 import type { TestDatatype } from '@/assets/TSinterface/SystemTest'
 import {
   TestLists,
@@ -175,7 +176,6 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import SystemTransferVue from '@/components/SystemTransfer.vue'
 import { useRouter } from 'vue-router'
 import TestDogis from '@/components/TestDogis.vue'
-
 //路由跳转
 let router = useRouter()
 //控制穿梭框显示隐藏和名称
@@ -236,76 +236,41 @@ const bianjis = async (data: any, num: string | number) => {
   }
 }
 //取消发布
-const Cancelpublication = async () => {
+const Cancelpublication = async (name: string) => {
   ElMessageBox.confirm('此操作将修改选中的考试状态, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   })
     .then(async () => {
-      let res = await TestUpdateStates({
-        ids: Deletealls.value.ids,
-        state: 2
-      })
-      console.log(res)
-      if (res.errCode === 10000) {
-        Deletealls.value.ids = []
-        loading.value = true
-        TestListdata()
-        ElMessage.success('取消成功')
+      if (name === '批量删除') {
+        let res = await TestDeleteall({
+          ids: Deletealls.value.ids
+        })
+        if (res.errCode === 10000) {
+          ElMessage.success('删除成功')
+        }
+      } else {
+        let res = await TestUpdateStates({
+          ids: Deletealls.value.ids,
+          state: name === '发布考试' ? 1 : 2
+        })
+        if (res.errCode === 10000) {
+          if (name !== '发布考试') {
+            ElMessage.success('取消成功')
+          } else {
+            ElMessage.success('发布成功')
+          }
+        }
       }
+      Deletealls.value.ids = []
+      loading.value = true
+      TestListdata()
     })
     .catch((error) => {
-      console.log('')
     })
 }
-//发布
-const publishAdd = async () => {
-  ElMessageBox.confirm('此操作将修改选中的考试状态, 是否继续?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(async () => {
-      let res = await TestUpdateStates({
-        ids: Deletealls.value.ids,
-        state: 1
-      })
-      console.log(res)
-      if (res.errCode === 10000) {
-        Deletealls.value.ids = []
-        loading.value = true
-        TestListdata()
-        ElMessage.success('发布成功')
-      }
-    })
-    .catch((error) => {
-      console.log('')
-    })
-}
-//批量删除
-const pldelTest = () => {
-  ElMessageBox.confirm('此操作将修改选中的考试状态, 是否继续?', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  })
-    .then(async () => {
-      let res = await TestDeleteall({
-        ids: Deletealls.value.ids
-      })
-      console.log(res)
-      if (res.errCode === 10000) {
-        Deletealls.value.ids = []
-        loading.value = true
-        TestListdata()
-        ElMessage.success('删除成功')
-      }
-    })
-    .catch((error) => {
-      console.log('')
-    })
-}
+
 //多选
 let Deletealls: any = ref({
   ids: []
@@ -357,7 +322,9 @@ const tableColums = ref([
   {
     label: '操作',
     isslot: true,
-    slotname: 'caozuo'
+    slotname: 'caozuo',
+
+    width: '148px'
   }
 ])
 //关闭操作
@@ -365,7 +332,6 @@ const DelSystemTransfer = () => {
   Testdatast.value = []
 }
 //点击考试名称
-
 //获取弹出框的数据
 let getDogis = ref()
 let getDogisashiw = ref(false)
@@ -416,11 +382,9 @@ const sonhandleCurrentChange = (data: number) => {
 //条
 const sonhandleSizeChange = (data: number) => {
   TestData.value.psize = data
-
   loading.value = true
   TestListdata()
 }
-
 //状态选中
 const TestState = (data: any) => {
   TestData.value.state = data
@@ -456,8 +420,6 @@ const open = (data: any) => {
       ids: []
     }
     arr.ids = [data.id] as any
-    console.log(arr)
-
     let res = await TestUpdateState({
       state: arr.state,
       ids: arr.ids
@@ -484,7 +446,7 @@ const radiotest = (data: any) => {
 //获取考试列表管理
 const TestListdata = async () => {
   let res = await TestLists(TestData.value)
-  console.log(res.data.list)
+
   if (res.errCode === 10000) {
     TestDatas.value = res.data.list
     total.value = res.data.counts
@@ -499,7 +461,6 @@ const tiems = (data: any) => {
 }
 //判断多选框是否选中做操作
 const isxuanze = (data: any) => {
-  console.log(data)
   if (data === true) {
     TestData.value.ismy = '0'
     TestData.value.admin = ''
@@ -545,10 +506,10 @@ const shortcuts = [
   }
 ]
 </script>
-
 <style lang="less" scoped>
 .el-row {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   position: relative;
   box-sizing: border-box;
@@ -560,6 +521,8 @@ const shortcuts = [
   margin-top: 15px;
   border-radius: 4px;
   display: flex;
+  align-items: center;
+
   .el-select {
     width: 100px;
   }
@@ -577,11 +540,11 @@ const shortcuts = [
   .caozuobutton {
     display: flex;
     .el-button {
-      border-radius: 0px;
-      padding-right: 5px;
+      padding-right: 4px;
       height: 15px;
       border-right: 1px solid #000;
       margin-left: 0;
+      border-radius: 0px;
     }
   }
 }

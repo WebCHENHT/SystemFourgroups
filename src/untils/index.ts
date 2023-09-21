@@ -18,6 +18,7 @@ export default function () {
     const res = menu.filter((item) => {
       return item.url !== null
     })
+
     res.forEach((item: any) => {
       const viewsurl =
         '../views' +
@@ -38,6 +39,7 @@ export default function () {
         },
         component: viteComponent[viewsurl]
       }
+
       router.addRoute('SystemMenu', obj)
     })
 
@@ -105,6 +107,15 @@ export default function () {
         url: '/SystemMenu/test'
       },
       component: () => import('../views/test/AnalyseView.vue')
+    })
+    router.addRoute('SystemMenu', {
+      path: '/SystemMenu/set',
+      name: 'AnalyseView',
+      meta: {
+        title: '修改密码',
+        url: '/SystemMenu/set'
+      },
+      component: () => import('../views/set/SetView1.vue')
     })
     router.addRoute('SystemMenu', {
       path: '/SystemMenu/test/TestAdd',

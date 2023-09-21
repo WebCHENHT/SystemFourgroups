@@ -177,6 +177,7 @@
             </div>
           </div>
         </el-form-item>
+
         <el-form-item label="试题存入题库：">
           <div style="display: flex">
             <el-select v-model="TestData.teacherid" class="m-2" placeholder="请选择">
@@ -474,7 +475,6 @@ const releaseadd = async (name: string) => {
     ElMessage.error('请选择阅卷老师')
   } else {
     let res = await TestAdd(TestData.value)
-    console.log(res.data)
     if (res.errCode === 10000) {
       if (Store.TestAddid !== 0) {
         Store.TestAddid = 0
@@ -485,41 +485,9 @@ const releaseadd = async (name: string) => {
       } else {
         location.reload()
       }
-      delqinkos()
     }
   }
 }
-
-//清空创建考试
-const delqinkos = () => {
-  TestData.value = {
-    id: 0,
-    title: '',
-    info: '',
-    admin: 'ldq',
-    begintime: '',
-    endtime: '',
-    limittime: '',
-    scores: 0,
-    incomplete: '',
-    pastscores: 60,
-    qorder: '',
-    aorder: '',
-    answershow: '0',
-    isshow: '',
-    databaseid: 0,
-    teacherid: '',
-    state: 1,
-    limits: [],
-    markteachers: [],
-    students: [],
-    questions: [],
-    subjectnum: 0,
-    addtime: '',
-    currenttime: ''
-  }
-}
-
 //限时控制
 const xianshix = (data: any) => {
   if (TestData.value.isshow === '1') {
@@ -550,14 +518,10 @@ const closetpaperList = () => {
 const myQunstions = (data: any) => {
   TestData.value.questions = data
 }
-
-//关闭试题弹框
-
 //打开题库列表
 const questionbank = () => {
   Questio.value.dialogVisible = true
 }
-
 //批量上传成功添加
 const MyStepsAdd = (data: any) => {
   Stepslog.value.dialogVisible = false
@@ -577,8 +541,6 @@ const plilsAdds = () => {
 }
 //删除
 const getTestDel = (data: any, key: number) => {
-  console.log(key)
-
   TestData.value.questions.splice(key, 1)
 }
 //编辑
@@ -631,7 +593,6 @@ const arraytest: any = computed(() => {
 //添加标题处理
 const filter = (title: any, answer: any) => {
   const answerList = answer.split('|')
-  console.log(answerList)
   let i = 0
   while (title.includes('[]')) {
     title = title.replace(
@@ -671,8 +632,6 @@ const MywangAdd = (data: any) => {
     TestData.value.questions.push(data)
     WangAdd.value.drawer = false
   } else {
-    console.log(data.id)
-
     TestData.value.questions[data.id - 1] = data
     WangAdd.value.drawer = false
   }
@@ -681,7 +640,6 @@ const MywangAdd = (data: any) => {
 const MywangColos = () => {
   wangis.value = false
 }
-
 //打开编辑器
 const Wangtitle = () => {
   wangis.value = true
@@ -722,7 +680,6 @@ const MybaseAdd = async (data: any) => {
     DatabaseData()
   }
 }
-
 //关闭题库页面
 const myCrcolcs = () => {
   Createtest.value = false
@@ -746,7 +703,6 @@ const MySystemTransferAdd = (data: any) => {
   })
   if (names.value === '阅卷老师') {
     TestData.value.markteachers = res
-    console.log(TestData.value.markteachers)
   }
   if (names.value === '可见老师') {
     TestData.value.limits = res
@@ -776,7 +732,6 @@ const Markingteacher = (data: any) => {
     Transfe.value.dialogVisible = true
   })
 }
-
 const shortcuts = [
   {
     text: '最近一周',

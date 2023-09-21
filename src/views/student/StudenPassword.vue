@@ -67,7 +67,6 @@ const add = async () => {
     succesMsg('重置成功！')
     props.fal()
   }
-  console.log(res)
 }
 </script>
 <style scoped>

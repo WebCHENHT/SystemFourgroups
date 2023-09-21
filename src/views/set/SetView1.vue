@@ -3,13 +3,13 @@
     <div class="passbox">
       <el-form :model="form" :rules="rules" label-width="120px">
         <el-form-item label="原密码" prop="oldpass">
-          <el-input v-model="form.oldpass" />
+          <el-input type="password" v-model="form.oldpass" />
         </el-form-item>
         <el-form-item label="新密码" prop="pass">
-          <el-input v-model="form.pass" />
+          <el-input type="password" v-model="form.pass" />
         </el-form-item>
         <el-form-item label="确认新密码 " prop="password">
-          <el-input v-model="form.password" />
+          <el-input type="password" v-model="form.password" />
         </el-form-item>
         <el-button class="but" type="primary" @click="passxiu">修改密码</el-button>
         <el-button @click="chongzhi">重置</el-button>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { StudentPass } from '@/assets/api/Set/Set'
+import { teacherchangePass } from '@/assets/api/teacher/teacher'
 import { errorMsg, succesMsg } from '@/untils/msg'
 import { reactive } from 'vue'
 const form: any = reactive({
@@ -29,7 +29,7 @@ const form: any = reactive({
 })
 // 修改密码
 const passxiu = async () => {
-  let red = await StudentPass(form)
+  let red = await teacherchangePass(form)
   if (red.errCode == 10000) {
     succesMsg('密码修改成功')
   } else {

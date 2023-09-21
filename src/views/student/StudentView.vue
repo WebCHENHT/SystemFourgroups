@@ -1,44 +1,44 @@
 <template>
   <div>
-    <h3>学员管理</h3>
-    <div style="display: flex; margin-top: 20px">
+    <div style="display: flex; justify-content: space-between">
+      <h3>学员管理</h3>
       <div>
-        <el-form-item label="学员名称">
-          <el-input v-model="params.key" placeholder="请输入关键字" />
-        </el-form-item>
+        <el-button @click="batch">批量添加</el-button>
+        <el-button type="primary" @click="add" v-authority="{ model: '学员', name: '添加' }"
+          >添加学生</el-button
+        >
       </div>
-      &nbsp;&nbsp;
+    </div>
+
+    <el-form style="display: flex; margin-top: 20px">
+      <el-form-item label="学员名称">
+        <el-input v-model="params.key" placeholder="请输入关键字" />
+      </el-form-item>
+
       <el-form-item label="部门">
         <el-cascader :options="options" :props="props2" @change="handleChange" clearable />
       </el-form-item>
-      &nbsp;&nbsp;
+
       <el-form-item label="班级">
         <el-select v-model="params.classid" placeholder="请选择">
           <el-option v-for="(item, index) in arr" :key="index" :label="item.name" :value="index" />
         </el-select>
       </el-form-item>
-      &nbsp;&nbsp;&nbsp;
-      <el-button type="primary" @click="cha" v-authority="{ model: '学员', name: '查看' }"
-        >查询</el-button
-      >
-      &nbsp;&nbsp;
-      <div v-if="show">
+      <el-form-item>
+        <el-button type="primary" @click="cha" v-authority="{ model: '学员', name: '查看' }"
+          >查询</el-button
+        >
+      </el-form-item>
+
+      <el-form-item v-if="show">
         <el-button type="danger" disabled>批量删除</el-button>
-      </div>
-      <div v-if="shows">
+      </el-form-item>
+
+      <el-form-item v-if="shows">
         <el-button type="danger" @click="dels">批量删除</el-button>
-      </div>
-      <el-button style="position: absolute; left: 88%; top: 10px" @click="batch"
-        >批量添加</el-button
-      >
-      <el-button
-        type="primary"
-        style="position: absolute; left: 93%; top: 10px"
-        @click="add"
-        v-authority="{ model: '学员', name: '添加' }"
-        >添加学生</el-button
-      >
-    </div>
+      </el-form-item>
+    </el-form>
+
     <div>
       <!-- 列表 -->
       <TableangPage
@@ -233,9 +233,7 @@ let studenlist = async () => {
   }
 }
 studenlist()
-const allTableDatas = (val: any) => {
-  console.log(val)
-}
+const allTableDatas = (val: any) => {}
 // 分页
 const handleCurrentChange = (val: number) => {
   loading.value = true
@@ -308,8 +306,6 @@ const resetting = (val: any) => {
 // 编辑
 let carr = reactive({})
 const edit = (val: any) => {
-  console.log(val)
-
   carr = val
   user.value = true
 }
@@ -329,5 +325,8 @@ const fathers = () => {
 }
 h3 {
   font-size: 20px;
+}
+.el-form-item {
+  margin-left: 10px;
 }
 </style>

@@ -120,7 +120,6 @@ const modify = async (formEl: FormInstance | undefined) => {
 // 部门列表
 const list = async () => {
   let res: any = await RoleList(data)
-  console.log(res)
   if (res.errCode === 10000) {
     datalist.value = res.data.list
   }
@@ -131,7 +130,6 @@ const del = () => {
   confirmBox('你真的确定吗？???', '你确定吗？', null)
     .then(async () => {
       let res = await DepartmentDelete({ id: dele.value })
-      console.log(res)
       shows.value = false
       list()
       succesMsg('删除成功')

@@ -1,19 +1,16 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-aside style="width: 75px; height: 100vh">
+      <el-aside style="width: 75px; height: 100vh; position: absolute; z-index: 999">
         <div class="wai_box">
           <div class="block">
-            <img
-              @click="data.show = !data.show"
-              src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-              alt=""
-            />
+            <img @click="data.show = !data.show" src="../assets/img/user.png" alt="" />
           </div>
           <div
+            class="Sytemicon"
             v-for="(item, index) in data.LeftArrDatas"
             :key="index"
-            :class="'/SystemMenu' + item.url === SytemUrl ? 'Sytemicont' : 'Sytemicon'"
+            :class="'/SystemMenu' + item.url === SytemUrl ? 'checked' : ''"
             @click="SystemLists(item)"
           >
             <div :class="`iconfont ${item.ico}`"></div>
@@ -21,7 +18,7 @@
           </div>
         </div>
       </el-aside>
-      <el-main>
+      <el-main style="margin-left: 75px">
         <router-view v-slot="{ Component }">
           <translate>
             <keep-alive>
@@ -38,10 +35,7 @@
     <div class="diabox"></div>
     <div class="photobox">
       <div class="photo">
-        <img
-          class="photoImg"
-          src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"
-        />
+        <img class="photoImg" src="../assets/img/user.png" />
       </div>
     </div>
     <div class="name">{{ data.userInfo.name }}</div>
@@ -51,21 +45,15 @@
       <el-button class="but" @click="SignOut">退出登录</el-button>
     </div>
     <div class="accountBox">
-      <div>
-        <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />账号
-      </div>
+      <div><img src="../assets/img/user.png" />账号</div>
       <div>{{ data.userInfo.username }}</div>
     </div>
     <div class="accountBox">
-      <div>
-        <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />密码
-      </div>
+      <div><img src="../assets/img/user.png" />密码</div>
       <div class="title" @click="setPass">设置</div>
     </div>
     <div class="accountBox">
-      <div>
-        <img src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />微信
-      </div>
+      <div><img src="../assets/img/user.png" />微信</div>
       <div class="title">未绑定</div>
     </div>
   </div>
@@ -117,7 +105,8 @@ const SignOut = () => {
 }
 //跳转到设置密码页面
 const setPass = () => {
-  router.push('setupPass')
+  SytemUrl.value = '/SystemMenu/set'
+  router.push('/SystemMenu/set')
   data.show = false
 }
 </script>
@@ -133,16 +122,48 @@ const setPass = () => {
 }
 .Sytemicon {
   margin: 0 auto 5px;
-  width: 67%;
-  padding: 8px 5px;
+  width: 65%;
+  padding: 4px 5px 5px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 12px;
   .iconfont {
     font-size: 25px;
+    &.icon-wenben {
+      transform: scaleY(0 0.85);
+    }
+
+    &.icon-changjianwenti {
+      font-size: 21px;
+      transform: scaleY(0.85);
+    }
+    &.icon-a-1kehudanweitaizhang {
+      transform: scaleY(0.8);
+    }
+    &.icon-qiyeguanli_yuangongguanli {
+      transform: scaleY(0.85);
+    }
+    &.icon-bumen {
+      transform: scaleY(0.8);
+    }
+    &.icon-wutouxiang {
+      transform: scaleY(0.9);
+    }
+    &.icon-shenpishenhe {
+      transform: scaleY(0.9);
+    }
+  }
+
+  &.checked {
+    background-color: #d1d3d5;
+    color: #3889ff;
+    border-radius: 10px;
+    .iconfont {
+      color: #3889ff;
+    }
   }
 }
 .block {
@@ -154,25 +175,6 @@ const setPass = () => {
     border-radius: 50%;
     width: 40px;
     height: 40px;
-  }
-}
-
-.Sytemicont {
-  margin: 0 auto 5px;
-  width: 67%;
-  padding: 8px 5px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  background-color: #d1d3d5;
-  color: #3889ff;
-  border-radius: 10px;
-  .iconfont {
-    font-size: 25px;
-    color: #3889ff;
   }
 }
 
@@ -239,7 +241,4 @@ const setPass = () => {
     }
   }
 }
-// /deep/.el-main {
-//   padding: 10px;
-// }
 </style>

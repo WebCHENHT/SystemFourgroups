@@ -109,12 +109,12 @@ const TestGetData = async () => {
   })
   if (res.errCode === 10000) {
     TestgetLists.value = res.data as any
-    console.log(res.data)
   }
 }
 TestGetData()
+
 const goBack = () => {
-  window.history.go(-1)
+  router.push('/SystemMenu/stutest')
 }
 </script>
 

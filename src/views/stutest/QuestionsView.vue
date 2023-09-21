@@ -28,7 +28,7 @@
             :class="item1 === item.studentanswer ? 'optionsconcent SelectedBox' : 'optionsconcent'"
             v-for="(item1, index1) in zhenq"
             :key="index1"
-            @click="panduns(item1, item.title)"
+            @click="panduns(item1, index)"
           >
             <div class="concentleft">
               <div class="yuexi" v-if="item1 !== item.studentanswer"></div>
@@ -163,9 +163,6 @@ const getexaminationlist = async () => {
     })
 
     time.value = result.value
-    console.log(time.value)
-
-    console.log(res.data)
 
     if (res.data.limittime !== 0) {
       ishowtime.value = true
@@ -188,7 +185,6 @@ const getexaminationlist = async () => {
           //计算描述 转化为整数
           const s = parseInt((times % 60) as any)
           dataTime.value = [h, m, s].map(timePadstart).join(':')
-          console.log(times)
 
           if (times <= 0) {
             //倒计时结束关闭循环提交
@@ -277,10 +273,8 @@ const duoxuan = debounce((index: number, answerno: any, id: number) => {
     let arr = examinationdatas.value[index].studentanswer.split('|')
     arr.splice(arr.indexOf(answerno), 1)
     examinationdatas.value[index].studentanswer = arr.join('|')
-    console.log(examinationdatas.value[index].studentanswer)
   } else {
     examinationdatas.value[index].studentanswer += '|' + answerno
-    console.log(examinationdatas.value[index].studentanswer)
   }
 }, 200)
 
@@ -291,9 +285,8 @@ const danxuan = debounce((data: any, index1: number) => {
 }, 200)
 
 //判断题
-const panduns = debounce((data1: any, data: any) => {
-  let res = examinationdatas.value.filter((item: any) => item.title === data)[0]
-  res.studentanswer = data1
+const panduns = debounce((data1: any, index: any) => {
+  examinationdatas.value[index].studentanswer = data1
 }, 200)
 </script>
 

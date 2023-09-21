@@ -271,7 +271,6 @@ const checkList = ref([]) //多选题 正确答案
 watch(
   () => props.questionData,
   (newVal, oldVal) => {
-    console.log('编辑新数据', newVal)
     if (newVal) {
       Object.assign(addData, newVal)
       if (newVal.answer) {
@@ -311,6 +310,7 @@ watch(
       let arr = res.map((item: any) => {
         return item !== ''
       })
+      
       if (arr) {
         input.value.length = res.length
       }
@@ -361,7 +361,6 @@ const ConfirmAdd = async () => {
     }
   if (addData.id === 0) {
     let res: any = await databasequestionadd(addData)
-    console.log('添加题库试题', res)
     if (res.errCode !== 10000) {
       errorMsg('添加失败！')
       return false
@@ -369,7 +368,6 @@ const ConfirmAdd = async () => {
     succesMsg('添加成功！')
   } else {
     let res = await databasequestionadd(addData)
-    console.log('编辑题库试题', res)
     if (res.errCode !== 10000) {
       errorMsg('编辑失败！')
       return false

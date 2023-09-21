@@ -3,75 +3,87 @@
     <h3>创建试卷</h3>
     <div class="one">
       <span class="ones">1</span>
-      <span data-v-ab382b7d="" style="padding-left: 17px">基本信息</span>
+      <span style="padding-left: 17px">基本信息</span>
     </div>
-    <el-form-item label="试卷名称：" style="margin-left: 150px; margin-top: 10px">
+    <el-form-item label="考试名称：" style="margin-left: 150px; margin-top: 10px">
       <el-input v-model="from.title" />
     </el-form-item>
     <div class="one">
       <span class="ones">2</span>
       <span style="padding-left: 17px">内容设置</span>
     </div>
-    <div style="display: flex">
-      <div>
-        <!-- 内容 -->
-        <div style="display: flex; margin: 10px; margin-left: 110px">
-          <div>
-            <el-form-item label="试卷名称：" style="margin-left: 40px"> </el-form-item>
-            <!-- 分值 -->
-            <div v-for="(item, index) in arraytest" :key="index">
-              <div class="Score" v-if="item.type === '单选题'">
-                <p>单选题{{ from.questions.filter((i: any) => i.type == item.type).length }}道</p>
-                <p>
-                  每题&nbsp;&nbsp;<el-input
-                    :model-value="MultipleChoice"
-                    style="width: 50px"
-                    @update:model-value="onchange($event, item.type)"
-                  />&nbsp;&nbsp;分
-                </p>
-              </div>
-              <div class="Score" v-if="item.type === '多选题'">
-                <p>多选题{{ from.questions.filter((i: any) => i.type == item.type).length }}道</p>
-                <p>
-                  每题&nbsp;&nbsp;<el-input
-                    :model-value="Multiplechoicequestions"
-                    style="width: 50px"
-                    @update:model-value="onchange($event, item.type)"
-                  />&nbsp;&nbsp;分
-                </p>
-              </div>
-              <div class="Score" v-if="item.type === '判断题'">
-                <p>判断题{{ from.questions.filter((i: any) => i.type == item.type).length }}道</p>
-                <p>
-                  每题&nbsp;&nbsp;<el-input
-                    :model-value="trueorfalse"
-                    style="width: 50px"
-                    @update:model-value="onchange($event, item.type)"
-                  />&nbsp;&nbsp;分
-                </p>
-              </div>
-              <div class="Score" v-if="item.type === '填空题'">
-                <p>填空题{{ from.questions.filter((i: any) => i.type == item.type).length }}道</p>
-                <p>
-                  每题&nbsp;&nbsp;<el-input
-                    :model-value="fillintheblanks"
-                    style="width: 50px"
-                    @update:model-value="onchange($event, item.type)"
-                  />&nbsp;&nbsp;分
-                </p>
-              </div>
-              <div class="Score" v-if="item.type === '问答题'">
-                <p>问答题{{ from.questions.filter((i: any) => i.type == item.type).length }}道</p>
-                <p>
-                  每题&nbsp;&nbsp;<el-input
-                    :model-value="essayquestion"
-                    style="width: 50px"
-                    @update:model-value="onchange($event, item.type)"
-                  />&nbsp;&nbsp;分
-                </p>
-              </div>
+
+    <!-- 试卷 -->
+    <div>
+      <el-form style="display: flex; margin-top: 20px" label-width="190px">
+        <div>
+          <el-form-item label="试卷名称：" style="margin-left: 40px" />
+          <!-- 分值 -->
+          <div v-for="(item, index) in arraytest" :key="index">
+            <div class="Score" v-if="item.type === '单选题'">
+              <p>单选题{{ from.questions.filter((i: any) => i.type == item.type).length }}道</p>
+              <p>
+                每题
+                <el-input
+                  :model-value="MultipleChoice"
+                  style="width: 50px"
+                  @update:model-value="onchange($event, item.type)"
+                />
+                分
+              </p>
+            </div>
+            <div class="Score" v-if="item.type === '多选题'">
+              <p>多选题{{ from.questions.filter((i: any) => i.type == item.type).length }}道</p>
+              <p>
+                每题
+                <el-input
+                  :model-value="Multiplechoicequestions"
+                  style="width: 50px"
+                  @update:model-value="onchange($event, item.type)"
+                />
+                分
+              </p>
+            </div>
+            <div class="Score" v-if="item.type === '判断题'">
+              <p>判断题{{ from.questions.filter((i: any) => i.type == item.type).length }}道</p>
+              <p>
+                每题
+                <el-input
+                  :model-value="trueorfalse"
+                  style="width: 50px"
+                  @update:model-value="onchange($event, item.type)"
+                />
+                分
+              </p>
+            </div>
+            <div class="Score" v-if="item.type === '填空题'">
+              <p>填空题{{ from.questions.filter((i: any) => i.type == item.type).length }}道</p>
+              <p>
+                每题
+                <el-input
+                  :model-value="fillintheblanks"
+                  style="width: 50px"
+                  @update:model-value="onchange($event, item.type)"
+                />
+                分
+              </p>
+            </div>
+            <div class="Score" v-if="item.type === '问答题'">
+              <p>问答题{{ from.questions.filter((i: any) => i.type == item.type).length }}道</p>
+              <p>
+                每题
+                <el-input
+                  :model-value="essayquestion"
+                  style="width: 50px"
+                  @update:model-value="onchange($event, item.type)"
+                />
+                分
+              </p>
             </div>
           </div>
+        </div>
+
+        <div class="godtop">
           <div>
             <!-- 上面 -->
             <div class="god">
@@ -79,7 +91,7 @@
               <div class="right">
                 <span>总分：{{ scores }}</span>
                 <span>已添加{{ from.questions.length }}题</span>
-                <el-button style="position: relative; left: 30px" @click="del">清空</el-button>
+                <el-button @click="del">清空</el-button>
               </div>
             </div>
             <!-- 中间 -->
@@ -87,11 +99,8 @@
               <div v-for="(item, index) in from.questions" :key="item.id">
                 <!-- 单选题 -->
                 <div class="top" v-if="item.type === '单选题'">
-                  <span>{{ index + 1 }}.{{ item.type }}</span
-                  >&nbsp;&nbsp;
-                  <span
-                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
-                  ></span>
+                  <span>{{ index + 1 }}.{{ item.type }}</span>
+                  <span>分值:<el-input v-model="item.scores" style="width: 50px"></el-input></span>
                   <span @click="getTestadd(item, index + 1)"
                     ><el-icon><EditPen /></el-icon
                   ></span>
@@ -103,13 +112,13 @@
                   <div v-for="items in item.answers" :key="items.id">
                     <div class="bo color" v-if="item.answer === items.answerno">
                       <div class="box"></div>
-                      &nbsp; &nbsp;
+
                       <span>{{ items.answerno }}：</span>
                       <span>{{ items.content }}</span>
                     </div>
                     <div class="bo" v-if="item.answer != items.answerno">
                       <div class="box"></div>
-                      &nbsp; &nbsp;
+
                       <span>{{ items.answerno }}：</span>
                       <span>{{ items.content }}</span>
                     </div>
@@ -117,11 +126,8 @@
                 </div>
                 <!-- 多选题 -->
                 <div class="top" v-if="item.type === '多选题'">
-                  <span>{{ index + 1 }}.{{ item.type }}</span
-                  >&nbsp;&nbsp;
-                  <span
-                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
-                  ></span>
+                  <span>{{ index + 1 }}.{{ item.type }}</span>
+                  <span>分值:<el-input v-model="item.scores" style="width: 50px"></el-input></span>
                   <span @click="getTestadd(item, index + 1)"
                     ><el-icon><EditPen /></el-icon
                   ></span>
@@ -139,7 +145,7 @@
                       "
                     >
                       <div class="box"></div>
-                      &nbsp; &nbsp;
+
                       <span>{{ items.answerno }}：</span>
                       <span>{{ items.content }}</span>
                     </div>
@@ -151,7 +157,7 @@
                       "
                     >
                       <div class="box"></div>
-                      &nbsp; &nbsp;
+
                       <span>{{ items.answerno }}：</span>
                       <span>{{ items.content }}</span>
                     </div>
@@ -159,11 +165,8 @@
                 </div>
                 <!-- 填空题和问答题 -->
                 <div class="top" v-if="item.type === '填空题' || item.type == '问答题'">
-                  <span>{{ index + 1 }}.{{ item.type }}</span
-                  >&nbsp;&nbsp;
-                  <span
-                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
-                  ></span>
+                  <span>{{ index + 1 }}.{{ item.type }}</span>
+                  <span>分值:<el-input v-model="item.scores" style="width: 50px"></el-input></span>
                   <span @click="getTestadd(item, index + 1)"
                     ><el-icon><EditPen /></el-icon
                   ></span>
@@ -181,11 +184,8 @@
                 </div>
                 <!-- 判断题 -->
                 <div class="top" v-if="item.type === '判断题'">
-                  <span>{{ index + 1 }}.{{ item.type }}</span
-                  >&nbsp;&nbsp;
-                  <span
-                    >分值:&nbsp;&nbsp;<el-input v-model="item.scores" style="width: 50px"></el-input
-                  ></span>
+                  <span>{{ index + 1 }}.{{ item.type }}</span>
+                  <span>分值:<el-input v-model="item.scores" style="width: 50px"></el-input></span>
                   <span @click="getTestadd(item, index + 1)"
                     ><el-icon><EditPen /></el-icon
                   ></span>
@@ -198,57 +198,38 @@
               </div>
             </div>
             <!-- 下面 -->
-            <div class="god">
+            <div class="godst">
               <el-button @click="Wangtitle"> 添加题目 </el-button>
               <el-button @click="Batch"> 批量导入 </el-button>
               <el-button @click="questionbank"> 从题库中导入 </el-button>
             </div>
-
-            <div
-              id="el-id-9465-1"
-              class="el-form-item__label"
-              style="width: 110px; margin-left: -110px; margin-top: 20px"
-            >
-              试题存入题库：
-            </div>
-            <el-select placeholder="请选择题库" v-model="from.databaseid">
-              <el-option v-for="item in arr" :key="item.id" :label="item.title" :value="item.id" />
-            </el-select>
-            <button
-              class="el-button"
-              aria-disabled="false"
-              type="button"
-              style="font-size: 13px; margin-left: 20px"
-              @click="chujians"
-            >
-              + 创建题库
-            </button>
           </div>
         </div>
-      </div>
+      </el-form>
     </div>
+    <!-- 试题 -->
+    <el-form style="display: flex; margin-top: 20px">
+      <el-form-item label="试题存入题库：" style="margin-left: 120px">
+        <el-select placeholder="请选择题库" v-model="from.databaseid">
+          <el-option v-for="item in arr" :key="item.id" :label="item.title" :value="item.id" />
+        </el-select>
+      </el-form-item>
+      <el-form-item style="margin-left: 20px">
+        <el-button aria-disabled="false" @click="chujians"> + 创建题库 </el-button>
+      </el-form-item>
+    </el-form>
 
     <div class="one">
       <span class="ones">3</span>
       <span style="padding-left: 17px">教师范围</span>
     </div>
-    <div
-      id="el-id-9465-1"
-      class="el-form-item__label"
-      style="width: 110px; margin-left: 100px; margin-top: 20px"
-    >
-      可见老师：
-    </div>
-    <el-button
-      aria-disabled="false"
-      style="font-size: 13px; position: relative"
-      @click="Markingteacher('可见老师')"
-    >
-      <sup class="el-badge__content el-badge__content--primary is-fixed">{{
-        from.limits.length
-      }}</sup>
-      + 选择
-    </el-button>
+
+    <el-form-item label="可见老师： " style="margin-left: 150px; margin-top: 20px">
+      <el-button @click="Markingteacher('可见老师')">
+        + 选择
+        <div class="but">{{ from.limits.length }}</div>
+      </el-button>
+    </el-form-item>
   </div>
   <div style="margin-left: 210px; margin-top: 50px">
     <el-button type="primary" @click="add">提交</el-button>
@@ -370,7 +351,7 @@ let list = async () => {
     psize: 10,
     key: '',
     admin: '',
-    ismy: ''
+    ismy: 0
   })
   if (res.errCode === 10000) {
     arr.value = res.data.list
@@ -510,7 +491,10 @@ const Wangtitle = () => {
 
 //打开题库弹框
 const chujians = () => {
-  Questions.value.dialogVisible = true
+  Createtest.value = true
+  nextTick(() => {
+    Questions.value.dialogVisible = true
+  })
 } //关闭穿梭框操作
 const myclose = () => {
   Bulletbox.value = false

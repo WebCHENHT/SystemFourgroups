@@ -1,21 +1,7 @@
 <template>
   <div>
-    <h3>班级管理</h3>
-    <!-- 顶部 -->
-    <div style="display: flex; margin-top: 20px">
-      <div>
-        <el-form-item label="班级名称">
-          <el-input v-model="params.key" placeholder="请输入关键字" />
-        </el-form-item>
-      </div>
-      &nbsp;&nbsp;
-      <el-form-item label="部门">
-        <el-cascader :options="options" :props="props2" @change="handleChange" clearable />
-      </el-form-item>
-      &nbsp;&nbsp;&nbsp;
-      <el-button type="primary" @click="cha" v-authority="{ model: '班级', name: '查看' }"
-        >查询</el-button
-      >
+    <div style="display: flex">
+      <h3>班级管理</h3>
       <el-button
         type="primary"
         style="position: absolute; left: 90%"
@@ -24,6 +10,22 @@
         >添加班级</el-button
       >
     </div>
+
+    <!-- 顶部 -->
+    <el-form style="display: flex; margin-top: 20px">
+      <el-form-item label="班级名称">
+        <el-input v-model="params.key" placeholder="请输入关键字" />
+      </el-form-item>
+
+      <el-form-item label="部门">
+        <el-cascader :options="options" :props="props2" @change="handleChange" clearable />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="cha" v-authority="{ model: '班级', name: '查看' }"
+          >查询</el-button
+        >
+      </el-form-item>
+    </el-form>
     <!-- 批量删除 -->
     <div v-if="show">
       <el-button type="danger" @click="dels">批量删除</el-button>
