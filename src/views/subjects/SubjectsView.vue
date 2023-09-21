@@ -1,28 +1,37 @@
 <template>
   <div>
-    <h3>试卷管理</h3>
+    <div style="display: flex; justify-content: space-between">
+      <h3>试卷管理</h3>
+      <el-button
+        type="primary"
+        class="button"
+        @click="cuan"
+        v-authority="{ model: '试卷', name: '创建' }"
+        >创建试卷</el-button
+      >
+    </div>
+
     <div>
       <div style="display: flex; margin-top: 20px">
-        <el-form-item label="关键字">
-          <el-input placeholder="考试名称" v-model="params.key" />
-        </el-form-item>
-        &nbsp; &nbsp; &nbsp; &nbsp;
-        <el-form-item label="创建人">
-          <el-input placeholder="创建人" v-model="params.admin" @input="inputs" />
-        </el-form-item>
-        &nbsp;&nbsp;
-        <el-checkbox @change="duoxuans" v-model="vuels">只看我创建的</el-checkbox>
-        &nbsp;&nbsp;
-        <el-button type="primary" @click="Csnds" v-authority="{ model: '试卷', name: '查看' }"
-          >查询</el-button
-        >
-        <el-button
-          type="primary"
-          style="position: absolute; left: 93%; top: 10px"
-          @click="cuan"
-          v-authority="{ model: '试卷', name: '创建' }"
-          >创建试卷</el-button
-        >
+        <el-form :inline="true" :model="params" class="demo-form-inline">
+          <el-form-item label="关键字">
+            <el-input placeholder="考试名称" v-model="params.key" />
+          </el-form-item>
+
+          <el-form-item label="创建人">
+            <el-input placeholder="创建人" v-model="params.admin" @input="inputs" />
+          </el-form-item>
+
+          <el-form-item>
+            <el-checkbox @change="duoxuans" v-model="vuels">只看我创建的</el-checkbox>
+          </el-form-item>
+
+          <el-form-item>
+            <el-button type="primary" @click="Csnds" v-authority="{ model: '试卷', name: '查看' }"
+              >查询</el-button
+            >
+          </el-form-item>
+        </el-form>
       </div>
     </div>
     <!-- 列表 -->
@@ -76,7 +85,7 @@ import { subjectsdelete, subjectsget, subjectslist } from '@/assets/api/subjects
 import TableangPage from '@/components/TableangPage.vue'
 import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
 import PaperView from '@/views/subjects/PaperView.vue'
-import { reactive, ref, toRefs, onActivated } from 'vue'
+import { reactive, ref, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 let router = useRouter()
 // 试卷表格数据
