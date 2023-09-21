@@ -311,6 +311,8 @@ watch(
       let arr = res.map((item: any) => {
         return item !== ''
       })
+      console.log(arr);
+      
       if (arr) {
         input.value.length = res.length
       }

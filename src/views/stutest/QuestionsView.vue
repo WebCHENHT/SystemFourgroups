@@ -28,7 +28,7 @@
             :class="item1 === item.studentanswer ? 'optionsconcent SelectedBox' : 'optionsconcent'"
             v-for="(item1, index1) in zhenq"
             :key="index1"
-            @click="panduns(item1, item.title)"
+            @click="panduns(item1, index)"
           >
             <div class="concentleft">
               <div class="yuexi" v-if="item1 !== item.studentanswer"></div>
@@ -291,9 +291,8 @@ const danxuan = debounce((data: any, index1: number) => {
 }, 200)
 
 //判断题
-const panduns = debounce((data1: any, data: any) => {
-  let res = examinationdatas.value.filter((item: any) => item.title === data)[0]
-  res.studentanswer = data1
+const panduns = debounce((data1: any, index: any) => {
+  examinationdatas.value[index].studentanswer = data1
 }, 200)
 </script>
 

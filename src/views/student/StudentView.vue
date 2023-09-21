@@ -4,14 +4,13 @@
       <h3>学员管理</h3>
       <div>
         <el-button @click="batch">批量添加</el-button>
-
         <el-button type="primary" @click="add" v-authority="{ model: '学员', name: '添加' }"
           >添加学生</el-button
         >
       </div>
     </div>
 
-    <el-form style="display: flex">
+    <el-form style="display: flex; margin-top: 20px">
       <el-form-item label="学员名称">
         <el-input v-model="params.key" placeholder="请输入关键字" />
       </el-form-item>
