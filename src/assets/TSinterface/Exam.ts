@@ -18,7 +18,7 @@ export interface Examcans {
   testid:number;
   key: string;
   depid: number|string;
-  classid: number;
+  classid: number|string;
   state: string;
   pass: number;
   pastscores: number;

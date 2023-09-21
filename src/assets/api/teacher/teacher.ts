@@ -23,8 +23,8 @@ export const roleList = (data: Rolecan) => {
   return index.get<RoleRootObject>('role/list', data)
 }
 // 部门列表
-export const DepartmentList = (data: Rolecan) => {
-  return index.get<RoleRootObject>('department/list', data)
+export const DepartmentList = () => {
+  return index.get<RoleRootObject>('department/list', )
 }
 // 师资添加
 export const teacherchangeAdd = (data: teacherRootAdd) => {

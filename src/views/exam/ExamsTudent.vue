@@ -46,7 +46,7 @@
       </template>
     </TableangPage>
     <!-- 抽屉 -->
-      <el-drawer class="drawers" v-model="drawer" :title="`${marginState.name}${'的试卷'}`" :direction="direction" :before-close="handleClose" >
+      <el-drawer class="drawers" v-model="drawer" :title="`${marginState.name}${'的试卷'}`" :before-close="handleClose" >
         <div class="ti_box" v-for="(item,index) in paperdata" :key="index">
           <div class="ti_top">{{index+1}}  、 {{ item.type }}<span class="tex_hui">分值：{{ item.scores }}</span></div>
           <div class="ti_mu">{{ item.title.replace(/\[\]/g, '_____')}}</div>
@@ -133,7 +133,7 @@ const props = {
 const DeparList = async ()=>{
   let red:any = await DepartmentList()
   options.value = red.data.list
-  // console.log(852,red)
+
 }
 DeparList()
 // 所传的参数
@@ -193,7 +193,7 @@ let form = reactive<classdata>({
 })
 const classesdata = async ()=>{
   let red = await classeslist(form)
-  console.log(666,red);
+
   clasList.value = red.data.list 
   
 }
@@ -215,14 +215,13 @@ let tableData: any = ref([])
 let total = ref(0)
 // 搜索
 const search = ()=>{
-  console.log(ruform);
+
   loading.value = true
   studentlists()
 }
 // 考生列表
 const studentlists = async ()=>{
   let red = await studentlist(ruform)
-  console.log(red);
   tableData.value = red.data.list
   total.value = red.data.counts  
   loading.value = false
@@ -244,27 +243,20 @@ const drawer = ref(false)
 const isShows = ref(false)
 const open = (val: any)=>{
   isShows.value = true
-  // console.log('获取到的数据------',val);
+
   drawer.value = true
   marginState.name = val.name
   marginState.testid = route.query.id
   marginState.studentid = val.id
-  // console.log(123456,marginState);
+
   paperlist()
 
 }
-// 头部×号
-// const direction = ref('rtl')
-// const handleClose = (done: () => void) => {
-//   drawer.value = false
-//   // loading.value = true
 
-// }
 const handleClose = (done: () => void) => {
   ElMessageBox.confirm('确认要退出吗？')
     .then(() => {
       done()
-      faAdd()
     })
     .catch(() => {
       // catch error
@@ -283,7 +275,6 @@ const confirmClick = async ()=>{
   PassworData = paperdata.value.map((item:any)=>({...item,scores:item.studentscores}))
   drawer.value = false
   let red = await studentanswer(PassworData)
-  console.log('阅卷完毕',red);
   // loading.value = true
 
   if(red.errCode==10000){
@@ -299,21 +290,17 @@ const marginState = reactive<any>({
   testid:0,
   studentid:0,
 })
-let paperdata = ref([])
+let paperdata:any = ref([])
 // 试卷列表
 const paperlist = async ()=>{
   let red = await queslist(marginState)
-  console.log('试卷列表',red);
   paperdata.value = red.data.list
-  // console.log(666,paperdata.value);
   
 }
 // 动态表单验证
 let Atomicsl = (rule: any, value: any, callback: any) => {
   let max = parseInt(rule.maxE)
   let val = parseInt(value)
-  console.log(11,max);
-  console.log(22,val);
   if (isNaN(val)) {
     callback(new Error('请打分'))
     return false
@@ -324,7 +311,6 @@ let Atomicsl = (rule: any, value: any, callback: any) => {
   }
 }
 let Rules = (e: any) => {
-  console.log(111,e)
   return [{ validator:Atomicsl, maxE: e, trigger: 'blur' }]
 }
 
