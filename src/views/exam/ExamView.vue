@@ -102,14 +102,12 @@ let total = ref(0)
   // 阅卷列表
   let tableData: any = ref([])
   const tealist = async()=>{
-    let res:any = await TestLists(ruform)
-  
-   
-    tableData.value = res.data.list
-    total.value = res.data.counts
-    loading.value = false
-   
-    
+    let res:any = await TestLists(ruform).catch(()=>{})
+    if(res?.errCode==10000){
+      tableData.value = res.data.list
+      total.value = res.data.counts
+      loading.value = false
+    }
   }
   tealist()
   // 分页
