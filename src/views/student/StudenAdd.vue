@@ -19,7 +19,7 @@
       <el-form-item label="电话" prop="photo">
         <el-input v-model="AddForm.photo" maxlength="11" />
       </el-form-item>
-      <div style="display: flex;">
+      <div style="display: flex">
         <el-form-item label="部门">
           <el-select v-model="AddForm.depname" placeholder="请选择" @change="selectChange">
             <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id" />
@@ -59,7 +59,7 @@
 import { RoleList } from '@/assets/api/DepartMent/department'
 import { ClList } from '@/assets/api/classes/classe'
 import { classesadd } from '@/assets/api/studen/studen'
-import { succesMsg } from '@/untils/msg'
+import { errorMsg, succesMsg } from '@/untils/msg'
 import { ElMessageBox, type FormInstance, type FormRules } from 'element-plus'
 import { reactive, ref, toRefs } from 'vue'
 const dialogVisible = ref(false)
@@ -130,22 +130,22 @@ const add = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      let res = await classesadd(AddForm.value)
+      let res = await classesadd(AddForm.value).catch(() => {})
       if (AddForm.value.id === 0) {
-        if (res.errCode === 10000) {
+        if (res?.errCode === 10000) {
           succesMsg('添加成功！')
           props.getListDialog()
           props.falv()
         }
       } else {
-        if (res.errCode === 10000) {
+        if (res?.errCode === 10000) {
           succesMsg('修改成功！')
           props.getListDialog()
           props.falv()
         }
       }
     } else {
-      return ''
+      errorMsg('已取消')
     }
   })
 }
@@ -178,8 +178,10 @@ const { params } = toRefs(data)
 let options: any = ref([])
 // 部门列表
 const deplist = async () => {
-  let res: any = await RoleList({ page: 1, psize: 12 })
-  options.value = res.data.list
+  let res: any = await RoleList({ page: 1, psize: 12 }).catch(() => {})
+  if (res?.errCode === 10000) {
+    options.value = res.data.list
+  }
 }
 deplist()
 let arr: any = ref([])
@@ -189,8 +191,10 @@ const selectChange = async (val: any) => {
   AddForm.value.classid = ''
   params.value.depid = val
   // 班级列表
-  let res: any = await ClList(params.value)
-  arr.value = res.data.list
+  let res: any = await ClList(params.value).catch(() => {})
+  if (res?.errCode === 10000) {
+    arr.value = res.data.list
+  }
 }
 
 const handleClose = (done: () => void) => {
@@ -199,7 +203,7 @@ const handleClose = (done: () => void) => {
       done()
     })
     .catch(() => {
-      // catch error
+      errorMsg('已取消')
     })
 }
 </script>
