@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test": "vue-cli-service build --mode test",
-    "liuhao": "vite",
+    "liuhao": "vite  --host",
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",

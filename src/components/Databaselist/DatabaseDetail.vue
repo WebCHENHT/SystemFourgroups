@@ -54,13 +54,10 @@ const props = defineProps({
     required: true
   }
 })
-console.log(props.getEestDetail)
 const detail = props.getEestDetail
-console.log(detail)
-
 const emit = defineEmits(['closeDrawer'])
 
-const handleClose = (done: any) => {
+const handleClose = (done:any) => {
   emit('closeDrawer', false)
 }
 </script>

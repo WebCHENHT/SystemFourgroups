@@ -165,8 +165,8 @@ const compile = (data: any) => {
 }
 // 列表
 const lists = async () => {
-  let res: any = await DatabaseList(data)
-  if (res.errCode === 10000) {
+  let res: any = await DatabaseList(data).catch(()=>{})
+  if (res?.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
     loading.value = false
@@ -230,8 +230,8 @@ const delAll = () => {
       let data: any = {
         ids: id
       }
-      let res = await DatabaseDeleteall(data)
-      if (res.errCode === 10000) {
+      let res = await DatabaseDeleteall(data).catch(()=>{})
+      if (res?.errCode === 10000) {
         succesMsg('删除成功')
         // 调用列表
         lists()
@@ -248,8 +248,8 @@ const del = async (id: any) => {
       let pwd: any = {
         id: id
       }
-      let res = await Databasedel(pwd)
-      if (res.errCode === 10000) {
+      let res = await Databasedel(pwd).catch(()=>{})
+      if (res?.errCode === 10000) {
         succesMsg('删除成功')
       }
       lists()
