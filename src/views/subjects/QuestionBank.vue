@@ -89,8 +89,8 @@ const change = (row: any) => {
 }
 // 题库列表
 const lists = async () => {
-  let res: any = await datalist(data)
-  if (res.errCode === 10000) {
+  let res: any = await datalist(data).catch(() => {})
+  if (res?.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
   }
@@ -109,8 +109,8 @@ const emit = defineEmits(['allTableDatas'])
 // 添加
 const add = async () => {
   emit('allTableDatas', 111111)
-  let res: any = await DatabaseList({ databaseid: database.value })
-  if (res.errCode === 10000) {
+  let res: any = await DatabaseList({ databaseid: database.value }).catch(() => {})
+  if (res?.errCode === 10000) {
     props.fal()
   }
 }

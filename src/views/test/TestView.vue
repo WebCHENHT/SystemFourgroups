@@ -267,8 +267,7 @@ const Cancelpublication = async (name: string) => {
       loading.value = true
       TestListdata()
     })
-    .catch((error) => {
-    })
+    .catch((error) => {})
 }
 
 //多选
@@ -385,6 +384,7 @@ const sonhandleSizeChange = (data: number) => {
   loading.value = true
   TestListdata()
 }
+
 //状态选中
 const TestState = (data: any) => {
   TestData.value.state = data

@@ -142,7 +142,6 @@ const props2 = {
   value: 'id',
   label: 'name',
   children: 'children',
-  // checkStrictly: true, //点击单选框选中改点击整行选中
   emitPath: false //只获取级联选择器中最后一项
 }
 // 获取部门id
@@ -154,15 +153,19 @@ const handleChange = async (data: any) => {
     psize: 0,
     depid: data,
     key: ''
-  })
-
-  arr.value = res.data.list
+  }).catch(() => {})
+  if (res?.errCode === 10000) {
+    arr.value = res.data.list
+  }
 }
 let options = ref([])
+
 // 部门列表
 const deplist = async () => {
-  let res: any = await RoleList({ page: 1, psize: 12 })
-  options.value = res.data.list
+  let res: any = await RoleList({ page: 1, psize: 12 }).catch(() => {})
+  if (res?.errCode === 10000) {
+    options.value = res.data.list
+  }
 }
 deplist()
 let arr: any = ref([])
@@ -225,8 +228,8 @@ let TableData = ref([])
 let total = ref()
 // 学员列表
 let studenlist = async () => {
-  let res: any = await studentlist(params.value)
-  if (res.errCode === 10000) {
+  let res: any = await studentlist(params.value).catch(() => {})
+  if (res?.errCode === 10000) {
     loading.value = false
     TableData.value = res.data.list
     total.value = res.data.counts
@@ -249,8 +252,8 @@ const handleSizeChange = (val: number) => {
 const del = async (id: any) => {
   confirmBox('确定要删除吗?', '你确定吗？', null)
     .then(async () => {
-      let res = await studentdelete({ id: id.id })
-      if (res.errCode === 10000) {
+      let res = await studentdelete({ id: id.id }).catch(() => {})
+      if (res?.errCode === 10000) {
         succesMsg('删除成功？')
         studenlist()
       }
@@ -266,10 +269,8 @@ const dels = () => {
       let data: any = {
         ids: id
       }
-      console.log(data)
-
-      let res = await studentdeletes(data)
-      if (res.errCode === 10000) {
+      let res = await studentdeletes(data).catch(() => {})
+      if (res?.errCode === 10000) {
         succesMsg('删除成功')
         // 调用列表
         studenlist()

@@ -338,8 +338,10 @@ const allTableData = (val: any) => {
 }
 // 详情编辑回显
 let subjlist = async () => {
-  let res: any = await subjectsget({ id: useroute.query.id } as any)
-  Object.assign(from.value, res.data)
+  let res: any = await subjectsget({ id: useroute.query.id } as any).catch(() => {})
+  if (res?.errCode === 10000) {
+    Object.assign(from.value, res.data)
+  }
 }
 subjlist()
 let sex = 'http://apis.90000p.com/exam2212/api/test/upload'
@@ -352,8 +354,8 @@ let list = async () => {
     key: '',
     admin: '',
     ismy: 0
-  })
-  if (res.errCode === 10000) {
+  }).catch(() => {})
+  if (res?.errCode === 10000) {
     arr.value = res.data.list
   }
 }
@@ -449,16 +451,16 @@ const myQunstions = (data: any) => {
 //题库
 let baseDatas = ref()
 const DatabaseData = async () => {
-  let res: any = await DatabaseList()
-  if (res.errCode === 10000) {
+  let res: any = await DatabaseList().catch(() => {})
+  if (res?.errCode === 10000) {
     baseDatas.value = res.data.list
   }
 }
 DatabaseData()
 //添加题库
 const MybaseAdd = async (data: any) => {
-  let res = await DatabaseAdd(data)
-  if (res.errCode === 10000) {
+  let res = await DatabaseAdd(data).catch(() => {})
+  if (res?.errCode === 10000) {
     Questions.value.dialogVisible = false
     DatabaseData()
   }

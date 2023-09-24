@@ -6,7 +6,11 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test": "vue-cli-service build --mode test",
+<<<<<<< HEAD
     "liuhao": "vite  --host",
+=======
+    "dev": "vite",
+>>>>>>> 09e67bc924a18550d81e8944ed18c8a13bc17b1d
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",

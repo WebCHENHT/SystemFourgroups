@@ -81,7 +81,6 @@ const props = {
   value: 'id',
   label: 'name',
   children: 'children',
-  // checkStrictly: true, //点击单选框选中改点击整行选中
   emitPath: false //只获取级联选择器中最后一项
 }
 const dataa = reactive({
@@ -90,8 +89,10 @@ const dataa = reactive({
 })
 // 部门列表
 const lists = async () => {
-  const res: any = await RoleList({ page: 1, psize: 10 })
-  dataa.arr = res.data.list
+  const res: any = await RoleList({ page: 1, psize: 10 }).catch(() => {})
+  if (res?.errCode === 10000) {
+    dataa.arr = res.data.list
+  }
 }
 lists()
 // 确定按钮 添加和修改
@@ -100,8 +101,8 @@ const add = async (formEl: FormInstance | undefined) => {
   await formEl.validate(async (valid, fields) => {
     if (valid) {
       // 请求添加班级接口
-      let res: any = await classesadd(Idataa)
-      if (res.errCode === 10000) {
+      let res: any = await classesadd(Idataa).catch(() => {})
+      if (res?.errCode === 10000) {
         if (res.data.id === 0) {
           succesMsg('添加成功')
           a.fal()
@@ -124,7 +125,7 @@ const handleClose = (done: () => void) => {
       done()
     })
     .catch(() => {
-      // catch error
+      return ''
     })
 }
 </script>

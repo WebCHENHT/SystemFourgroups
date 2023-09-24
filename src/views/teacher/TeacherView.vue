@@ -100,9 +100,11 @@ let optionList: any = ref([])
 let loading = ref<boolean>(true)
 // 角色列表
 const roleLists = async () => {
-  let red = await roleList(0 as any)
-
-  optionList.value = red.data.list
+  let red = await roleList(0 as any).catch(()=>{})
+  if(red?.errCode){
+    optionList.value = red.data.list
+  }
+  
 
 }
 roleLists()
@@ -121,8 +123,11 @@ const add = async (val: any) => {
 }
 // 部门列表
 const DeparList = async () => {
-  let red: any = await DepartmentList()
-  options.value = red.data.list
+  let red: any = await DepartmentList().catch(()=>{})
+  if(red?.errCode){
+    options.value = red.data.list
+  }
+  
 
 }
 DeparList()
@@ -176,9 +181,9 @@ const sou = async () => {
 // 教资列表
 let tableData: any = ref([])
 const tealist = async () => {
-  let res: any = await teacherlist(ruform)
+  let res: any = await teacherlist(ruform).catch(()=>{})
 
-  if (res.errCode === 10000) {
+  if (res?.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
     loading.value = false
@@ -288,9 +293,9 @@ const rules = reactive({
 })
 // 密码重置
 const Pass = async () => {
-  let red = await teacherchangeAdd(form)
+  let red = await teacherchangeAdd(form).catch(()=>{})
   dialogVisible.value = false
-  if(red.errCode==10000){
+  if(red?.errCode==10000){
     succesMsg('密码重置成功')
     loading.value = true
   }
@@ -363,11 +368,19 @@ let formAdd = reactive({
   pwd: 0,
 })
 const teacheAdd = async () => {
-  let red: any = await teacherchangeAdd(formAdd)
+  let red: any = await teacherchangeAdd(formAdd).catch(()=>{})
 
-  if(red.errCode==10000){
+  if(red?.errCode==10000){
     dialogadd.value = false
     succesMsg(formAdd.id > 1 ? '修改成功' : '添加成功')
+    formAdd.id = 0
+    formAdd.name = ''
+    formAdd.username = ''
+    formAdd.tel = ''
+    formAdd.pass = ''
+    formAdd.depid = 0
+    formAdd.roleid = ''
+    dialogadd.value = false
     tealist()
   }else if(red.errCode==10600){
     errorMsg(red.errMsg)

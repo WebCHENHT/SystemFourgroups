@@ -51,6 +51,7 @@ class RequestHttp {
     this.service.interceptors.request.use(
       (config: AxiosRequestConfig | any) => {
         const token: string = store.token
+        console.log('aaaa')
         return {
           ...config,
           headers: {
@@ -77,6 +78,8 @@ class RequestHttp {
           // router.replace({
           //   path: '/login'
           // })
+          console.log('aaaa')
+
           return Promise.reject(data)
         }
         // 全局错误信息拦截（防止下载文件得时候返回数据流，没有code，直接报错）

@@ -17,11 +17,9 @@ declare module 'vue' {
     EcharTs: typeof import('./src/components/EcharTs.vue')['default']
     Editor: typeof import('./src/components/Databaselist/Editor.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
-    ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCascader: typeof import('element-plus/es')['ElCascader']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
-    ElCheckboxGroup: typeof import('element-plus/es')['ElCheckboxGroup']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
@@ -38,7 +36,6 @@ declare module 'vue' {
     ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRadio: typeof import('element-plus/es')['ElRadio']
-    ElRadioButton: typeof import('element-plus/es')['ElRadioButton']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
@@ -48,7 +45,10 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
+<<<<<<< HEAD
     ElTree: typeof import('element-plus/es')['ElTree']
+=======
+>>>>>>> 09e67bc924a18550d81e8944ed18c8a13bc17b1d
     ElUpload: typeof import('element-plus/es')['ElUpload']
     ExamListView: typeof import('./src/components/ExamListView.vue')['default']
     ListtoftestView: typeof import('./src/components/ListtoftestView.vue')['default']
