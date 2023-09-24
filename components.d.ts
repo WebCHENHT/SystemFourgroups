@@ -29,6 +29,7 @@ declare module 'vue' {
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElInput: typeof import('element-plus/es')['ElInput']
+    ElInputNumber: typeof import('element-plus/es')['ElInputNumber']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPageHeader: typeof import('element-plus/es')['ElPageHeader']
@@ -43,7 +44,14 @@ declare module 'vue' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTransfer: typeof import('element-plus/es')['ElTransfer']
+<<<<<<< HEAD
     ElTree: typeof import('element-plus/es')['ElTree']
+=======
+<<<<<<< HEAD
+    ElTree: typeof import('element-plus/es')['ElTree']
+=======
+>>>>>>> 88910991ea25094c74514748699248737f1eb83f
+>>>>>>> 6b46eabef89e9fea52f79a98a4082dc7944b64ad
     ElUpload: typeof import('element-plus/es')['ElUpload']
     ExamListView: typeof import('./src/components/ExamListView.vue')['default']
     ListtoftestView: typeof import('./src/components/ListtoftestView.vue')['default']
