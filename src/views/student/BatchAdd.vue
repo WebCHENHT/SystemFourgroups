@@ -39,6 +39,7 @@
 
 <script setup lang="ts">
 import { classesadd } from '@/assets/api/studen/studen'
+import { errorMsg } from '@/untils/msg'
 import { Check } from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import { ref } from 'vue'
@@ -60,7 +61,7 @@ const handleClose = (done: () => void) => {
       done()
     })
     .catch(() => {
-      // catch error
+      errorMsg('已取消')
     })
 }
 const dialogVisible = ref(false)
@@ -75,8 +76,8 @@ const add = async () => {
       username: row.username,
       pass: row.pass
     }
-    let res = await classesadd(data)
-    if (res.errCode === 10000) {
+    let res = await classesadd(data).catch(() => {})
+    if (res?.errCode === 10000) {
       loading.value = false
       props.fal()
     }
@@ -88,7 +89,7 @@ let excel = () => {
   let data = XLSX.utils.json_to_sheet(tableData.value as any) // 2.创建工作簿
   let wb = XLSX.utils.book_new() // 3.把工作表放到工作簿中
   XLSX.utils.book_append_sheet(wb, data, 'data') // 4.生成文件并下载
-  XLSX.writeFile(wb, '哈哈哈' + '.xlsx')
+  XLSX.writeFile(wb, '学生信息' + '.xlsx')
 }
 </script>
 

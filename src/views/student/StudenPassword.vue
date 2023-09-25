@@ -18,12 +18,11 @@
       </span>
     </template>
   </el-dialog>
- 
 </template>
 
 <script lang="ts" setup>
 import { classesadd } from '@/assets/api/studen/studen'
-import { succesMsg } from '@/untils/msg'
+import { errorMsg, succesMsg } from '@/untils/msg'
 
 import { ElMessageBox } from 'element-plus'
 import { reactive, ref } from 'vue'
@@ -38,8 +37,6 @@ const props = defineProps({
     required: true
   }
 })
-console.log(props.call)
-
 let form = reactive({
   id: props.call.id,
   name: props.call.name,
@@ -55,7 +52,7 @@ const handleClose = (done: () => void) => {
       done()
     })
     .catch(() => {
-      // catch error
+      errorMsg('已取消')
     })
 }
 const cancellation = () => {

@@ -1,7 +1,9 @@
 <template>
   <div class="department">
     <div class="header">部门管理</div>
-    <el-button type="primary" @click="add" v-authority="{ model: '部门', name: '添加' }">添加一级节点</el-button>
+    <el-button type="primary" @click="add" v-authority="{ model: '部门', name: '添加' }"
+      >添加一级节点</el-button
+    >
     <div class="content">
       <!-- 部门列表 -->
       <div class="content-left">
@@ -33,9 +35,21 @@
             <el-input v-model="form.name" />
           </el-form-item>
           <el-form-item>
-            <el-button type="info" @click="del" v-authority="{ model: '部门', name: '删除' }">删除当前节点</el-button>
-            <el-button type="success" @click="modify(ruleFormRef)" v-authority="{ model: '部门', name: '修改' }">修改当前节点</el-button>
-            <el-button type="primary" @click="AddChild(ruleFormRef)" v-authority="{ model: '部门', name: '添加' }">添加子节点</el-button>
+            <el-button type="info" @click="del" v-authority="{ model: '部门', name: '删除' }"
+              >删除当前节点</el-button
+            >
+            <el-button
+              type="success"
+              @click="modify(ruleFormRef)"
+              v-authority="{ model: '部门', name: '修改' }"
+              >修改当前节点</el-button
+            >
+            <el-button
+              type="primary"
+              @click="AddChild(ruleFormRef)"
+              v-authority="{ model: '部门', name: '添加' }"
+              >添加子节点</el-button
+            >
           </el-form-item>
         </el-form>
       </div>
@@ -43,10 +57,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { DepartAdd, DepartmentDelete, RoleList } from '@/assets/api/DepartMent/department';
-import { confirmBox, errorMsg, succesMsg } from '@/untils/msg';
-import type { FormInstance, FormRules } from 'element-plus';
-import { reactive, ref } from 'vue';
+import { DepartAdd, DepartmentDelete, RoleList } from '@/assets/api/DepartMent/department'
+import { confirmBox, errorMsg, succesMsg } from '@/untils/msg'
+import type { FormInstance, FormRules } from 'element-plus'
+import { reactive, ref } from 'vue'
 let datalist = ref([])
 let dele = ref()
 let names = ref('')
@@ -83,10 +97,10 @@ const AddChild = async (formEl: FormInstance | undefined) => {
       let lists: any = {
         id: 0,
         name: form.name,
-        pid:dele.value
+        pid: dele.value
       }
-      let res = await DepartAdd(lists)
-      if (res.errCode === 10000) {
+      let res = await DepartAdd(lists).catch(() => {})
+      if (res?.errCode === 10000) {
         succesMsg('添加成功')
         form.name = ''
         list()
@@ -104,10 +118,10 @@ const modify = async (formEl: FormInstance | undefined) => {
       let modifys = {
         id: dele.value,
         name: form.name,
-        pid:pids.value
+        pid: pids.value
       }
-      let res = await DepartAdd(modifys)
-      if (res.errCode === 10000) {
+      let res = await DepartAdd(modifys).catch(() => {})
+      if (res?.errCode === 10000) {
         succesMsg('添加成功')
         form.name = ''
         list()
@@ -119,8 +133,8 @@ const modify = async (formEl: FormInstance | undefined) => {
 }
 // 部门列表
 const list = async () => {
-  let res: any = await RoleList(data)
-  if (res.errCode === 10000) {
+  let res: any = await RoleList(data).catch(() => {})
+  if (res?.errCode === 10000) {
     datalist.value = res.data.list
   }
 }
@@ -129,10 +143,12 @@ list()
 const del = () => {
   confirmBox('你真的确定吗？???', '你确定吗？', null)
     .then(async () => {
-      let res = await DepartmentDelete({ id: dele.value })
-      shows.value = false
-      list()
-      succesMsg('删除成功')
+      let res = await DepartmentDelete({ id: dele.value }).catch(() => {})
+      if (res?.errCode === 10000) {
+        shows.value = false
+        list()
+        succesMsg('删除成功')
+      }
     })
     .catch(() => {
       errorMsg('不了不了OvO')
@@ -143,8 +159,8 @@ const adds = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      let res = await DepartAdd(form)
-      if (res.errCode === 10000) {
+      let res = await DepartAdd(form).catch(() => {})
+      if (res?.errCode === 10000) {
         succesMsg('添加成功')
         form.name = ''
         list()
@@ -202,7 +218,7 @@ const handleNodeClick = (data: any) => {
       .el-form-item {
         margin-top: 10px;
         .el-button {
-          margin-left:10px;
+          margin-left: 10px;
         }
       }
       .el-form-item:first-child {

@@ -131,8 +131,10 @@ const props = {
 }
 // 部门列表
 const DeparList = async ()=>{
-  let red:any = await DepartmentList()
-  options.value = red.data.list
+  let red:any = await DepartmentList().catch(()=>{})
+  if(red?.errCode==10000){
+    options.value = red.data.list
+  }
 
 }
 DeparList()
@@ -192,10 +194,10 @@ let form = reactive<classdata>({
   depid: 0,
 })
 const classesdata = async ()=>{
-  let red = await classeslist(form)
-
-  clasList.value = red.data.list 
-  
+  let red = await classeslist(form).catch(()=>{})
+  if(red?.errCode==10000){
+    clasList.value = red.data.list 
+  }
 }
 
 //部门change事件
@@ -221,10 +223,13 @@ const search = ()=>{
 }
 // 考生列表
 const studentlists = async ()=>{
-  let red = await studentlist(ruform)
-  tableData.value = red.data.list
-  total.value = red.data.counts  
-  loading.value = false
+  let red = await studentlist(ruform).catch(()=>{})
+  if(red?.errCode==10000){
+    tableData.value = red.data.list
+    total.value = red.data.counts  
+    loading.value = false
+  }
+  
 }
 studentlists()
 // 分页
@@ -274,10 +279,10 @@ const confirmClick = async ()=>{
   // 接口需要传的参数名称吧值重新赋给这个参数
   PassworData = paperdata.value.map((item:any)=>({...item,scores:item.studentscores}))
   drawer.value = false
-  let red = await studentanswer(PassworData)
+  let red = await studentanswer(PassworData).catch(()=>{})
   // loading.value = true
 
-  if(red.errCode==10000){
+  if(red?.errCode==10000){
     succesMsg('您已经判完卷了')
       loading.value = true
 
@@ -293,8 +298,11 @@ const marginState = reactive<any>({
 let paperdata:any = ref([])
 // 试卷列表
 const paperlist = async ()=>{
-  let red = await queslist(marginState)
-  paperdata.value = red.data.list
+  let red = await queslist(marginState).catch(()=>{})
+  if(red?.errCode==10000){
+    paperdata.value = red.data.list
+  }
+  
   
 }
 // 动态表单验证
