@@ -178,54 +178,29 @@ const guabviwangs = () => {
 const baocuns = () => {
   if (questionsData.value.title === '') {
     ElMessage.error('题干不能为空')
+  } else if (
+    (questionsData.value.type === '多选题' || questionsData.value.type === '单选题') &&
+    !questionsData.value.answers.every((item: any) => item.content !== '')
+  ) {
+    ElMessage.error('选项输入框不能为空')
+  } else if (
+    questionsData.value.type === '多选题' &&
+    questionsData.value.answer.split('|').length < 2
+  ) {
+    ElMessage.error('至少选择两项')
+  } else if (questionsData.value.type === '判断题' && questionsData.value.answer === '') {
+    ElMessage.error('至少选择一项')
+  } else if (questionsData.value.type === '填空题' && input.value.length <= 0) {
+    ElMessage.error('请在题库输入大括号')
+  } else if (
+    questionsData.value.type === '填空题' &&
+    !input.value.every((item: any) => item !== '')
+  ) {
+    ElMessage.error('正确答案,输入框不能为空')
+  } else if (questionsData.value.type === '问答题' && questionsData.value.explains === '') {
+    ElMessage.error('解析不能为空请输入')
   } else {
-    if (questionsData.value.type === '多选题' || questionsData.value.type === '单选题') {
-      if (!questionsData.value.answers.every((item: any) => item.content !== '')) {
-        ElMessage.error('选项输入框不能为空')
-      } else {
-        if (questionsData.value.type === '多选题') {
-          if (questionsData.value.answer.split('|').length < 2) {
-            ElMessage.error('至少选择两项')
-          } else {
-            emits('MywangAdd', questionsData.value)
-          }
-        }
-
-        if (questionsData.value.type === '单选题') {
-          if (questionsData.value.answer === '') {
-            ElMessage.error('至少选择一项')
-          } else {
-            emits('MywangAdd', questionsData.value)
-          }
-        }
-      }
-    }
-
-    if (questionsData.value.type === '判断题') {
-      if (questionsData.value.answer === '') {
-        ElMessage.error('至少选择一项')
-      } else {
-        emits('MywangAdd', questionsData.value)
-      }
-    }
-    if (questionsData.value.type === '填空题') {
-      if (input.value.length <= 0) {
-        ElMessage.error('请在题库输入大括号')
-      } else {
-        if (input.value[input.value.length - 1] === undefined) {
-          ElMessage.error('正确答案,输入框不能为空')
-        } else {
-          emits('MywangAdd', questionsData.value)
-        }
-      }
-    }
-    if (questionsData.value.type === '问答题') {
-      if (questionsData.value.explains === '') {
-        ElMessage.error('解析不能为空请输入')
-      } else {
-        emits('MywangAdd', questionsData.value)
-      }
-    }
+    emits('MywangAdd', questionsData.value)
   }
 }
 const inputs = (data: any) => {
@@ -290,25 +265,13 @@ let yinwens: any = ref([
 ])
 //点击顶部题目类型
 const gattabtype = (data: any) => {
-  if (data === '填空题') {
-    questionsData.value.answer = ''
-    questionsData.value.explains = ''
-  } else {
-    input.value = []
-  }
-  if (data === '问答题') {
-    questionsData.value.answer = ''
-    questionsData.value.explains = ''
-  }
-  if (data === '判断题') {
-    questionsData.value.answer = ''
-    questionsData.value.explains = ''
-  }
+  questionsData.value.answer = ''
+  questionsData.value.explains = ''
+  input.value = []
   if (data === '单选题' || data === '多选题') {
     if (data === '单选题') {
       questionsData.value.answer = 'A'
     }
-    questionsData.value.explains = ''
   } else {
     questionsData.value.answers = [
       {

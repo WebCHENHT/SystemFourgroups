@@ -61,16 +61,21 @@ let props = defineProps<{
 //确定操作
 const confirmEvent = async () => {
   let res = props.Questionlists.map((item: any) => {
+    let scores: number | null = null
+    if (['单选题', '多选题', '判断题'].includes(item.type)) {
+      scores = item.answer === item.studentanswer ? item.scores : 0
+    }
+
     return {
       testid: item.testid,
       studentid: store.model.id,
       questionid: item.id,
       answer: item.studentanswer == null ? '' : item.studentanswer,
-      scores: quanduans(item.answer, item.studentanswer, item.scores, item.type)
+      scores
     }
   })
-  let Student = await StudentanswerAdd(res)
-  if (Student.errCode === 10000) {
+  let Student = await StudentanswerAdd(res).catch(() => {})
+  if (Student?.errCode === 10000) {
     localStorage.removeItem('data' + route.query.id)
     ElMessage.success('答卷完毕')
     router.push({
@@ -81,39 +86,9 @@ const confirmEvent = async () => {
     })
   }
 }
-let quanduans = (answer: any, studentanswer: any, scores: number, type: string) => {
-  if (type === '单选题' || type === '判断题') {
-    return answer === studentanswer ? scores : 0
-  }
-  if (type === '多选题') {
-    if (studentanswer === null) {
-      return 0
-    } else {
-      let arr = studentanswer.split('|').sort()
-      let res = arr.filter((item: any, index: any) => {
-        return !answer.split('|').includes(item)
-      })
-      if (res.length > 0) {
-        return 0
-      } else {
-        let res = answer.split('|').filter((item: any, index: any) => {
-          return item !== arr[index]
-        })
-        if (res.length > 0) {
-          return 0
-        } else {
-          return scores
-        }
-      }
-    }
-  }
-  if (type === '问答题' || type === '填空题') {
-    return null
-  }
-}
 //取消操作
 const cancelEvent = () => {
-  console.log('cancel!')
+  return ''
 }
 let list = computed(() => {
   return props.Questionlists.filter((item: any) => {

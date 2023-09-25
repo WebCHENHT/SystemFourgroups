@@ -17,76 +17,38 @@
         </div>
       </div>
       <span class="titleres" v-if="item.type !== '填空题'" v-html="item.title"></span>
-      <span
-        class="titleres"
-        v-else
-        v-html="tiankongs(index, item.title, item.studentanswer)"
-      ></span>
+      <span class="titleres" v-else v-html="tiankongs(item.title, item.studentanswer)"></span>
       <!-- 判断题 -->
       <div v-if="item.type === '判断题'">
-        <div v-if="item.studentanswer !== ''">
-          <div v-if="item.studentanswer === '错误'">
-            <div class="optionsLi">
-              <div class="left">
-                <div class="opt"></div>
-                <span>正确</span>
-              </div>
-            </div>
+        <div
+          class="optionsLi"
+          :class="
+            item.studentanswer !== ''
+              ? item.answer === ite && item.studentanswer === ite
+                ? 'soumeer'
+                : item.studentanswer.indexOf(ite) === -1
+                ? ''
+                : 'wrong'
+              : ''
+          "
+          v-for="(ite, inde) in ishowpandus"
+          :key="inde"
+        >
+          <div class="left">
+            <div class="opt"></div>
+            <div>{{ ite }}</div>
           </div>
-          <div v-else>
-            <div
-              :class="item.answer === item.studentanswer ? 'optionsLi okdak' : 'optionsLi wrong'"
-            >
-              <div class="left">
-                <div class="opt"></div>
-                <span :class="item.answer === item.studentanswer ? 'timright' : 'error'">正确</span>
-              </div>
-              <div class="timright" v-if="item.answer === item.studentanswer">回答正确</div>
-              <div class="error" v-else>回答错误</div>
-            </div>
-          </div>
-          <div v-if="item.studentanswer === '正确'">
-            <div class="optionsLi">
-              <div class="left">
-                <div class="opt"></div>
-                <span>错误</span>
-              </div>
-            </div>
-          </div>
-          <div v-else>
-            <div
-              :class="item.answer === item.studentanswer ? 'optionsLi okdak' : 'optionsLi wrong'"
-            >
-              <div class="left">
-                <div class="opt"></div>
-                <span :class="item.answer === item.studentanswer ? 'timright' : 'error'">错误</span>
-              </div>
-              <div class="timright" v-if="item.answer === item.studentanswer">回答正确</div>
-              <div class="error" v-else>回答错误</div>
-            </div>
-          </div>
-          <div class="timanswer" v-if="item.type === '判断题'">
-            <span style="font-size: 15px; color: #90adca">正确答案：</span>
-            <div class="parse">{{ item.answer }}</div>
+          <div
+            class="right"
+            v-if="item.studentanswer.includes(ite)"
+            :class="item.answer.includes(ite) ? 'timright' : 'error'"
+          >
+            {{ item.answer.includes(ite) ? '回答正确' : '回答错误' }}
           </div>
         </div>
-        <div v-else>
-          <div class="optionsLi">
-            <div class="left">
-              <div class="opt"></div>
-              <span>正确</span>
-            </div>
-          </div>
-          <div class="optionsLi">
-            <div class="left">
-              <div class="opt"></div>
-              <span>错误</span>
-            </div>
-          </div>
-          <div class="timanswer" v-if="item.type === '判断题'">
-            <span style="font-size: 15px; color: #90adca">正确答案：</span>
-            <div class="parse">{{ item.answer }}</div>
-          </div>
+        <div class="timanswer">
+          <span style="font-size: 15px; color: #90adca">正确答案：</span>
+          <div style="font-size: 15px; color: #90adca">{{ item.answer }}</div>
         </div>
       </div>
     </div>
@@ -106,15 +68,13 @@
     <div v-if="item.type === '单选题' || item.type === '多选题'">
       <div class="xuzix" v-for="(item1, index1) in item.answers" :key="index1">
         <div
+          class="timiunxs"
           :class="
-            item.answer.split('|').includes(item1.answerno)
-              ? 'timiunxs timiunxscord'
-              : 'timiunxs wrong'
-          "
-          :style="
-            !item.studentanswer.split('|').includes(item1.answerno)
-              ? 'background-color: #fafbfd'
-              : ''
+            item.studentanswer.includes(item1.answerno) && item.answer.includes(item1.answerno)
+              ? 'timiunxscord'
+              : item.studentanswer.indexOf(item1.answerno) === -1
+              ? ''
+              : 'wrong'
           "
         >
           <div class="timleft">
@@ -123,10 +83,10 @@
           </div>
 
           <div
-            v-if="item.studentanswer.split('|').includes(item1.answerno)"
-            :class="item.answer.split('|').includes(item1.answerno) ? 'timright' : 'error'"
+            v-if="item.studentanswer.includes(item1.answerno)"
+            :class="item.answer.includes(item1.answerno) ? 'timright' : 'error'"
           >
-            {{ item.answer.split('|').includes(item1.answerno) ? '回答正确' : '回答错误' }}
+            {{ item.answer.includes(item1.answerno) ? '回答正确' : '回答错误' }}
           </div>
         </div>
       </div>
@@ -150,7 +110,8 @@
 let props = defineProps<{
   DrawerDatas: any
 }>()
-const tiankongs = (index: any, title: string, studentanswer: string) => {
+let ishowpandus = ['正确', '错误']
+const tiankongs = (title: string, studentanswer: string) => {
   if (title.includes('[]')) {
     studentanswer.split('|').forEach((item: any) => {
       title = title.replace(
@@ -164,6 +125,10 @@ const tiankongs = (index: any, title: string, studentanswer: string) => {
 </script>
 
 <style lang="less" scoped>
+.soumeer {
+  background-color: #f0faf6;
+  border: 1px solid #f0faf6;
+}
 .Oppositetopictop {
   width: 100%;
   .OppositetopicList {
@@ -234,15 +199,7 @@ const tiankongs = (index: any, title: string, studentanswer: string) => {
   display: flex;
   flex-wrap: wrap;
 }
-.timiunxscord {
-  height: 30px;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  width: 100%;
-  background-color: #f0faf6;
-  border: 1px solid #f0faf6;
-}
+
 .timiunxs {
   height: 40px;
   width: 100%;
@@ -252,6 +209,11 @@ const tiankongs = (index: any, title: string, studentanswer: string) => {
   justify-content: space-between;
   border-radius: 3px;
   margin-bottom: 10px;
+  &.timiunxscord {
+    height: 40px;
+    background-color: #f0faf6;
+    border: 1px solid #f0faf6;
+  }
   .timleft {
     display: flex;
     align-items: center;
@@ -369,7 +331,7 @@ const tiankongs = (index: any, title: string, studentanswer: string) => {
   color: #4cc0a4;
   display: block;
 }
-.wrong {
+&.wrong {
   background-color: #fcf3f3;
 }
 .Drawtop {

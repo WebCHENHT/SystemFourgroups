@@ -2,10 +2,12 @@
   <div class="LoginBoxs">
     <div class="Login">
       <div class="title">
-        <img src="http://edu.90000p.com/exam/cyx/assets/log.6449415e.png" alt="" />
+        <img src="../assets/img/login.png" alt="" />
       </div>
       <div class="loginsize">
-        <div class="sizeleft"><h2>考试系统</h2></div>
+        <div class="sizeleft">
+          <h2 style="font-size: 24px; font-weight: 600; color: #000">考试系统</h2>
+        </div>
         <div class="sizeright" @click="Loginishow = !Loginishow" v-if="Loginishow">
           <img src="../assets/img/QRcode.png" alt="" />
         </div>
