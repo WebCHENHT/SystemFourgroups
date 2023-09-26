@@ -58,8 +58,8 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
 import dayjs from 'dayjs'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 let props = defineProps<{
   StutesDatas: any
@@ -110,7 +110,6 @@ const handleCurrentChange = (val: number) => {
   height: 94vh;
   .contotest {
     height: 94%;
-    overflow-y: scroll;
     .Tesgtbox {
       display: flex;
       flex-wrap: wrap;
