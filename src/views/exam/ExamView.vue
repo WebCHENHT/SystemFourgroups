@@ -16,6 +16,11 @@
     @sonhandleCurrentChange="handleCurrentChange"
     @sonhandleSizeChange="handleSizeChange"
     >
+    <template  v-slot:wei="scope">
+      <div style="color: red;">
+       {{ scope.data.incomplete }}
+      </div>
+    </template>
     <template #time="{ data }">
       <div>
         {{
@@ -65,7 +70,9 @@
     },
     {
       label: '未判人数',
-      prop: 'incomplete',
+      isslot: true,
+      slotname: 'wei'
+      // prop: 'incomplete',
       // width: '120'
     },
     {

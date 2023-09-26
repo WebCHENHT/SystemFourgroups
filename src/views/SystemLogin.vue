@@ -69,14 +69,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus'
-import { TeacherChecklogin } from '@/assets/api/SystemLiognAdd/index'
-import { succesMsg, errorMsg } from '@/untils/msg'
-import { debounce } from '@/untils/antishake'
-import { useCounterStore } from '@/stores/counter'
 import type { LoginAddObject } from '@/assets/TSinterface/SystemLoginInterface'
-import { useRoute, useRouter } from 'vue-router'
+import { TeacherChecklogin } from '@/assets/api/SystemLiognAdd/index'
+import { useCounterStore } from '@/stores/counter'
+import { debounce } from '@/untils/antishake'
+import { errorMsg, succesMsg } from '@/untils/msg'
+import type { FormInstance, FormRules } from 'element-plus'
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 let router = useRouter()
 
 const store: LoginAddObject | any = useCounterStore()
@@ -92,8 +92,8 @@ interface RuleForm {
 let Systemname = ref(false)
 //登录接口需要的数据
 const LoginAdd = reactive<RuleForm>({
-  username: 'c1c1c1',
-  pass: '123456'
+  username: '',
+  pass: ''
 })
 //登录校验
 const Loginrules = reactive<FormRules<RuleForm>>({

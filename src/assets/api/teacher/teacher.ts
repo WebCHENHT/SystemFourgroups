@@ -2,7 +2,6 @@ import index from '@/untils/request'
 import type { 
   teacher, RootObject, 
   teacherdeletes, teacherdele,
-  teacherchanges, teacherchange,
   RoleRootObject,Rolecan,
   teacherRoot,teacherRootAdd,
 } from '@/assets/TSinterface/teacher'
