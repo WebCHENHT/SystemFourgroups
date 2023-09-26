@@ -366,7 +366,7 @@ const student = debounce(async (name: string, ishows: boolean, data: any) => {
 }, 300)
 //关闭穿梭框页面
 const MyClose = () => {
-  TrabsList.value = true
+  TrabsList.value = false
 }
 //表单数据条数和是否开启loading
 let loading = ref<boolean>(true)

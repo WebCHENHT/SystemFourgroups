@@ -110,7 +110,7 @@
               type="text"
               v-model="questionsData.scores"
               style="width: 77px; height: 28px"
-              @blur="inputs($event)"
+              @blur="inputs"
             />
           </el-form-item>
           <el-form-item>
@@ -203,7 +203,7 @@ const baocuns = () => {
     emits('MywangAdd', questionsData.value)
   }
 }
-const inputs = (data: any) => {
+const inputs = () => {
   if ((questionsData.value.scores as any) == '') {
     ElMessage.warning('分值不能为空')
   }

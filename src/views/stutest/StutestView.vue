@@ -74,6 +74,8 @@ const MyhandleCurrent = (data: any) => {
   StutestDatas()
 }
 const xuanzes = () => {
+  StutestModel.page = 1
+  StutestModel.psize = 12
   loading.value = true
   StutestDatas()
 }
