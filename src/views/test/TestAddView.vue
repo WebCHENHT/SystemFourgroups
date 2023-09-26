@@ -545,9 +545,12 @@ const getTestDel = (data: any, key: number) => {
 }
 //编辑
 const getTestadd = (data: any, key: number) => {
-  WangAdd.value.drawer = true
-  WangAdd.value.questionsData = JSON.parse(JSON.stringify(data))
-  WangAdd.value.questionsData.id = key
+  wangis.value = true
+  nextTick(() => {
+    WangAdd.value.drawer = true
+    WangAdd.value.questionsData = JSON.parse(JSON.stringify(data))
+    WangAdd.value.questionsData.id = key
+  })
 }
 //输入input题型输入操作
 const onchange = (data: any, type: any) => {
