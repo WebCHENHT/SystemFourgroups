@@ -59,8 +59,8 @@ const addEditData = ref({
 })
 // 角色列表
 const list = async () => {
-  let res: any = await RoleList(data)
-  if (res.errCode === 10000) {
+  let res: any = await RoleList(data).catch(() => {})
+  if (res?.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
     loading.value = false
@@ -72,8 +72,8 @@ const del = async (id: any) => {
   confirmBox('确定删除吗???', '你确定吗？', null)
     .then(async () => {
       // dataid.id = id.id
-      let res: any = await RoleDelete(id)
-      if (res.errCode === 10000) {
+      let res: any = await RoleDelete(id).catch(() => {})
+      if (res?.errCode === 10000) {
         succesMsg('删除成功')
       }
       list()

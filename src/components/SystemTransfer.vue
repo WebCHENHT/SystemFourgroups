@@ -133,7 +133,7 @@ const gethuisxia = async () => {
     if (res.names === '学生考试列表') {
       let reesa: any = await TestGetstudents({
         testid: res.testid
-      })
+      }).catch(() => {})
       if (reesa.errCode === 10000) {
         let resas = reesa.data.map((item: any) => item.id)
         Classes.value = resas
@@ -143,8 +143,8 @@ const gethuisxia = async () => {
       if (res.names === '可见老师') {
         let resasTeches = await TestGetlimit({
           testid: res.testid as unknown as number
-        })
-        if (resasTeches.errCode === 10000) {
+        }).catch(() => {})
+        if (resasTeches?.errCode === 10000) {
           let arr = resasTeches.data.map((item: any) => {
             return item.id
           })
@@ -154,8 +154,8 @@ const gethuisxia = async () => {
       } else {
         let resyuejuans = await TestGetmarkteachers({
           testid: res.testid as unknown as number
-        })
-        if (resyuejuans.errCode === 10000) {
+        }).catch(() => {})
+        if (resyuejuans?.errCode === 10000) {
           let resas = resyuejuans.data.map((item: any) => {
             return item.id
           })
@@ -165,8 +165,8 @@ const gethuisxia = async () => {
       }
     }
   }
-  let resDepartems = await DepartmentList()
-  if (resDepartems.errCode === 10000) {
+  let resDepartems = await DepartmentList().catch(() => {})
+  if (resDepartems?.errCode === 10000) {
     Testdatast.value = resDepartems.data.list as any
   }
 }
@@ -178,16 +178,16 @@ const getDepartment = async (data: number) => {
   if (res.ishow === true) {
     let res = await ClassesList({
       depid: data
-    })
-    if (res.errCode === 10000) {
+    }).catch(() => {})
+    if (res?.errCode === 10000) {
       ClassesDatas.value = res.data.list
     }
   } else {
     loading.value = true
     let resa = await TeacherList({
       depid: data
-    })
-    if (resa.errCode === 10000) {
+    }).catch(() => {})
+    if (resa?.errCode === 10000) {
       loading.value = false
       if (res.testid !== 0) {
         getTransadd(resa.data.list)
@@ -203,8 +203,8 @@ const getClasses = async () => {
   let resa = await StudentList({
     depid: Departmentvalue.value as unknown as number,
     classid: Classesvalue.value as unknown as number
-  })
-  if (resa.errCode === 10000) {
+  }).catch(() => {})
+  if (resa?.errCode === 10000) {
     loading.value = false
     if (res.testid !== 0) {
       getTransadd(resa.data.list)
@@ -251,8 +251,8 @@ const MySystemTransferAdd = async (data: any) => {
       let Teststudentsres = await TeststudentsAdd({
         testid: res.testid,
         list
-      })
-      if (Teststudentsres.errCode === 10000) {
+      }).catch(() => {})
+      if (Teststudentsres?.errCode === 10000) {
         ElMessage.success('更改成功')
         dialogVisible.value = false
       }
@@ -271,8 +271,8 @@ const MySystemTransferAdd = async (data: any) => {
         let Testlimitres = await TestlimitAdd({
           testid: res.testid,
           list
-        })
-        if (Testlimitres.errCode === 10000) {
+        }).catch(() => {})
+        if (Testlimitres?.errCode === 10000) {
           ElMessage.success('更改成功')
           dialogVisible.value = false
         }
@@ -290,8 +290,8 @@ const MySystemTransferAdd = async (data: any) => {
         let Testmarkres = await TestmarkteacherAdd({
           testid: res.testid,
           list
-        })
-        if (Testmarkres.errCode === 10000) {
+        }).catch(() => {})
+        if (Testmarkres?.errCode === 10000) {
           ElMessage.success('更改成功')
           dialogVisible.value = false
         }

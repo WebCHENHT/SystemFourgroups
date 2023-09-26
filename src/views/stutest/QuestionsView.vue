@@ -111,8 +111,12 @@ import { TestStart } from '@/assets/api/TestList/index'
 import AnswerSheetVue from '@/components/AnswerSheet.vue'
 import { htmlEncode } from '@/untils/Dilist'
 import { debounce } from '@/untils/antishake'
+
 import { AlarmClock, Select } from '@element-plus/icons-vue'
 import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+// 导入 duration 插件
+dayjs.extend(duration)
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 let route = useRoute()
@@ -155,15 +159,14 @@ const getexaminationlist = async () => {
   let timer: any
   let res: any = await TestStart({
     testid: route.query.id as string
-  })
-  if (res.errCode === 10000) {
+  }).catch(() => {})
+  if (res?.errCode === 10000) {
     name.value = res.data.title
     const result = computed(() => {
       return dayjs(res.data.endtime).diff(dayjs(res.data.studentStartTime), 'seconds')
     })
 
     time.value = result.value
-
     if (res.data.limittime !== 0) {
       ishowtime.value = true
       const limittimeInSeconds = res.data.limittime * 60
@@ -171,7 +174,7 @@ const getexaminationlist = async () => {
       const studentStartTime = dayjs(res.data.studentStartTime)
       const timeDifferenceInSeconds = currentTime.diff(studentStartTime, 'seconds')
       let times: any = limittimeInSeconds - timeDifferenceInSeconds
-      const timePadstart = (time: any) => time.toString().padStart(2, '0')
+
       const countDown = () => {
         //获取当前时间的时间戳（单位毫秒）
         timer = setInterval(() => {
@@ -179,12 +182,8 @@ const getexaminationlist = async () => {
           times--
           time.value--
           //计算小时数 转化为整数
-          const h = parseInt(((times / 60 / 60) % 24) as any)
-          //计算分钟数 转化为整数
-          const m = parseInt(((times / 60) % 60) as any)
-          //计算描述 转化为整数
-          const s = parseInt((times % 60) as any)
-          dataTime.value = [h, m, s].map(timePadstart).join(':')
+
+          dataTime.value = dayjs.duration(times, 'seconds').format('HH:mm:ss')
 
           if (times <= 0) {
             //倒计时结束关闭循环提交
@@ -230,7 +229,6 @@ const getexaminationlist = async () => {
         }
         item.oninput = function () {
           let index = this.getAttribute('data-index')
-
           let arr: any = []
           document.querySelectorAll('.input' + index).forEach((ite: any) => {
             if (ite.value) {
@@ -266,16 +264,17 @@ const huancuns = (id: any, data: any) => {
   localStorage.setItem('data' + id, data)
 }
 //多选题
-const duoxuan = debounce((index: number, answerno: any, id: number) => {
-  if (!examinationdatas.value[index].studentanswer) {
-    examinationdatas.value[index].studentanswer = answerno
-  } else if (examinationdatas.value[index].studentanswer.includes(answerno)) {
-    let arr = examinationdatas.value[index].studentanswer.split('|')
-    arr.splice(arr.indexOf(answerno), 1)
-    examinationdatas.value[index].studentanswer = arr.join('|')
+const duoxuan = debounce((index: number, answerno: any) => {
+  let _studentanswer = examinationdatas.value[index].studentanswer
+  let stuAnswers = _studentanswer ? _studentanswer.split('|') : []
+
+  if (stuAnswers.length > 0 && stuAnswers.includes(answerno)) {
+    stuAnswers = stuAnswers.filter((item: any) => item != answerno)
   } else {
-    examinationdatas.value[index].studentanswer += '|' + answerno
+    stuAnswers.push(answerno)
   }
+
+  examinationdatas.value[index].studentanswer = stuAnswers.sort().join('|')
 }, 200)
 
 //单选题

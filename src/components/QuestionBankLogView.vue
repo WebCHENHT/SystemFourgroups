@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="题库列表" width="80%" >
+  <el-dialog v-model="dialogVisible" title="题库列表" width="80%">
     <div class="Parperlist">
       <el-form :model="DatabaseListObj">
         <el-form-item label="试卷名称">
@@ -43,11 +43,10 @@
 <script setup lang="ts">
 import { ref, reactive, nextTick } from 'vue'
 import TableangPage from '@/components/TableangPage.vue'
-import { DatabaseList, DatabasequestionList } from '@/assets/api/TestList'
+import { DatabaseList } from '@/assets/api/TestList'
 import ListtoftestView from './ListtoftestView.vue'
 let emit = defineEmits<{
   (name: 'myQunstions', value: any): any
-
 }>()
 let danvalue = ref(0)
 let vuels = ref(false)
@@ -128,7 +127,7 @@ const QuestionOk = () => {
   }
 }
 const DatabaseListDatas = async () => {
-  let res: any = await DatabaseList(DatabaseListObj)
+  let res: any = await DatabaseList(DatabaseListObj).catch(() => {})
   if (res.errCode === 10000) {
     total.value = res.data.counts
     loading.value = false

@@ -34,7 +34,6 @@
 
 <script setup lang="ts">
 import { TestGetForResult } from '@/assets/api/TestList'
-import AnswerSheet from '@/components/AnswerSheet.vue'
 import TestBView from '@/components/TestBView.vue'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -53,8 +52,8 @@ let DrawerDatas: any = ref([])
 const result = async () => {
   let res = await TestGetForResult({
     testid: route.query.testid as unknown as number
-  })
-  if (res.errCode === 10000) {
+  }).catch(() => {})
+  if (res?.errCode === 10000) {
     DrawerDatas.value = res.data
   }
 }

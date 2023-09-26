@@ -360,15 +360,15 @@ const ConfirmAdd = async () => {
       }
     }
   if (addData.id === 0) {
-    let res: any = await databasequestionadd(addData)
-    if (res.errCode !== 10000) {
+    let res: any = await databasequestionadd(addData).catch(() => {})
+    if (res?.errCode !== 10000) {
       errorMsg('添加失败！')
       return false
     }
     succesMsg('添加成功！')
   } else {
-    let res = await databasequestionadd(addData)
-    if (res.errCode !== 10000) {
+    let res = await databasequestionadd(addData).catch(() => {})
+    if (res?.errCode !== 10000) {
       errorMsg('编辑失败！')
       return false
     }

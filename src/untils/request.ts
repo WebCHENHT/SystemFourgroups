@@ -43,6 +43,7 @@ class RequestHttp {
   public constructor(config: AxiosRequestConfig) {
     // 实例化axios
     this.service = axios.create(config)
+
     /**
      * 请求拦截器
      * 客户端发送请求 -> [请求拦截器] -> 服务器
@@ -51,7 +52,7 @@ class RequestHttp {
     this.service.interceptors.request.use(
       (config: AxiosRequestConfig | any) => {
         const token: string = store.token
-        console.log('aaaa')
+
         return {
           ...config,
           headers: {
@@ -77,8 +78,7 @@ class RequestHttp {
           store.token = ''
           // router.replace({
           //   path: '/login'
-          // })
-          console.log('aaaa')
+          // }
 
           return Promise.reject(data)
         }
@@ -96,6 +96,7 @@ class RequestHttp {
         }
         if (!window.navigator.onLine) {
           ElMessage.error('网络连接失败')
+          console.log('aaas')
           // 可以跳转到错误页面，也可以不做操作
           // return router.replace({
           //   path: '/404'

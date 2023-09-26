@@ -134,8 +134,8 @@ let Listtoftestlists = ref([])
 let ListtoftestObj: any = ref({})
 const dataquesDatas = async () => {
   if (DatabasequestObj.databaseid !== 0) {
-    let res: any = await DatabasequestionList(DatabasequestObj)
-    if (res.errCode === 10000) {
+    let res: any = await DatabasequestionList(DatabasequestObj).catch(()=>{})
+    if (res?.errCode === 10000) {
       ListtoftestObj.value = res.data.database
 
       let Arrs = res.data.list.filter((item: any) => {
