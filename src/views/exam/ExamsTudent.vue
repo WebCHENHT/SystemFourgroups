@@ -39,9 +39,18 @@
       <template v-slot:shijian="data">
         {{ data.data.addtime.substring(0,16) }}
       </template>
+      <template  v-slot:wei="scope">
+        <div style="color: red;" v-if="scope.data.state=='未阅卷'">
+        {{ scope.data.state }}
+        </div>
+        <div style="color: #2c6ce2;" v-if="scope.data.state=='已阅卷'">
+          {{ scope.data.state }}
+        </div>
+      </template>
       <template #actions="slotname: any">
         
-        <el-button type="primary" size="small" link @click="open(slotname.data)">阅卷</el-button>
+        
+      <el-button type="primary" size="small" link @click="open(slotname.data)">阅卷</el-button>
           
       </template>
     </TableangPage>
@@ -65,7 +74,6 @@
                   show-word-limit
                   type="textarea"
                 />
-                <!-- <el-input v-model="item.comments" maxlength="300  " type="textarea" /> -->
               </el-form-item>
             </el-form>
             
@@ -176,9 +184,9 @@ const tableColum = reactive([
     },
     {
       label: '状态',
-      prop: 'state',
-      // isslot: true,
-      // width: '120'
+      isslot: true,
+      slotname: 'wei'
+      // prop: 'state',
     },
     {
     label: '操作',
