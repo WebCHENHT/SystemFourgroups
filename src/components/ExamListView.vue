@@ -110,7 +110,7 @@ const handleCurrentChange = (val: number) => {
   height: 94vh;
   .contotest {
     height: 94%;
-    overflow-y: scroll;
+
     .Tesgtbox {
       display: flex;
       flex-wrap: wrap;
