@@ -65,11 +65,11 @@ import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useCounterStore } from '@/stores/counter'
 
-let route = useRoute()
+  let route = useRoute()
 
-let store = useCounterStore()
+  let store = useCounterStore()
 
-let router = useRouter()
+  let router = useRouter()
 
 const data = reactive({
   LeftArrDatas: [] as any,
