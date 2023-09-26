@@ -6,7 +6,7 @@
           <el-input v-model="DatabaseListObj.key" placeholder="请输入试卷名称" />
         </el-form-item>
         <el-form-item label="创建人">
-          <el-input v-model="DatabaseListObj.admin" placeholder="请输入试卷名称" @input="inputs" />
+          <el-input v-model="DatabaseListObj.admin" placeholder="请输入创建人" @input="inputs" />
         </el-form-item>
         <el-form-item>
           <el-checkbox v-model="vuels" label="只看我创建的" size="large" @change="duoxuans" />
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, nextTick } from 'vue'
+import { ref, reactive } from 'vue'
 import TableangPage from '@/components/TableangPage.vue'
 import { SubjectsList } from '@/assets/api/TestList'
 
@@ -95,7 +95,7 @@ const sonhandleSizeChange = (data: any) => {
   loading.value = true
   DatabaseListDatas()
 }
-const inputs = (data: any) => {
+const inputs = () => {
   if (DatabaseListObj.admin !== '') {
     vuels.value = false
     DatabaseListObj.ismy = 0
@@ -117,15 +117,15 @@ const QuestionOk = () => {
   }
 }
 const DatabaseListDatas = async () => {
-  let res: any = await SubjectsList(DatabaseListObj)
-  if (res.errCode === 10000) {
+  let res: any = await SubjectsList(DatabaseListObj).catch(() => {})
+  if (res?.errCode === 10000) {
     total.value = res.data.counts
     loading.value = false
     DatabaseVuels.value = res.data.list
   }
 }
 DatabaseListDatas()
-const closetpaperList=()=>{
+const closetpaperList = () => {
   emit('MyclosetpaperList')
 }
 const dialogVisible = ref(false)

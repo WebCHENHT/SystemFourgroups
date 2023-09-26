@@ -156,8 +156,8 @@ let data = reactive<any>({
 const { params } = toRefs(data)
 // 试卷列表
 let list = async () => {
-  let res: any = await subjectslist(params.value)
-  if (res.errCode === 10000) {
+  let res: any = await subjectslist(params.value).catch(() => {})
+  if (res?.errCode === 10000) {
     TableData.value = res.data.list
     total.value = res.data.counts
     loading.value = false
@@ -167,8 +167,8 @@ list()
 // 试卷名称
 let getDogis = ref()
 const paper = async (row: any) => {
-  let res: any = await subjectsget({ id: row.id })
-  if (res.errCode === 10000) {
+  let res: any = await subjectsget({ id: row.id }).catch(() => {})
+  if (res?.errCode === 10000) {
     getDogis.value.id = row.id
     getDogis.value.dialogVisible = true
     getDogis.value.getDogisTest = res.data
@@ -178,9 +178,11 @@ const paper = async (row: any) => {
 let del = async (val: any) => {
   confirmBox('确定要删除吗?', '确定吗?', null)
     .then(async () => {
-      let res = await subjectsdelete({ id: val.id })
-      list()
-      succesMsg('删除成功！')
+      let res = await subjectsdelete({ id: val.id }).catch(() => {})
+      if (res?.errCode === 10000) {
+        list()
+        succesMsg('删除成功！')
+      }
     })
     .catch(() => {
       errorMsg('已取消')
@@ -194,7 +196,6 @@ const cuan = () => {
 }
 // 编辑试卷
 const edit = (row: any) => {
-
   router.push({
     path: 'SystemMenu/subjects/SubjectsAdd',
     query: {

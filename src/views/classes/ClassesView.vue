@@ -1,12 +1,8 @@
 <template>
   <div>
-    <div style="display: flex">
+    <div style="display: flex; justify-content: space-between">
       <h3>班级管理</h3>
-      <el-button
-        type="primary"
-        style="position: absolute; left: 90%"
-        @click="reser"
-        v-authority="{ model: '班级', name: '添加' }"
+      <el-button type="primary" @click="reser" v-authority="{ model: '班级', name: '添加' }"
         >添加班级</el-button
       >
     </div>
@@ -119,8 +115,8 @@ const TableData = ref([])
 let total = ref()
 // 班级列表
 let list = async () => {
-  let res: any = await ClList(ruform.params)
-  if (res.errCode === 10000) {
+  let res: any = await ClList(ruform.params).catch(() => {})
+  if (res?.errCode === 10000) {
     TableData.value = res.data.list
     total.value = res.data.counts
     loading.value = false
@@ -166,8 +162,8 @@ const dels = () => {
       let data: any = {
         ids: id
       }
-      let res = await classesdeleteall(data)
-      if (res.errCode === 10000) {
+      let res = await classesdeleteall(data).catch(() => {})
+      if (res?.errCode === 10000) {
         succesMsg('删除成功')
         // 调用列表
         list()
@@ -184,8 +180,8 @@ const classedle = (id: { id: any }) => {
       let data = {
         id: id.id
       }
-      let res = await classesdelete(data)
-      if (res.errCode === 10000) {
+      let res = await classesdelete(data).catch(() => {})
+      if (res?.errCode === 10000) {
         succesMsg('删除成功？')
         list()
       }
@@ -219,7 +215,6 @@ const props2 = {
   value: 'id',
   label: 'name',
   children: 'children',
-  // checkStrictly: true, //点击单选框选中改点击整行选中
   emitPath: false //只获取级联选择器中最后一项
 }
 // 获取部门id
@@ -229,8 +224,10 @@ const handleChange = (data: any) => {
 let options = ref([])
 // 部门列表
 const deplist = async () => {
-  let res: any = await RoleList({ page: 1, psize: 12 })
-  options.value = res.data.list
+  let res: any = await RoleList({ page: 1, psize: 12 }).catch(() => {})
+  if (res?.errCode === 10000) {
+    options.value = res.data.list
+  }
 }
 deplist()
 //查询

@@ -149,8 +149,8 @@ const myCrcolcs = () => {
 }
 // 添加题库
 const MybaseAdd = async (data: any) => {
-  let res = await DatabaseAdd(data)
-  if (res.errCode === 10000) {
+  let res = await DatabaseAdd(data).catch(()=>{})
+  if (res?.errCode === 10000) {
     flag.value.dialogVisible = false
     if (flag.value.ruleForm.id !== 0) {
       ElMessage.success('修改成功')
@@ -162,8 +162,8 @@ const MybaseAdd = async (data: any) => {
 }
 // 题库列表
 const lists = async () => {
-  let res: any = await datalist(data)
-  if (res.errCode === 10000) {
+  let res: any = await datalist(data).catch(()=>{})
+  if (res?.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
     loading.value = false
@@ -193,8 +193,8 @@ const del = async (id: any) => {
   confirmBox('确定删除吗???', '你确定吗？', null)
     .then(async () => {
       // dataid.id = id.id
-      let res: any = await DatabaseDelete(id)
-      if (res.errCode === 10000) {
+      let res: any = await DatabaseDelete(id).catch(()=>{})
+      if (res?.errCode === 10000) {
         succesMsg('删除成功')
       }
       lists()
@@ -234,8 +234,8 @@ const delAll = () => {
       let data: any = {
         ids: id
       }
-      let res = await deleteall(data)
-      if (res.errCode === 10000) {
+      let res = await deleteall(data).catch(()=>{})
+      if (res?.errCode === 10000) {
         succesMsg('删除成功')
         // 调用列表
         lists()

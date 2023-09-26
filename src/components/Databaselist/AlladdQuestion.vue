@@ -130,8 +130,8 @@ const confirm = async () => {
     ElMessage.error('请先选择要上传的文件！')
     return false
   }
-  let result: any = await databasequestionAddlist(addData)
-  if (result.errCode !== 10000) {
+  let result: any = await databasequestionAddlist(addData).catch(() => {})
+  if (result?.errCode !== 10000) {
     ElMessage.error(result.errMsg)
     return false
   }
