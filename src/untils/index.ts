@@ -42,7 +42,6 @@ export default function () {
 
       router.addRoute('SystemMenu', obj)
     })
-
     router.addRoute('SystemMenu', {
       path: 'SystemMenu/exam/ExamsTudent',
       name: 'ExamsTudent',
@@ -52,7 +51,6 @@ export default function () {
       },
       component: () => import('../views/exam/ExamsTudent.vue')
     })
-
     router.addRoute('SystemMenu', {
       path: 'SystemMenu/subjects/SubjectsAdd',
       name: 'SubjectsAdd',
@@ -62,7 +60,6 @@ export default function () {
       },
       component: () => import('../views/subjects/SubjctsAdd.vue')
     })
-
     router.addRoute({
       path: '/SystemMenu/stutest/examprepare',
       name: 'stutest',

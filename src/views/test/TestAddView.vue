@@ -44,7 +44,7 @@
               <div v-for="(item, index) in arraytest" :key="index">
                 <span style="margin-left: 10px">{{
                   `${item.type}${
-                    TestData.questions.filter((i: any) => i.type == item.type).length
+                    TestData.quetions.fsilter((i: any) => i.type == item.type).length
                   }道`
                 }}</span>
                 <div class="Calculatidan" v-if="item.type === '单选题'">
@@ -587,6 +587,7 @@ const arraytest: any = computed(() => {
       listarray.value.push(TestData.value.questions.find((items: any) => items.type == item))
     }
   })
+
   // })
   return listarray.value
 })

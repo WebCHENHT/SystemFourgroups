@@ -59,6 +59,7 @@
                 <div class="tiao">
                   <span style="font-size: 14px; margin-right: 10px">{{ item.answerno }}:</span>
                   <el-input v-model="item.content"></el-input>
+
                   <div
                     style="font-size: 25px; color: #f56c6c; margin-left: 10px; cursor: pointer"
                     @click="delinput(item, index)"
@@ -125,10 +126,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
-import WangEditor from './WangEditor.vue'
 import { CircleClose, CirclePlus } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
+import { reactive, ref, watch } from 'vue'
+import WangEditor from './WangEditor.vue'
 let emits = defineEmits<{
   (name: 'MywangAdd', value: any): any
   (name: 'MywangColos'): any
@@ -243,6 +244,8 @@ watch(
       }
     }
     let res = a.title.match(/\[\]/g)
+    console.log(res)
+
     if (Array.isArray(res)) {
       let arr = res.map((item: any) => {
         return item !== ''

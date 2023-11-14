@@ -4,92 +4,151 @@
       <div class="ter">师资管理</div>
       <div class="terbut">
         <el-button>批量添加</el-button>
-        <el-button type="primary" @click="dialogadd = true" v-authority="{ model: '师资', name: '添加' }">添加教资</el-button>
+        <el-button
+          type="primary"
+          @click="dialogadd = true"
+          v-authority="{ model: '师资', name: '添加' }"
+          >添加教资</el-button
+        >
       </div>
     </div>
     <div class="watchInput">
-      <span class="">关键字</span><el-input class="text" v-model="ruform.key" placeholder="请输入关键字" />
-      <span class="">部门</span><el-cascader @change="add" v-model="ruform.depid" class="text" :options="options"
-        :props="props" clearable />
+      <span class="">关键字</span
+      ><el-input class="text" v-model="ruform.key" placeholder="请输入关键字" />
+      <span class="">部门</span
+      ><el-cascader
+        @change="add"
+        v-model="ruform.depid"
+        class="text"
+        :options="options"
+        :props="props"
+        clearable
+      />
       <span class="jiaos">角色</span>
       <el-select v-model="ruform.pwd" clearable placeholder="请选择">
         <el-option v-for="item in optionList" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
-      <el-button class="but" type="primary" @click="sou" v-authority="{ model: '师资', name: '查看' }">搜索</el-button>
+      <el-button
+        class="but"
+        type="primary"
+        @click="sou"
+        v-authority="{ model: '师资', name: '查看' }"
+        >搜索</el-button
+      >
     </div>
-    <TableangPage :loading="loading" :TableData="tableData" :tableColums="tableColum" :total="total"
-      @sonhandleCurrentChange="handleCurrentChange" @sonhandleSizeChange="handleSizeChange">
+    <TableangPage
+      :loading="loading"
+      :TableData="tableData"
+      :tableColums="tableColum"
+      :total="total"
+      @sonhandleCurrentChange="handleCurrentChange"
+      @sonhandleSizeChange="handleSizeChange"
+    >
       <template #actions="slotname: any">
-        <el-button type="primary" size="small" link @click="ChongVisible(slotname.data)">重置密码</el-button>
-        <el-button type="primary" size="small" link @click="teachedele(slotname.data)" v-authority="{ model: '师资', name: '编辑' }">修改</el-button>
+        <el-button type="primary" size="small" link @click="ChongVisible(slotname.data)"
+          >重置密码</el-button
+        >
+        <el-button
+          type="primary"
+          size="small"
+          link
+          @click="teachedele(slotname.data)"
+          v-authority="{ model: '师资', name: '编辑' }"
+          >修改</el-button
+        >
         <!-- <el-button text @click="dele(slotname.data)" link>删除</el-button> -->
-        <el-button type="primary" size="small" link @click="open(slotname.data)" v-authority="{ model: '师资', name: '删除' }">删除</el-button>
+        <el-button
+          type="primary"
+          size="small"
+          link
+          @click="open(slotname.data)"
+          v-authority="{ model: '师资', name: '删除' }"
+          >删除</el-button
+        >
       </template>
     </TableangPage>
     <!-- 重置密码弹出框 @click="Pass" -->
-    <el-dialog  :before-close="close" v-model=" dialogVisible " title="重置密码" width="30%">
-      <el-form :model=" form " :rules="rules" label-width="120px">
+    <el-dialog :before-close="close" v-model="dialogVisible" title="重置密码" width="30%">
+      <el-form :model="form" :rules="rules" label-width="120px">
         <el-form-item label="姓名:">
           {{ form.name }}
           <!-- <el-input v-model="form.name" /> -->
         </el-form-item>
         <el-form-item label="密码:" prop="confirmPass">
-          <el-input v-model=" form.confirmPass " />
+          <el-input v-model="form.confirmPass" />
         </el-form-item>
         <el-form-item label="确认密码:" prop="pass">
-          <el-input v-model=" form.pass " />
+          <el-input v-model="form.pass" />
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="pwead">取消</el-button>
-          <el-button type="primary" @click=" Pass ">
-            确认
-          </el-button>
+          <el-button type="primary" @click="Pass"> 确认 </el-button>
         </span>
       </template>
     </el-dialog>
     <!-- 添加弹出框 -->
-    <el-dialog :before-close="handleClose" v-model=" dialogadd " :title=" formAdd.id > 1 ? '编辑老师' : '添加老师' " width="30%">
-      <el-form :model=" formAdd " :rules="rulesadd" label-width="120px">
+    <el-dialog
+      :before-close="handleClose"
+      v-model="dialogadd"
+      :title="formAdd.id > 1 ? '编辑老师' : '添加老师'"
+      width="30%"
+    >
+      <el-form :model="formAdd" :rules="rulesadd" label-width="120px">
         <el-form-item label="姓名" prop="name">
-          <el-input v-model=" formAdd.name "  />
+          <el-input v-model="formAdd.name" />
         </el-form-item>
         <el-form-item label="电话">
-          <el-input v-model=" formAdd.tel " />
+          <el-input v-model="formAdd.tel" />
         </el-form-item>
         <el-form-item label="部门" prop="depid">
-          <el-cascader v-model=" formAdd.depid " class="text" :options=" options " :props=" props " clearable />
+          <el-cascader
+            v-model="formAdd.depid"
+            class="text"
+            :options="options"
+            :props="props"
+            clearable
+          />
         </el-form-item>
         <el-form-item label="角色" prop="roleid">
-          <el-select v-model=" formAdd.roleid " clearable placeholder="请选择">
-            <el-option v-for="  item   in   optionList  " :key=" item.id " :label=" item.name " :value=" item.id " />
+          <el-select v-model="formAdd.roleid" clearable placeholder="请选择">
+            <el-option
+              v-for="item in optionList"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="账号" prop="username">
-          <el-input v-model=" formAdd.username " />
+          <el-input v-model="formAdd.username" />
         </el-form-item>
         <el-form-item label="密码" prop="pass">
-          <el-input v-model=" formAdd.pass " />
+          <el-input v-model="formAdd.pass" />
         </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click=" faAdd ">取消</el-button>
-          <el-button type="primary" @click=" teacheAdd ">
-            确定
-          </el-button>
+          <el-button @click="faAdd">取消</el-button>
+          <el-button type="primary" @click="teacheAdd"> 确定 </el-button>
         </span>
       </template>
     </el-dialog>
   </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
-import { teacherlist, teacherdelete , roleList, DepartmentList, teacherchangeAdd } from '@/assets/api/teacher/teacher'
+import {
+  DepartmentList,
+  roleList,
+  teacherchangeAdd,
+  teacherdelete,
+  teacherlist
+} from '@/assets/api/teacher/teacher'
 import TableangPage from '@/components/TableangPage.vue'
-import { succesMsg,errorMsg } from '@/untils/msg'
-import { ElMessageBox, ElMessage } from 'element-plus';
+import { errorMsg, succesMsg } from '@/untils/msg'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { reactive, ref } from 'vue'
 // 密码重置弹出框
 let dialogVisible = ref(false)
 // 添加弹出框
@@ -100,12 +159,10 @@ let optionList: any = ref([])
 let loading = ref<boolean>(true)
 // 角色列表
 const roleLists = async () => {
-  let red = await roleList(0 as any).catch(()=>{})
-  if(red?.errCode){
+  let red = await roleList(0 as any).catch(() => {})
+  if (red?.errCode) {
     optionList.value = red.data.list
   }
-  
-
 }
 roleLists()
 // 部门
@@ -119,43 +176,40 @@ const props = {
 //部门change事件
 const add = async (val: any) => {
   ruform.depid = val
-
 }
 // 部门列表
 const DeparList = async () => {
-  let red: any = await DepartmentList().catch(()=>{})
-  if(red?.errCode){
+  let red: any = await DepartmentList().catch(() => {})
+  if (red?.errCode) {
     options.value = red.data.list
   }
-  
-
 }
 DeparList()
 // 列表数据
 const tableColum = reactive([
   {
     label: '姓名',
-    prop: 'name',
+    prop: 'name'
     // width: '150'
   },
   {
     label: '部门',
-    prop: 'depname',
+    prop: 'depname'
     // width: '150'
   },
   {
     label: '电话',
-    prop: 'tel',
+    prop: 'tel'
     // width: '150'
   },
   {
     label: '角色',
-    prop: 'rolename',
+    prop: 'rolename'
     // width: '120'
   },
   {
     label: '账号',
-    prop: 'username',
+    prop: 'username'
     // width: '120'
   },
   {
@@ -181,14 +235,13 @@ const sou = async () => {
 // 教资列表
 let tableData: any = ref([])
 const tealist = async () => {
-  let res: any = await teacherlist(ruform).catch(()=>{})
+  let res: any = await teacherlist(ruform).catch(() => {})
 
   if (res?.errCode === 10000) {
     tableData.value = res.data.list
     total.value = res.data.counts
     loading.value = false
   }
-
 }
 tealist()
 // 分页
@@ -204,33 +257,30 @@ const handleCurrentChange = (val: number) => {
 }
 // 删除
 const open = (id: any) => {
-  ElMessageBox.confirm(
-    '是否删除',
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  )
+  ElMessageBox.confirm('是否删除', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
     .then(async () => {
       let ids = {
         id: 0
       }
       ids.id = id.id
-      let res = await teacherdelete(ids)
-      
-      tealist()
-      ElMessage({
-        type: 'success',
-        message: '删除成功',
-      })
-      loading.value = false
+      let res = await teacherdelete(ids).catch(() => {})
+      if (res?.errCode === 10000) {
+        tealist()
+        ElMessage({
+          type: 'success',
+          message: '删除成功'
+        })
+        loading.value = false
+      }
     })
     .catch(() => {
       ElMessage({
         type: 'info',
-        message: '取消删除',
+        message: '取消删除'
       })
       loading.value = false
     })
@@ -249,18 +299,18 @@ const ChongVisible = (val: any) => {
   form.username = val.username
 }
 // 重置密码参数
-let form:any = reactive({
-  confirmPass:"",//新密码
-  depid:0,//
-  id:0,
-  name:"",//名字
-  oldpass:"",//原密码
-  pass:"",//新密码
-  qq:"",//原密码
-  roleid:0,//角色
-  searchDepa:[],
-  tel:"",//手机号
-  username:"",//账号
+let form: any = reactive({
+  confirmPass: '', //新密码
+  depid: 0, //
+  id: 0,
+  name: '', //名字
+  oldpass: '', //原密码
+  pass: '', //新密码
+  qq: '', //原密码
+  roleid: 0, //角色
+  searchDepa: [],
+  tel: '', //手机号
+  username: '' //账号
 })
 
 // 表单验证
@@ -279,52 +329,55 @@ const validatePass2 = (rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('请输入6-12位新密码'))
   } else if (value !== form.confirmPass) {
-    callback(new Error("确认密码与确认新密码不同!"))
+    callback(new Error('确认密码与确认新密码不同!'))
   } else {
     callback()
   }
 }
 const rules = reactive({
-  confirmPass: [{ validator: validatePass, trigger: 'blur' },
-  { required: true, message: '请输入新密码 ', trigger: 'blur' }],
-  pass: [{ validator: validatePass2, trigger: 'blur' },
-  { required: true, message: '请输入新密码 ', trigger: 'blur' }],
-  
+  confirmPass: [
+    { validator: validatePass, trigger: 'blur' },
+    { required: true, message: '请输入新密码 ', trigger: 'blur' }
+  ],
+  pass: [
+    { validator: validatePass2, trigger: 'blur' },
+    { required: true, message: '请输入新密码 ', trigger: 'blur' }
+  ]
 })
 // 密码重置
 const Pass = async () => {
-  let red = await teacherchangeAdd(form).catch(()=>{})
+  let red = await teacherchangeAdd(form).catch(() => {})
   dialogVisible.value = false
-  if(red?.errCode==10000){
+  if (red?.errCode == 10000) {
     succesMsg('密码重置成功')
     loading.value = true
   }
-    form.confirmPass= '';
-    form.depid= 0;
-    form.id= 0;
-    form.name='' ;
-    form.oldpass='';
-    form.pass='';
-    form.qq='';
-    form.roleid= 0;
-    form.tel='';
-    form.username='';
+  form.confirmPass = ''
+  form.depid = 0
+  form.id = 0
+  form.name = ''
+  form.oldpass = ''
+  form.pass = ''
+  form.qq = ''
+  form.roleid = 0
+  form.tel = ''
+  form.username = ''
 }
 // 重置密码取消
-const pwead = ()=>{
-  form.confirmPass= '';
-    form.depid= 0;
-    form.id= 0;
-    form.name='' ;
-    form.oldpass='';
-    form.pass='';
-    form.qq='';
-    form.roleid= 0;
-    form.tel='';
-    form.username='';
+const pwead = () => {
+  form.confirmPass = ''
+  form.depid = 0
+  form.id = 0
+  form.name = ''
+  form.oldpass = ''
+  form.pass = ''
+  form.qq = ''
+  form.roleid = 0
+  form.tel = ''
+  form.username = ''
   dialogVisible.value = false
 }
-// 
+//
 const handleClose = (done: () => void) => {
   ElMessageBox.confirm('确认要退出吗？')
     .then(() => {
@@ -365,12 +418,12 @@ let formAdd = reactive({
   pass: '',
   depid: 0,
   roleid: '',
-  pwd: 0,
+  pwd: 0
 })
 const teacheAdd = async () => {
-  let red: any = await teacherchangeAdd(formAdd).catch(()=>{})
+  let red: any = await teacherchangeAdd(formAdd).catch(() => {})
 
-  if(red?.errCode==10000){
+  if (red?.errCode == 10000) {
     dialogadd.value = false
     succesMsg(formAdd.id > 1 ? '修改成功' : '添加成功')
     formAdd.id = 0
@@ -382,30 +435,21 @@ const teacheAdd = async () => {
     formAdd.roleid = ''
     dialogadd.value = false
     tealist()
-  }else if(red.errCode==10600){
+  } else if (red.errCode == 10600) {
     errorMsg(red.errMsg)
   }
   loading.value = true
-  
 }
 // 添加表单验证
 const rulesadd = reactive({
-  name: [
-    { required: true, message: '姓名不能为空', trigger: 'blur' },
-  ],
-  depid: [
-    { required: true, message: '部门不能为空', trigger: 'blur' },
-  ],
-  roleid: [
-    { required: true, message: '角色不能为空', trigger: 'blur' },
-  ],
-  username: [
-    { required: true, message: '部门不能为空', trigger: 'blur' },
-  ],
+  name: [{ required: true, message: '姓名不能为空', trigger: 'blur' }],
+  depid: [{ required: true, message: '部门不能为空', trigger: 'blur' }],
+  roleid: [{ required: true, message: '角色不能为空', trigger: 'blur' }],
+  username: [{ required: true, message: '部门不能为空', trigger: 'blur' }],
   pass: [
     { required: true, message: '密码不能为空', trigger: 'blur' },
-    { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' },
-  ],
+    { min: 3, max: 10, message: '密码又3-10个字符组成', trigger: 'blur' }
+  ]
 })
 // 修改
 const teachedele = async (val: any) => {
@@ -417,7 +461,6 @@ const teachedele = async (val: any) => {
   formAdd.pass = val.pass
   formAdd.depid = val.depid
   formAdd.roleid = val.roleid
-
 }
 </script>
 <style scoped lang="less">
@@ -443,7 +486,7 @@ const teachedele = async (val: any) => {
       width: 10%;
       margin-right: 1%;
     }
-    .jiaos{
+    .jiaos {
       margin-left: 1%;
     }
   }
