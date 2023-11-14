@@ -9,15 +9,14 @@
             </template>
           </el-page-header>
         </div>
-        <div v-if="ishow">
+        <div v-if="resultdata.result !== '待阅卷'">
           <div
-            :class="resultdata.studentScores >= resultdata.pastscores ? 'stampBox' : 'Errorboxs'"
+            :class="{
+              stampBox: resultdata.result === '已通过',
+              Errorboxs: resultdata.result === '未通过'
+            }"
           >
-            <div
-              :class="resultdata.studentScores >= resultdata.pastscores ? 'soumnus' : 'Errormnus'"
-            >
-              {{ resultdata.studentScores >= resultdata.pastscores ? '已通过' : '未通过' }}
-            </div>
+            {{ resultdata.result }}
           </div>
         </div>
         <div class="titmesa">
@@ -34,66 +33,44 @@
           <div>通过分数:{{ resultdata.pastscores }}分</div>
         </div>
         <div class="boxNbm">
-          <div v-if="ishow">
-            <div v-if="resultdata.studentScores >= resultdata.pastscores">
-              <div class="suossnum">{{ resultdata.studentScores }}</div>
-              <div class="suosstitle">恭喜，通过考试</div>
+          <div v-if="resultdata.result !== '待阅卷'">
+            <div
+              :class="{
+                suossnum: resultdata.result === '已通过',
+                noPassNum: resultdata.result === '未通过'
+              }"
+            >
+              {{ resultdata.studentScores }}
             </div>
-            <div v-else>
-              <div class="noPassNum">{{ resultdata.studentScores }}</div>
-              <div class="noPasserror">很可惜，未通过</div>
+            <div style="font-size: 21px">
+              {{
+                resultdata.studentScores >= resultdata.pastscores
+                  ? '恭喜，通过考试'
+                  : '很可惜，未通过'
+              }}
             </div>
           </div>
           <div class="load" v-else>待阅卷</div>
         </div>
-
-        <table>
-          <tr class="toplis">
-            <td></td>
-            <td>
-              单选题<span v-if="getstixingsi('单选题') > 0">({{ getstixingsi('单选题') }})</span>
-            </td>
-            <td>
-              多选题<span v-if="getstixingsi('多选题') > 0">({{ getstixingsi('多选题') }})</span>
-            </td>
-            <td>
-              判断题<span v-if="getstixingsi('判断题') > 0">({{ getstixingsi('判断题') }})</span>
-            </td>
-            <td>
-              填空题<span v-if="getstixingsi('填空题') > 0">({{ getstixingsi('填空题') }})</span>
-            </td>
-            <td>
-              问答题<span v-if="getstixingsi('问答题') > 0">({{ getstixingsi('问答题') }})</span>
-            </td>
-          </tr>
-          <tr>
-            <td>正确数</td>
-            <td>{{ correctNumber('单选题') > 0 ? `${correctNumber('单选题')}题` : '--' }}</td>
-            <td>{{ correctNumber('多选题') > 0 ? `${correctNumber('多选题')}题` : '--' }}</td>
-            <td>{{ correctNumber('判断题') > 0 ? `${correctNumber('判断题')}题` : '--' }}</td>
-            <td v-if="resultdata.result !== '待阅卷'">
-              {{ correctNumber('填空题') > 0 ? `${correctNumber('填空题')}题` : '--' }}
-            </td>
-            <td v-if="resultdata.result !== '待阅卷'">
-              {{ correctNumber('问答题') > 0 ? `${correctNumber('问答题')}题` : '--' }}
-            </td>
-            <td rowspan="2" v-if="resultdata.result === '待阅卷'" style="color: red">待阅卷</td>
-            <td rowspan="2" v-if="resultdata.result === '待阅卷'" style="color: red">待阅卷</td>
-          </tr>
-          <tr>
-            <td>错误数</td>
-            <td>{{ NumberofErrors('单选题') > 0 ? `${NumberofErrors('单选题')}题` : '--' }}</td>
-            <td>{{ NumberofErrors('多选题') > 0 ? `${NumberofErrors('多选题')}题` : '--' }}</td>
-            <td>{{ NumberofErrors('判断题') > 0 ? `${NumberofErrors('判断题')}题` : '--' }}</td>
-            <td v-if="resultdata.result !== '待阅卷'">
-              {{ NumberofErrors('填空题') > 0 ? `${NumberofErrors('填空题')}题` : '--' }}
-            </td>
-            <td v-if="resultdata.result !== '待阅卷'">
-              {{ NumberofErrors('问答题') > 0 ? `${NumberofErrors('问答题')}题` : '--' }}
-            </td>
-          </tr>
-        </table>
-        <div class="succssbutttons" v-if="ishow">
+        <div class="tebleboxs">
+          <div class="tebleli">
+            <div></div>
+            <div>正确数</div>
+            <div>错误数</div>
+          </div>
+          <div class="tebleli" v-for="(item, index) in questionTypes" :key="index">
+            <div>
+              {{ item.name }} <span v-show="item.counts">({{ item.counts }})</span>
+            </div>
+            <div :class="{ heshei: item.error === '' }">
+              {{ item.correct }}<span v-show="item.correct !== '--'">题</span>
+            </div>
+            <div v-if="item.error !== ''">
+              {{ item.error }}<span v-show="item.error !== '--'">题</span>
+            </div>
+          </div>
+        </div>
+        <div class="succssbutttons" v-if="resultdata.result !== '待阅卷'">
           <el-button
             :style="
               resultdata.studentScores >= resultdata.pastscores
@@ -113,23 +90,12 @@
 <script setup lang="ts">
 import { TestGetForResult } from '@/assets/api/TestList'
 import { useRoute, useRouter } from 'vue-router'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import dayjs from 'dayjs'
 let route = useRoute()
 let router = useRouter()
 let resultdata = ref<any>([])
-let ishow = ref(false)
 let boxs = ref(false)
-watch(
-  () => resultdata.value,
-  (a, b) => {
-    if (a.result === '待阅卷') {
-      ishow.value = false
-    } else {
-      ishow.value = true
-    }
-  }
-)
 //查看试卷
 const view = () => {
   router.push({
@@ -140,109 +106,51 @@ const view = () => {
   })
 }
 
+const questionTypes: any = ref([
+  { name: '单选题', counts: 0, correct: 0, error: 0 },
+  { name: '多选题', counts: 0, correct: 0, error: 0 },
+  { name: '判断题', counts: 0, correct: 0, error: 0 },
+  { name: '填空题', counts: 0, correct: 0, error: 0 },
+  { name: '问答题', counts: 0, correct: 0, error: 0 }
+])
 //获取试卷结果
 const TestGetForResultdata = async () => {
   let res = await TestGetForResult({
     testid: route.query.id as unknown as number
-  })
-  if (res.errCode === 10000) {
+  }).catch(() => {})
+  if (res?.errCode === 10000) {
     resultdata.value = res.data as any
     boxs.value = true
+
+    let arr: any = resultdata.value.questions
+    questionTypes.value.forEach((item1: any) => {
+      item1.counts = arr.filter((item2: any) => item2.type === item1.name).length
+      item1.correct = arr.filter(
+        (item2: any) => item2.type === item1.name && item2.scores === item2.studentscores
+      ).length
+
+      item1.error = item1.counts - item1.correct
+
+      if (
+        resultdata.value.result === '待阅卷' &&
+        (item1.name === '填空题' || item1.name === '问答题')
+      ) {
+        item1.correct = '等待阅卷'
+        item1.error = ''
+      } else if (item1.counts !== 0) {
+        if (item1.correct === 0) {
+          item1.correct = '--'
+        } else if (item1.error === 0) {
+          item1.error = '--'
+        }
+      } else {
+        item1.correct = '--'
+        item1.error = '--'
+      }
+    })
   }
 }
 TestGetForResultdata()
-
-const getstixingsi = (name: string) => {
-  let arr: any = resultdata.value.questions
-  if (Array.isArray(arr)) {
-    if (name === '单选题') {
-      return arr.filter((item: any) => item.type === '单选题').length as any
-    }
-    if (name === '多选题') {
-      return arr.filter((item: any) => item.type === '多选题').length as any
-    }
-    if (name === '判断题') {
-      return arr.filter((item: any) => item.type === '判断题').length as any
-    }
-    if (name === '填空题') {
-      return arr.filter((item: any) => item.type === '填空题').length as any
-    }
-    if (name === '问答题') {
-      return arr.filter((item: any) => item.type === '问答题').length as any
-    }
-  }
-}
-const correctNumber = (name: any) => {
-  let arr: any[] = resultdata.value.questions
-  if (Array.isArray(arr)) {
-    if (name === '单选题') {
-      return arr
-        .filter((item: any) => item.type === '单选题')
-        .filter((item: any) => item.studentscores !== null && item.studentscores !== 0)
-        .length as any
-    }
-    if (name === '多选题') {
-      return arr
-        .filter((item: any) => item.type === '多选题')
-        .filter((item: any) => item.studentscores !== null && item.studentscores !== 0)
-        .length as any
-    }
-    if (name === '判断题') {
-      return arr
-        .filter((item: any) => item.type === '判断题')
-        .filter((item: any) => item.studentscores !== null && item.studentscores !== 0)
-        .length as any
-    }
-    if (name === '填空题') {
-      return arr
-        .filter((item: any) => item.type === '填空题')
-        .filter((item: any) => item.studentscores !== null && item.studentscores !== 0)
-        .length as any
-    }
-    if (name === '问答题') {
-      return arr
-        .filter((item: any) => item.type === '问答题')
-        .filter((item: any) => item.studentscores !== null && item.studentscores !== 0)
-        .length as any
-    }
-  }
-}
-const NumberofErrors = (name: any) => {
-  let arr: any[] = resultdata.value.questions
-  if (Array.isArray(arr)) {
-    if (name === '单选题') {
-      return arr
-        .filter((item: any) => item.type === '单选题')
-        .filter((item: any) => {
-          return item.studentscores === null || item.studentscores === 0
-        }).length as any
-    }
-    if (name === '多选题') {
-      return arr
-        .filter((item: any) => item.type === '多选题')
-        .filter((item: any) => item.studentscores === null || item.studentscores === 0)
-        .length as any
-    }
-    if (name === '判断题') {
-      return arr
-        .filter((item: any) => item.type === '判断题')
-        .filter((item: any) => item.studentscores === null || item.studentscores === 0)
-        .length as any
-    }
-    if (name === '填空题') {
-      return arr
-        .filter((item: any) => item.type === '填空题')
-        .filter((item: any) => item.studentscores === null || item.studentscores === 0)
-        .length as any
-    }
-    if (name === '问答题') {
-      return arr
-        .filter((item: any) => item.type === '问答题')
-        .filter((item: any) => item.studentscores === null || item.studentscores === 0)
-        .length as any
-    }
-  }
-}
 const goBack = () => {
   router.push({
     path: '/SystemMenu/stutest'
@@ -263,6 +171,41 @@ fuuhsah()
 </script>
 
 <style lang="less" scoped>
+.heshei {
+  height: 100%;
+  color: red;
+}
+.tebleboxs {
+  width: 100%;
+  border: 1px solid rgb(241, 241, 241);
+  margin-top: 30px;
+  display: flex;
+  .tebleli {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid rgb(241, 241, 241);
+    &:last-child {
+      border-right: none;
+    }
+    div {
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px rgb(241, 241, 241) solid;
+      font-size: 14px;
+      padding: 15px;
+      &:last-child {
+        border-bottom: none;
+      }
+      &:first-child {
+        background-color: rgb(241, 241, 241);
+        min-height: 25px;
+      }
+    }
+  }
+}
 .load {
   font-size: 68px;
   font-weight: 700;
@@ -283,17 +226,20 @@ fuuhsah()
   justify-content: center;
   align-items: center;
   transform: rotate(340deg);
-  .Errormnus {
-    width: 86px;
-    height: 86px;
+  color: red;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-
+    border: 4px solid rgba(255, 0, 0, 0.197);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 17px;
-    border: 4px solid rgba(255, 0, 0, 0.197);
-    color: red;
+
+    box-sizing: border-box;
   }
 }
 .stampBox {
@@ -308,16 +254,20 @@ fuuhsah()
   justify-content: center;
   align-items: center;
   transform: rotate(340deg);
-  .soumnus {
-    width: 86px;
-    height: 86px;
+  color: #14bd83;
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
     border: #14bd8229 solid 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 17px;
-    color: #14bd83;
+
+    box-sizing: border-box;
   }
 }
 .succssbutttons {
@@ -333,26 +283,7 @@ fuuhsah()
     color: #fff;
   }
 }
-.toplis {
-  background-color: rgb(251, 252, 252);
-  height: 45px;
-}
-table {
-  width: 100%;
-  border-top: 1px solid rgb(241, 241, 241);
-  border-left: 1px solid rgb(241, 241, 241);
-  border-collapse: collapse;
-  margin-top: 30px;
-  tr {
-    height: 60px;
-    td {
-      border-bottom: 1px solid rgb(241, 241, 241);
-      border-right: 1px solid rgb(241, 241, 241);
-      text-align: center;
-      font-size: 14px;
-    }
-  }
-}
+
 .examPrepareBody {
   width: 100%;
   height: 100vh;
@@ -402,18 +333,13 @@ table {
     color: rgb(20, 189, 131);
     margin: 15px 0;
   }
-  .suosstitle {
-    font-size: 21px;
-  }
+
   .noPassNum {
     display: flex;
     justify-content: center;
     font-size: 68px;
     color: red;
     margin: 15px 0px;
-  }
-  .noPasserror {
-    font-size: 21px;
   }
 }
 </style>

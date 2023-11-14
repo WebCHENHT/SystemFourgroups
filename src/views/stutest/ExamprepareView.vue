@@ -52,30 +52,24 @@
             <div class="num">{{ TestgetLists.pastscores }}分</div>
           </div>
         </div>
+
         <div class="testbuttoms">
           <div v-if="TestgetLists.begintime !== null && TestgetLists.endtime !== null">
             <el-button
               @click="Figures"
               type="primary"
-              :disabled="
-                dayjs(dayjs(TestgetLists.begintime).format('YYYY-MM-DD HH:mm')).unix() <
-                  dayjs(dayjs(TestgetLists.currenttime).format('YYYY-MM-DD HH:mm')).unix() &&
-                dayjs(dayjs(TestgetLists.endtime).format('YYYY-MM-DD HH:mm')).unix() >
-                  dayjs(dayjs(TestgetLists.currenttime).format('YYYY-MM-DD HH:mm')).unix()
-                  ? false
-                  : true
-              "
+              :disabled="resan > 300 ? true : resan !== 0 ? true : false"
             >
               {{
-                dayjs(dayjs(TestgetLists.begintime).format('YYYY-MM-DD HH:mm')).unix() <
-                  dayjs(dayjs(TestgetLists.currenttime).format('YYYY-MM-DD HH:mm')).unix() &&
-                dayjs(dayjs(TestgetLists.endtime).format('YYYY-MM-DD HH:mm')).unix() >
-                  dayjs(dayjs(TestgetLists.currenttime).format('YYYY-MM-DD HH:mm')).unix()
-                  ? '开始考试'
-                  : '不在开放时间内'
-              }}</el-button
-            >
+                resan > 300
+                  ? '未到考试时间'
+                  : resan !== 0
+                  ? dayjs.duration(resan, 'seconds').format('mm:ss')
+                  : '开始考试'
+              }}
+            </el-button>
           </div>
+
           <div v-else>
             <el-button type="primary" @click="Figures"> 开始考试 </el-button>
           </div>
@@ -87,8 +81,11 @@
 
 <script setup lang="ts">
 import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
+// 导入 duration 插件
+dayjs.extend(duration)
 import { TestGet } from '@/assets/api/TestList'
-import { ref } from 'vue'
+import {  ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 let router = useRouter()
 let route = useRoute()
@@ -102,13 +99,25 @@ const Figures = () => {
     }
   })
 }
-
+let interv: any = null
+let resan = ref(0)
 const TestGetData = async () => {
   let res = await TestGet({
     id: route.query.id as unknown as number
-  })
-  if (res.errCode === 10000) {
+  }).catch(() => {})
+  if (res?.errCode === 10000) {
     TestgetLists.value = res.data as any
+    let begintime = dayjs(dayjs(TestgetLists.value.begintime).format('YYYY-MM-DD HH:mm')).unix()
+    let currenttime = dayjs(dayjs(TestgetLists.value.currenttime).format('YYYY-MM-DD HH:mm')).unix()
+    if (begintime > currenttime) {
+      resan.value = begintime - currenttime
+      interv = setInterval(() => {
+        resan.value--
+        if (resan.value <= 0) {
+          clearInterval(interv)
+        }
+      }, 1000)
+    }
   }
 }
 TestGetData()

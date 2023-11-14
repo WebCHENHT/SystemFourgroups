@@ -136,6 +136,8 @@ const add = async (formEl: FormInstance | undefined) => {
           succesMsg('添加成功！')
           props.getListDialog()
           props.falv()
+        } else {
+          errorMsg(res?.errMsg)
         }
       } else {
         if (res?.errCode === 10000) {

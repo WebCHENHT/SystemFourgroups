@@ -369,7 +369,7 @@ const add = async () => {
   } else if (from.value.questions.length <= 0) {
     errorMsg('题干不能为空')
     return
-  } else if (from.value.limits.length <= 1) {
+  } else if (from.value.limits.length <= 0) {
     errorMsg('可见老师不能为空')
     return
   }
@@ -514,9 +514,12 @@ const MywangAdd = (data: any) => {
 }
 //编辑
 const getTestadd = (data: any, key: number) => {
-  WangAdd.value.drawer = true
-  WangAdd.value.questionsData = JSON.parse(JSON.stringify(data))
-  WangAdd.value.questionsData.id = key
+  wangis.value = true
+  nextTick(() => {
+    WangAdd.value.drawer = true
+    WangAdd.value.questionsData = JSON.parse(JSON.stringify(data))
+    WangAdd.value.questionsData.id = key
+  })
 }
 const Markingteacher = (data: any) => {
   Bulletbox.value = true

@@ -51,12 +51,11 @@ let StutestModel = reactive({
   result: ''
 })
 let StutesDatas: any = ref([])
-onActivated(() => {
-})
+onActivated(() => {})
 
 const StutestDatas = async () => {
-  let res = await TestLists(StutestModel)
-  if (res.errCode === 10000) {
+  let res = await TestLists(StutestModel).catch(() => {})
+  if (res?.errCode === 10000) {
     StutesDatas.value = res.data.list
     total.value = res.data.counts as unknown as number
     loading.value = false
@@ -75,6 +74,8 @@ const MyhandleCurrent = (data: any) => {
   StutestDatas()
 }
 const xuanzes = () => {
+  StutestModel.page = 1
+  StutestModel.psize = 12
   loading.value = true
   StutestDatas()
 }

@@ -432,8 +432,8 @@ const Testgets = async () => {
   if (tesGetid.value !== 0) {
     let res = await TestGet({
       id: tesGetid.value
-    })
-    if (res.errCode === 10000) {
+    }).catch(() => {})
+    if (res?.errCode === 10000) {
       TestData.value = res.data
       TestData.value.students = []
       ElMessage.warning('注意学生需要重新选择')
@@ -474,8 +474,8 @@ const releaseadd = async (name: string) => {
   } else if (TestData.value.markteachers.length <= 0) {
     ElMessage.error('请选择阅卷老师')
   } else {
-    let res = await TestAdd(TestData.value)
-    if (res.errCode === 10000) {
+    let res = await TestAdd(TestData.value).catch(() => {})
+    if (res?.errCode === 10000) {
       if (Store.TestAddid !== 0) {
         Store.TestAddid = 0
       }
@@ -498,8 +498,8 @@ const xianshix = (data: any) => {
 const MyTestpapers = async (id: any) => {
   let res: any = await SubjectsGet({
     id
-  })
-  if (res.errCode === 10000) {
+  }).catch(() => {})
+  if (res?.errCode === 10000) {
     TestData.value.questions = res.data.questions
   }
 }
@@ -545,9 +545,12 @@ const getTestDel = (data: any, key: number) => {
 }
 //编辑
 const getTestadd = (data: any, key: number) => {
-  WangAdd.value.drawer = true
-  WangAdd.value.questionsData = JSON.parse(JSON.stringify(data))
-  WangAdd.value.questionsData.id = key
+  wangis.value = true
+  nextTick(() => {
+    WangAdd.value.drawer = true
+    WangAdd.value.questionsData = JSON.parse(JSON.stringify(data))
+    WangAdd.value.questionsData.id = key
+  })
 }
 //输入input题型输入操作
 const onchange = (data: any, type: any) => {
@@ -631,11 +634,10 @@ const result = computed(() => {
 const MywangAdd = (data: any) => {
   if (data.id === 0) {
     TestData.value.questions.push(data)
-    WangAdd.value.drawer = false
   } else {
     TestData.value.questions[data.id - 1] = data
-    WangAdd.value.drawer = false
   }
+  WangAdd.value.drawer = false
 }
 //关闭题型添加弹框
 const MywangColos = () => {
@@ -666,8 +668,8 @@ const chujians = () => {
 //题库
 let baseDatas = ref()
 const DatabaseData = async () => {
-  let res: any = await DatabaseList()
-  if (res.errCode === 10000) {
+  let res: any = await DatabaseList().catch(() => {})
+  if (res?.errCode === 10000) {
     baseDatas.value = res.data.list
   }
 }
@@ -675,8 +677,8 @@ DatabaseData()
 
 //添加题库
 const MybaseAdd = async (data: any) => {
-  let res = await DatabaseAdd(data)
-  if (res.errCode === 10000) {
+  let res = await DatabaseAdd(data).catch(() => {})
+  if (res?.errCode === 10000) {
     Questions.value.dialogVisible = false
     DatabaseData()
   }

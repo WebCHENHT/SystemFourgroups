@@ -209,8 +209,8 @@ const TestcharAt = debounce(() => {
 const delTest = async (id: any) => {
   let res = await TestDelete({
     id: id
-  })
-  if (res.errCode === 10000) {
+  }).catch(() => {})
+  if (res?.errCode === 10000) {
     ElMessage.success('删除成功')
     loading.value = true
     TestListdata()
@@ -246,16 +246,16 @@ const Cancelpublication = async (name: string) => {
       if (name === '批量删除') {
         let res = await TestDeleteall({
           ids: Deletealls.value.ids
-        })
-        if (res.errCode === 10000) {
+        }).catch(() => {})
+        if (res?.errCode === 10000) {
           ElMessage.success('删除成功')
         }
       } else {
         let res = await TestUpdateStates({
           ids: Deletealls.value.ids,
           state: name === '发布考试' ? 1 : 2
-        })
-        if (res.errCode === 10000) {
+        }).catch(() => {})
+        if (res?.errCode === 10000) {
           if (name !== '发布考试') {
             ElMessage.success('取消成功')
           } else {
@@ -339,8 +339,8 @@ const GetTestAt = async (data: any) => {
   nextTick(async () => {
     let res = await TestGet({
       id: data.id
-    })
-    if (res.errCode === 10000) {
+    }).catch(() => {})
+    if (res?.errCode === 10000) {
       getDogis.value.testid = data.id
       getDogis.value.dialogVisible = true
       getDogis.value.getDogisTest = res.data
@@ -366,7 +366,7 @@ const student = debounce(async (name: string, ishows: boolean, data: any) => {
 }, 300)
 //关闭穿梭框页面
 const MyClose = () => {
-  TrabsList.value = true
+  TrabsList.value = false
 }
 //表单数据条数和是否开启loading
 let loading = ref<boolean>(true)
@@ -423,8 +423,8 @@ const open = (data: any) => {
     let res = await TestUpdateState({
       state: arr.state,
       ids: arr.ids
-    })
-    if (res.errCode === 10000) {
+    }).catch(() => {})
+    if (res?.errCode === 10000) {
       loading.value = true
       ElMessage({
         type: 'success',
@@ -445,9 +445,9 @@ const radiotest = (data: any) => {
 }
 //获取考试列表管理
 const TestListdata = async () => {
-  let res = await TestLists(TestData.value)
+  let res = await TestLists(TestData.value).catch(() => {})
 
-  if (res.errCode === 10000) {
+  if (res?.errCode === 10000) {
     TestDatas.value = res.data.list
     total.value = res.data.counts
     loading.value = false

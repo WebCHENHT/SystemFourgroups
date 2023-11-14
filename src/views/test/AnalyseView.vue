@@ -103,7 +103,6 @@
   </div>
   <SystemDrawer
     ref="drawer"
-    :Drawertabledata="Drawertabledata"
     v-if="Drawertableisas"
     @MySystemDrawerClose="MySystemDrawerClose"
   ></SystemDrawer>
@@ -203,16 +202,14 @@ const chAkans = () => {
 let drawer = ref()
 
 //给抽屉传数据
-let Drawertabledata = ref()
 const AchahStudent = async (data: any) => {
   Drawertableisas.value = true
   nextTick(async () => {
     let res = await TestGetForResult({
       testid: route.query.id,
       studentid: data.id
-    })
-    if (res.errCode === 10000) {
-      console.log(res.data)
+    }).catch(()=>{})
+    if (res?.errCode === 10000) {
       drawer.value.DrawerDatas = res.data
       drawer.value.Drawertableis = true
     }
@@ -226,9 +223,9 @@ const MySystemDrawerClose = () => {
 let Studentdatas = ref<any[]>([])
 
 const Studentdata = async () => {
-  let res = await StudentTest(StudentTestform)
-  console.log(res)
-  if (res.errCode === 10000) {
+  let res = await StudentTest(StudentTestform).catch(()=>{})
+
+  if (res?.errCode === 10000) {
     loading.value = false
     Studentdatas.value = res.data.list
   }
@@ -240,8 +237,8 @@ const activeName = ref('first')
 const Departmentvalue = ref([])
 const Departmentoptions = ref<any[]>([])
 const Departmentcascader = async () => {
-  let res = await DepartmentList()
-  if (res.errCode === 10000) {
+  let res = await DepartmentList().catch(()=>{})
+  if (res?.errCode === 10000) {
     Departmentoptions.value = res.data.list
   }
 }
@@ -258,8 +255,8 @@ const handleChange = async (value: []) => {
     StudentTestform.depid = depid
     let res = await ClassesList({
       depid: depid
-    })
-    if (res.errCode === 10000) {
+    }).catch(()=>{})
+    if (res?.errCode === 10000) {
       Classesoptions.value = res.data.list
       Classesis.value = false
     }
@@ -277,9 +274,9 @@ let systemAnalyObj = ref<any>({})
 const systemAnalysedata = async () => {
   let res = await TestAnalyse({
     testid: route.query.id
-  })
-  console.log(res)
-  if (res.errCode === 10000) {
+  }).catch(()=>{})
+
+  if (res?.errCode === 10000) {
     systemAnalyObj.value = res.data.model
     let key = Object.keys(res.data.pieItems)
     let value = Object.values(res.data.pieItems)

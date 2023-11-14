@@ -41,7 +41,7 @@ import TestBView from './TestBView.vue'
 let emits = defineEmits<{
   (name: 'MySystemDrawerClose'): void
 }>()
-let DrawerDatas = ref<TestGetForResultData>([])
+let DrawerDatas = ref<TestGetForResultData | any>([])
 const Drawertableis = ref(false)
 const SystemDrawerClose = () => {
   emits('MySystemDrawerClose')
